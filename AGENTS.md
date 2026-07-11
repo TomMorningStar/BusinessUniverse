@@ -11,6 +11,7 @@ The playable baseline is already implemented. Work from the current repository; 
 Implement only the user's explicit request.
 
 Do not automatically:
+
 - pick another backlog item;
 - redesign unrelated UI;
 - migrate libraries;
@@ -19,18 +20,7 @@ Do not automatically:
 - add a backend, SDK, framework, or dependency;
 - perform cleanup outside the requested scope.
 
-## Relevant documentation
-
-Read only what is needed for the task:
-
-1. `docs/PROJECT_STATE.md` — current project status.
-2. `docs/BUSINESS_UNIVERSE_SPEC.md` — implemented game behavior and numbers.
-3. `docs/ARCHITECTURE.md` — boundaries and data flow.
-4. `docs/DECISIONS.md` — durable technical decisions.
-5. `docs/REGRESSION_CHECKLIST.md` — affected regression scenarios.
-6. `docs/BACKLOG.md` — ideas only, never an automatic task source.
-
-If code and documentation disagree, inspect the implementation, identify which is current, and report the mismatch. Do not silently change behavior merely to match stale documentation.
+If documentation and code disagree, inspect the implementation, identify which is current, and report the mismatch. Do not silently change behavior merely to match stale documentation.
 
 ## Engineering constraints
 

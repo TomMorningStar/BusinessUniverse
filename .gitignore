@@ -24,8 +24,4 @@ dist-ssr
 *.sw?
 
 # AI tooling (not part of the project)
-.cursor
-.cursorignore
-.cursorrules
 .claude
-prompts

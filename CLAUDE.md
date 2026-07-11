@@ -29,22 +29,8 @@ There is no test runner configured in this repo. After any meaningful change, ru
 ## Scope discipline (read this first)
 
 - Implement only what the user explicitly requested. Do not pick another backlog item, redesign unrelated UI, migrate libraries, rewrite working modules, change game balance, or add a dependency/backend/SDK on your own initiative.
-- `docs/BACKLOG.md` is informational only — never treat it as an automatic task source.
 - If code and documentation disagree, trust the code, then report the mismatch rather than silently changing behavior to match stale docs.
 - Prefer the smallest coherent change that fully solves the request; keep refactors scoped to what the task requires.
-
-## Documentation map
-
-Read only what's relevant to the task at hand:
-
-- `docs/BUSINESS_UNIVERSE_SPEC.md` — source of truth for current game behavior and numbers (resources, buildings, recipes, prices, durations, capacities, save schema).
-- `docs/ARCHITECTURE.md` — layer boundaries and data flow (summarized below).
-- `docs/PROJECT_STATE.md` — what's implemented and current limitations.
-- `docs/DECISIONS.md` — durable architectural decisions (ADRs), e.g. why Zustand, why config-driven production.
-- `docs/REGRESSION_CHECKLIST.md` — run this in full only for releases, economy/production engine changes, save/migration changes, or large store/architecture refactors.
-- `docs/BACKLOG.md` — future ideas; never implement from here without an explicit user request.
-
-Update a doc only when the change actually affects it (game numbers → SPEC, architecture → ARCHITECTURE, status → PROJECT_STATE, a durable choice → DECISIONS).
 
 ## Architecture
 
@@ -60,13 +46,13 @@ React components → Zustand store (state/actions/selectors) → pure domain fun
 - **`src/app`** (`useGameLoop.ts`, `useAutosave.ts`) — app composition, game loop and autosave lifecycle, page-visibility handling.
 - **`src/utils`** — generic helpers with no knowledge of game entities.
 
-Key architectural rules (see `docs/ARCHITECTURE.md` for full detail):
+Key architectural rules:
 
 - **Config-driven entities**: resources and buildings are typed configs (`src/domain/resources.ts`, `src/domain/buildings.ts`). Adding an ordinary building should not require a copied production function or an `if (building.id === ...)` branch — production goes through `advanceBuilding`/`advanceAllBuildings` (`src/domain/production.ts`) driven by config.
-- **Atomic production cycles**: a cycle start verifies and consumes *all* recipe inputs at once (never partially); a cycle completion delivers/auto-sells all outputs exactly once. If a completed output can't fit in the warehouse, it stays pending (not silently dropped, not double-consumed on retry) — see ADR-005/ADR-006.
+- **Atomic production cycles**: a cycle start verifies and consumes _all_ recipe inputs at once (never partially); a cycle completion delivers/auto-sells all outputs exactly once. If a completed output can't fit in the warehouse, the building stays `output_blocked` at full progress until space frees up (not silently dropped, not double-consumed on retry) — see `startCycle`/`advanceBuilding` in `src/domain/production.ts`.
 - **Domain result model**: operations that can fail return `{ ok: true, value, events? } | { ok: false, reason }` rather than throwing; machine-readable reasons are converted to UI text in the presentation layer.
-- **Time/delta handling**: the store/domain boundary must reject non-finite or negative delta and clamp abnormally large delta (e.g. after a hidden tab). Hidden-tab time is currently *not* offline progress (ADR-007) — visibility restoration resets elapsed-time measurement rather than catching up.
-- **Persistence** (`src/domain/save.ts`): storage key `business-universe-save`, schema version `1` (`SAVE_SCHEMA_VERSION`). Flow is always `parseSave → migrateSave → sanitizeSave(fallback) → set(...)` — raw parsed JSON is never spread directly into store state. An unrecognized/future version is not treated as v1. Any change to persisted fields needs a migration or an explicit incompatibility decision, plus a spec update.
+- **Time/delta handling**: `getSafeDeltaMs` rejects non-finite/negative delta and clamps abnormally large delta (e.g. after a hidden tab) to `MAX_TICK_MS`. Hidden-tab time is currently _not_ offline progress — visibility restoration resets elapsed-time measurement rather than catching up.
+- **Persistence** (`src/domain/save.ts`): storage key `business-universe-save`, schema version `1` (`SAVE_SCHEMA_VERSION`). Flow is always `parseSave → migrateSave → sanitizeSave(fallback) → set(...)` — raw parsed JSON is never spread directly into store state. An unrecognized/future version is not treated as v1. Any change to persisted fields needs a migration (bump `SAVE_SCHEMA_VERSION`) or an explicit incompatibility decision.
 - **Derived state is never persisted** (progress %, formatted currency, button/status text) — compute it from persisted primitives.
 - **Platform integration boundary**: Yandex Games (or any platform) integration should sit behind a narrow adapter so the game keeps running locally without the platform iframe; domain types must not leak platform SDK types.
 

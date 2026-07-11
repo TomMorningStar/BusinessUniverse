@@ -22,7 +22,7 @@ type SidebarProps = {
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   return (
-    <nav className="sidebar" aria-label="Разделы">
+    <nav className="sidebar glass" aria-label="Разделы">
       {SIDEBAR_TABS.map((tab) => {
         const isActive = tab.id === activeTab;
 
@@ -34,7 +34,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             aria-pressed={isActive}
             onClick={() => onTabChange(tab.id)}
           >
-            <span className="sidebar__tab-icon" aria-hidden="true">
+            <span className="sidebar__tab-icon glass-icon" aria-hidden="true">
               <EmojiIcon emoji={tab.emoji} size={34} animated />
             </span>
             <span className="sidebar__tab-label">{tab.label}</span>

@@ -67,9 +67,15 @@ export function BuildingCard({ config, building }: BuildingCardProps) {
   const statusModifierClass = isBlocked
     ? 'building-card--blocked'
     : `building-card--${building.status}`;
+  const categoryModifierClass =
+    config.category === 'factory' ? 'building-card--factory' : 'building-card--raw';
 
   return (
-    <li className={`building-card ${statusModifierClass}`} style={progressStyle} title={statusText}>
+    <li
+      className={`building-card glass ${categoryModifierClass} ${statusModifierClass}`}
+      style={progressStyle}
+      title={statusText}
+    >
       <div className="building-card__progress-fill" aria-hidden="true" />
       <div className="building-card__icon">
         <EmojiIcon emoji={config.emoji} size={40} animated />

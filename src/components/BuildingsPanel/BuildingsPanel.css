@@ -4,10 +4,10 @@
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 14px;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 760px) {
   .buildings-panel__list {
     grid-template-columns: repeat(2, 1fr);
   }

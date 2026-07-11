@@ -2,11 +2,9 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 12px;
-  padding: 12px 14px;
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
+  gap: 8px 14px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
 }
 
 .resource-row__icon {
@@ -14,20 +12,23 @@
 }
 
 .resource-row__name {
-  font-weight: 600;
+  font-weight: 700;
   flex: 1 1 auto;
   min-width: 90px;
+  color: var(--text-primary);
 }
 
 .resource-row__stock {
-  min-width: 80px;
-  color: rgb(255 255 255 / 65%);
+  min-width: 84px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 .resource-row__value {
-  color: var(--success);
-  font-weight: 600;
+  color: var(--accent-success);
+  font-weight: 700;
   min-width: 70px;
+  font-variant-numeric: tabular-nums;
 }
 
 .resource-row__auto-sell {
@@ -35,13 +36,18 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  color: rgb(255 255 255 / 65%);
+  color: var(--text-secondary);
 }
 
 .resource-row__auto-sell input {
-  accent-color: var(--accent);
-  width: 16px;
-  height: 16px;
+  accent-color: var(--accent-success);
+  width: 18px;
+  height: 18px;
+}
+
+.resource-row__auto-sell input:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
 
 .resource-row__sell {
@@ -52,34 +58,6 @@
 
 .resource-row__sell-button {
   min-height: 40px;
-  padding: 8px 16px;
-  border: none;
-  border-radius: var(--radius-pill);
-  background: var(--accent-strong);
-  color: #ffffff;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    transform 0.15s ease,
-    background 0.15s ease;
-}
-
-.resource-row__sell-button:not(:disabled):hover {
-  background: var(--accent);
-}
-
-.resource-row__sell-button:not(:disabled):active {
-  transform: scale(0.96);
-}
-
-.resource-row__sell-button:disabled {
-  cursor: not-allowed;
-  background: var(--surface-strong);
-  color: rgb(255 255 255 / 40%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .resource-row__sell-button {
-    transition: none;
-  }
+  padding: 8px 18px;
+  font-size: 14px;
 }

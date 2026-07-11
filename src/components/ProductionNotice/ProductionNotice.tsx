@@ -11,7 +11,7 @@ export function ProductionNotice() {
   return (
     <div className="production-notice-list" aria-live="polite" role="status">
       {notices.map((notice) => (
-        <div key={notice.id} className="production-notice-list__item">
+        <div key={notice.id} className="production-notice-list__item glass glass--strong">
           {notice.message}
         </div>
       ))}

@@ -50,7 +50,7 @@ export function ShopPanel({ category }: ShopPanelProps) {
           return (
             <li
               key={buildingId}
-              className={`shop-panel__card ${cardModifierClass}`}
+              className={`shop-panel__card glass ${cardModifierClass}`}
               title={formatRecipeText(config)}
             >
               <div className="shop-panel__icon">
@@ -73,7 +73,7 @@ export function ShopPanel({ category }: ShopPanelProps) {
                 <span className="shop-panel__buy">
                   <button
                     type="button"
-                    className="shop-panel__buy-button"
+                    className="shop-panel__buy-button glass-btn glass-btn--success"
                     onClick={() => buyBuilding(buildingId)}
                     disabled={!affordable}
                   >

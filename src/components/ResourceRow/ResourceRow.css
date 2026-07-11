@@ -1,0 +1,56 @@
+.resource-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  border: 1px solid #2e303a;
+  border-radius: 8px;
+}
+
+.resource-row__icon {
+  font-size: 22px;
+}
+
+.resource-row__name {
+  font-weight: 600;
+  flex: 1 1 auto;
+  min-width: 90px;
+}
+
+.resource-row__stock {
+  min-width: 80px;
+}
+
+.resource-row__value {
+  color: #9ca3af;
+  min-width: 70px;
+}
+
+.resource-row__auto-sell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.resource-row__sell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.resource-row__sell-button {
+  min-height: 40px;
+  padding: 6px 12px;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.resource-row__sell-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

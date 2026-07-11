@@ -1,0 +1,210 @@
+.root {
+  --potato-size: 180px;
+
+  position: relative;
+  display: inline-grid;
+  width: var(--potato-size);
+  height: var(--potato-size);
+  place-items: center;
+  perspective: 720px;
+  isolation: isolate;
+  vertical-align: middle;
+}
+
+.potato {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 50% 64%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 3px rgb(84 35 4 / 18%)) drop-shadow(0 14px 12px rgb(84 35 4 / 18%));
+}
+
+.bodyGroup {
+  transform-origin: 150px 180px;
+}
+
+.details {
+  transform-origin: 150px 160px;
+}
+
+.glint {
+  transform-origin: 115px 96px;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+
+.shadow {
+  position: absolute;
+  z-index: 1;
+  bottom: 9%;
+  left: 17%;
+  width: 66%;
+  height: 14%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(65 28 4 / 38%) 0%,
+    rgb(65 28 4 / 20%) 42%,
+    transparent 75%
+  );
+  filter: blur(calc(var(--potato-size) * 0.025));
+  transform-origin: center;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.animated .potato {
+  animation: potatoIconTurn 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+.animated .bodyGroup {
+  animation: potatoIconSquish 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+.animated .details {
+  animation: potatoIconDetails 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+.animated .glint {
+  animation: potatoIconGlint 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+.animated .shadow {
+  animation: potatoIconShadow 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+.static .potato {
+  transform: translateY(-2%) rotateY(-5deg) rotateZ(-1deg);
+}
+
+@keyframes potatoIconTurn {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(-12deg) rotateZ(-2deg) scale(1);
+  }
+
+  18% {
+    transform: translate3d(0, -5%, 18px) rotateY(-3deg) rotateZ(1deg) scale(1.035);
+  }
+
+  42% {
+    transform: translate3d(0, -1%, 6px) rotateY(12deg) rotateZ(2.2deg) scale(1.01);
+  }
+
+  66% {
+    transform: translate3d(0, -6%, 20px) rotateY(2deg) rotateZ(-1.2deg) scale(1.04);
+  }
+
+  82% {
+    transform: translate3d(0, -2%, 8px) rotateY(-8deg) rotateZ(-2.5deg) scale(1.012);
+  }
+}
+
+@keyframes potatoIconSquish {
+  0%,
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+
+  18%,
+  66% {
+    transform: scale3d(1.015, 0.985, 1);
+  }
+
+  42%,
+  82% {
+    transform: scale3d(0.995, 1.008, 1);
+  }
+}
+
+@keyframes potatoIconDetails {
+  0%,
+  100% {
+    transform: translateX(-1.5px);
+  }
+
+  42% {
+    transform: translateX(2px);
+  }
+
+  66% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes potatoIconGlint {
+  0%,
+  100% {
+    transform: translate3d(-8px, 1px, 0) scale(0.96);
+    opacity: 0.58;
+  }
+
+  18% {
+    transform: translate3d(-1px, -2px, 0) scale(1.02);
+    opacity: 0.9;
+  }
+
+  42% {
+    transform: translate3d(12px, 2px, 0) scale(0.94);
+    opacity: 0.38;
+  }
+
+  66% {
+    transform: translate3d(2px, -3px, 0) scale(1.04);
+    opacity: 0.82;
+  }
+
+  82% {
+    transform: translate3d(-5px, 0, 0) scale(0.98);
+    opacity: 0.66;
+  }
+}
+
+@keyframes potatoIconShadow {
+  0%,
+  100% {
+    transform: translateX(-3%) scaleX(1);
+    opacity: 0.76;
+  }
+
+  18% {
+    transform: translateX(-1%) scaleX(0.76);
+    opacity: 0.42;
+  }
+
+  42% {
+    transform: translateX(4%) scaleX(0.94);
+    opacity: 0.68;
+  }
+
+  66% {
+    transform: translateX(1%) scaleX(0.72);
+    opacity: 0.38;
+  }
+
+  82% {
+    transform: translateX(-2%) scaleX(0.88);
+    opacity: 0.62;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated .potato,
+  .animated .bodyGroup,
+  .animated .details,
+  .animated .glint,
+  .animated .shadow {
+    animation: none;
+  }
+
+  .animated .potato {
+    transform: translateY(-2%) rotateY(-5deg) rotateZ(-1deg);
+  }
+}

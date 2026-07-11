@@ -1,0 +1,101 @@
+.building-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #2e303a;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  transition: border-color 0.2s linear;
+}
+
+.building-card--idle {
+  border-color: #2e303a;
+  opacity: 0.75;
+}
+
+.building-card--running {
+  border-color: #3f7a54;
+}
+
+.building-card--blocked {
+  border-color: #a15b1f;
+}
+
+.building-card__progress-fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: var(--progress, 0%);
+  background: rgb(94 189 138 / 20%);
+  transition: width 0.2s linear;
+  pointer-events: none;
+}
+
+.building-card--blocked .building-card__progress-fill {
+  background: rgb(161 91 31 / 22%);
+}
+
+.building-card__icon {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.building-card__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.building-card__name {
+  margin: 0;
+  font-size: 16px;
+}
+
+.building-card__recipe,
+.building-card__cycle {
+  margin: 0;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.building-card__stats {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
+.building-card__stats-visual {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .building-card__progress-fill {
+    transition: none;
+  }
+}

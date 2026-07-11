@@ -1,0 +1,140 @@
+.root {
+  --chips-size: 180px;
+
+  position: relative;
+  display: inline-grid;
+  width: var(--chips-size);
+  height: var(--chips-size);
+  place-items: center;
+  isolation: isolate;
+  vertical-align: middle;
+}
+
+.bag {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  user-select: none;
+  pointer-events: none;
+}
+
+.bagGroup {
+  transform-origin: 150px 265px;
+  will-change: transform;
+}
+
+.badge {
+  transform-origin: 150px 160px;
+  will-change: transform, opacity;
+}
+
+.chip {
+  transform-origin: 210px 240px;
+  will-change: transform;
+}
+
+.shadow {
+  position: absolute;
+  z-index: 1;
+  bottom: 6%;
+  left: 18%;
+  width: 64%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(0 0 0 / 35%) 0%,
+    rgb(0 0 0 / 18%) 45%,
+    transparent 75%
+  );
+  filter: blur(calc(var(--chips-size) * 0.02));
+  transform-origin: center;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.animated .bagGroup {
+  animation: chipsBagSway 3.2s ease-in-out infinite;
+}
+
+.animated .badge {
+  animation: chipsBadgeGlow 3.2s ease-in-out infinite;
+}
+
+.animated .chip {
+  animation: chipsBagWiggle 3.2s ease-in-out infinite;
+}
+
+.animated .shadow {
+  animation: chipsBagShadow 3.2s ease-in-out infinite;
+}
+
+.static .bagGroup {
+  transform: rotateZ(-1.5deg);
+}
+
+@keyframes chipsBagSway {
+  0%,
+  100% {
+    transform: rotateZ(-3deg);
+  }
+
+  50% {
+    transform: rotateZ(3deg);
+  }
+}
+
+@keyframes chipsBadgeGlow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.82;
+  }
+}
+
+@keyframes chipsBagWiggle {
+  0%,
+  100% {
+    transform: rotateZ(-6deg) translateY(0);
+  }
+
+  30% {
+    transform: rotateZ(4deg) translateY(-3px);
+  }
+
+  60% {
+    transform: rotateZ(-4deg) translateY(1px);
+  }
+}
+
+@keyframes chipsBagShadow {
+  0%,
+  100% {
+    transform: translateX(-3%) scaleX(1);
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: translateX(3%) scaleX(0.88);
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated .bagGroup,
+  .animated .badge,
+  .animated .chip,
+  .animated .shadow {
+    animation: none;
+  }
+
+  .animated .bagGroup {
+    transform: rotateZ(-1.5deg);
+  }
+}

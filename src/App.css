@@ -1,0 +1,20 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+.app__body {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 8px;
+  padding-bottom: 24px;
+}
+
+.app__main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 auto;
+  min-width: 0;
+}

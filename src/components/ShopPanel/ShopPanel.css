@@ -1,0 +1,99 @@
+.shop-panel {
+  padding: 12px 16px;
+}
+
+.shop-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.shop-panel__card {
+  border: 1px solid #2e303a;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  transition:
+    border-color 0.2s linear,
+    opacity 0.2s linear;
+}
+
+.shop-panel__card--affordable {
+  border-color: #3f7a54;
+}
+
+.shop-panel__card--unaffordable {
+  border-color: #2e303a;
+  opacity: 0.65;
+}
+
+.shop-panel__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shop-panel__content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.shop-panel__name {
+  margin: 0;
+  font-size: 16px;
+}
+
+.shop-panel__stats {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
+.shop-panel__stats-visual {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.shop-panel__stats-arrow {
+  margin: 0 1px;
+}
+
+.shop-panel__buy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.shop-panel__buy-button {
+  min-height: 32px;
+  padding: 4px 10px;
+  font-size: 13px;
+  border: 1px solid #4b5563;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.shop-panel__buy-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (min-width: 720px) {
+  .shop-panel__list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

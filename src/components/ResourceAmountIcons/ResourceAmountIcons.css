@@ -1,0 +1,9 @@
+.resource-amount-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.resource-amount-icons__overflow {
+  font-weight: 600;
+}

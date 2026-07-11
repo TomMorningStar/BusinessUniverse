@@ -1,12 +1,35 @@
 :root {
   color-scheme: dark;
   font:
-    16px/1.5 system-ui,
+    16px/1.5 -apple-system,
+    'SF Pro Text',
+    system-ui,
     'Segoe UI',
     Roboto,
     sans-serif;
-  background: #16171d;
-  color: #f3f4f6;
+  background: #0e1621;
+  color: #f0f4f8;
+
+  --accent: #2ea6ea;
+  --accent-strong: #229ed9;
+  --accent-soft: rgb(46 166 234 / 16%);
+  --success: #4fce5d;
+  --success-soft: rgb(79 206 93 / 16%);
+  --warning: #e4a63c;
+  --warning-soft: rgb(228 166 60 / 16%);
+  --danger: #e5534b;
+  --danger-soft: rgb(229 83 75 / 16%);
+
+  --surface: #17212b;
+  --surface-strong: #1c2733;
+  --surface-border: rgb(255 255 255 / 7%);
+  --surface-shadow: 0 2px 12px rgb(0 0 0 / 30%);
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
 }
 
 * {
@@ -19,11 +42,16 @@ body {
   overflow-x: hidden;
 }
 
+body {
+  min-height: 100svh;
+  background: radial-gradient(ellipse at 15% -10%, rgb(46 166 234 / 12%), transparent 55%), #0e1621;
+}
+
 #root {
   min-height: 100svh;
-  text-transform: uppercase;
 }
 
 button {
   font: inherit;
+  -webkit-tap-highlight-color: transparent;
 }

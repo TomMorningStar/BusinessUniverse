@@ -7,14 +7,15 @@
 .app__body {
   display: flex;
   flex: 1 1 auto;
-  gap: 8px;
+  gap: 4px;
   padding-bottom: 24px;
 }
 
 .app__main {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   flex: 1 1 auto;
   min-width: 0;
+  padding: 16px 8px 0 16px;
 }

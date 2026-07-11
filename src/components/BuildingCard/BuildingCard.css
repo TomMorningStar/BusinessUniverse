@@ -1,27 +1,29 @@
 .building-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid #2e303a;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: var(--radius-lg);
+  padding: 14px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 12px;
-  transition: border-color 0.2s linear;
+  gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  transition:
+    border-color 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .building-card--idle {
-  border-color: #2e303a;
-  opacity: 0.75;
+  opacity: 0.7;
 }
 
 .building-card--running {
-  border-color: #3f7a54;
+  border-color: rgb(79 206 93 / 40%);
 }
 
 .building-card--blocked {
-  border-color: #a15b1f;
+  border-color: rgb(228 166 60 / 40%);
 }
 
 .building-card__progress-fill {
@@ -29,13 +31,13 @@
   inset: 0;
   z-index: 0;
   width: var(--progress, 0%);
-  background: rgb(94 189 138 / 20%);
+  background: rgb(79 206 93 / 14%);
   transition: width 0.2s linear;
   pointer-events: none;
 }
 
 .building-card--blocked .building-card__progress-fill {
-  background: rgb(161 91 31 / 22%);
+  background: rgb(228 166 60 / 14%);
 }
 
 .building-card__icon {

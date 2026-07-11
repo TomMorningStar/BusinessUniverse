@@ -3,9 +3,10 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 12px;
-  padding: 10px 12px;
-  border: 1px solid #2e303a;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
 }
 
 .resource-row__icon {
@@ -20,10 +21,12 @@
 
 .resource-row__stock {
   min-width: 80px;
+  color: rgb(255 255 255 / 65%);
 }
 
 .resource-row__value {
-  color: #9ca3af;
+  color: var(--success);
+  font-weight: 600;
   min-width: 70px;
 }
 
@@ -32,6 +35,13 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  color: rgb(255 255 255 / 65%);
+}
+
+.resource-row__auto-sell input {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
 }
 
 .resource-row__sell {
@@ -42,15 +52,34 @@
 
 .resource-row__sell-button {
   min-height: 40px;
-  padding: 6px 12px;
-  border: 1px solid #4b5563;
-  border-radius: 6px;
-  background: transparent;
-  color: inherit;
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--accent-strong);
+  color: #ffffff;
+  font-weight: 600;
   cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.resource-row__sell-button:not(:disabled):hover {
+  background: var(--accent);
+}
+
+.resource-row__sell-button:not(:disabled):active {
+  transform: scale(0.96);
 }
 
 .resource-row__sell-button:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  background: var(--surface-strong);
+  color: rgb(255 255 255 / 40%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resource-row__sell-button {
+    transition: none;
+  }
 }

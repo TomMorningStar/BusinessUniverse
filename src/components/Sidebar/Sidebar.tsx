@@ -1,3 +1,4 @@
+import { EmojiIcon } from '../EmojiIcon/EmojiIcon';
 import './Sidebar.css';
 
 export type AppTab = 'warehouse' | 'raw_material' | 'factory';
@@ -34,7 +35,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             onClick={() => onTabChange(tab.id)}
           >
             <span className="sidebar__tab-icon" aria-hidden="true">
-              {tab.emoji}
+              <EmojiIcon emoji={tab.emoji} size={34} animated={isActive} />
             </span>
             <span className="sidebar__tab-label">{tab.label}</span>
           </button>

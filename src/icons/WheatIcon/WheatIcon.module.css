@@ -1,0 +1,87 @@
+.root {
+  --wheat-size: 28px;
+
+  position: relative;
+  display: inline-grid;
+  width: var(--wheat-size);
+  height: var(--wheat-size);
+  place-items: center;
+  isolation: isolate;
+  vertical-align: middle;
+}
+
+.wheat {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  user-select: none;
+  pointer-events: none;
+}
+
+.stalkGroup {
+  transform-origin: 100px 178px;
+  will-change: transform;
+}
+
+.shadow {
+  position: absolute;
+  z-index: 1;
+  bottom: 8%;
+  left: 30%;
+  width: 40%;
+  height: 10%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(0 0 0 / 32%) 0%,
+    rgb(0 0 0 / 14%) 45%,
+    transparent 75%
+  );
+  filter: blur(calc(var(--wheat-size) * 0.03));
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.animated .stalkGroup {
+  animation: wheatIconSway 3s ease-in-out infinite;
+}
+
+.animated .shadow {
+  animation: wheatIconShadow 3s ease-in-out infinite;
+}
+
+.static .stalkGroup {
+  transform: rotateZ(-2deg);
+}
+
+@keyframes wheatIconSway {
+  0%,
+  100% {
+    transform: rotateZ(-6deg);
+  }
+
+  50% {
+    transform: rotateZ(6deg);
+  }
+}
+
+@keyframes wheatIconShadow {
+  0%,
+  100% {
+    transform: translateX(-4%) scaleX(0.9);
+  }
+
+  50% {
+    transform: translateX(4%) scaleX(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated .stalkGroup,
+  .animated .shadow {
+    animation: none;
+  }
+}

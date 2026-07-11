@@ -1,6 +1,14 @@
 .root {
   --factory-size: 28px;
 
+  /* easily themeable via CSS */
+  --factory-wall-a: #46586a;
+  --factory-wall-b: #2b3947;
+  --factory-roof-a: #5b6f82;
+  --factory-roof-b: #38485a;
+  --factory-window-a: #ffe6a0;
+  --factory-window-b: #f0a93c;
+
   position: relative;
   display: inline-grid;
   width: var(--factory-size);
@@ -10,75 +18,190 @@
   vertical-align: middle;
 }
 
-.factory {
+.icon {
   position: relative;
   z-index: 2;
   display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
+  perspective: 500px;
   user-select: none;
   pointer-events: none;
 }
 
-.building {
+.wallA {
+  stop-color: var(--factory-wall-a);
+}
+.wallB {
+  stop-color: var(--factory-wall-b);
+}
+.roofA {
+  stop-color: var(--factory-roof-a);
+}
+.roofB {
+  stop-color: var(--factory-roof-b);
+}
+.winA {
+  stop-color: var(--factory-window-a);
+}
+.winB {
+  stop-color: var(--factory-window-b);
+}
+
+.float,
+.breathe,
+.tilt {
+  transform-box: fill-box;
+  transform-origin: 64px 114px;
+  transform-style: preserve-3d;
   will-change: transform;
 }
 
-.smokeLeft,
-.smokeRight {
-  opacity: 0;
+.breathe {
   transform-origin: center;
-  will-change: transform, opacity;
 }
 
 .shadow {
   position: absolute;
   z-index: 1;
-  bottom: 6%;
-  left: 16%;
-  width: 68%;
-  height: 10%;
+  bottom: 8%;
+  left: 15%;
+  width: 70%;
+  height: 11%;
   border-radius: 50%;
   background: radial-gradient(
     ellipse at center,
-    rgb(0 0 0 / 35%) 0%,
-    rgb(0 0 0 / 16%) 45%,
-    transparent 75%
+    rgb(4 12 20 / 40%) 0%,
+    rgb(4 12 20 / 18%) 45%,
+    transparent 74%
   );
   filter: blur(calc(var(--factory-size) * 0.03));
+  transform-origin: center;
+  will-change: transform, opacity;
   pointer-events: none;
 }
 
-.animated .smokeLeft {
-  animation: factoryIconSmoke 2.6s ease-out infinite;
+.smoke {
+  transform-box: fill-box;
 }
 
-.animated .smokeRight {
-  animation: factoryIconSmoke 2.6s ease-out infinite;
-  animation-delay: 1.1s;
+.puff1,
+.puff2,
+.puff3,
+.puff4 {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
 }
 
-@keyframes factoryIconSmoke {
-  0% {
-    transform: translateY(0) scale(0.6);
-    opacity: 0;
-  }
+.animated .float {
+  animation: factorySway 3.8s ease-in-out infinite;
+}
+.animated .breathe {
+  animation: factoryBreathe 3.4s ease-in-out infinite;
+}
+.animated .tilt {
+  animation: factoryTilt 5.6s ease-in-out infinite;
+}
+.animated .shadow {
+  animation: factoryShadow 3.4s ease-in-out infinite;
+}
+.animated .puff1 {
+  animation: factorySmoke 2.8s ease-out infinite;
+}
+.animated .puff2 {
+  animation: factorySmoke 2.8s ease-out infinite;
+  animation-delay: 1.4s;
+}
+.animated .puff3 {
+  animation: factorySmoke 2.8s ease-out infinite;
+  animation-delay: 0.7s;
+}
+.animated .puff4 {
+  animation: factorySmoke 2.8s ease-out infinite;
+  animation-delay: 2.1s;
+}
 
-  20% {
-    opacity: 0.7;
-  }
-
+@keyframes factorySway {
+  0%,
   100% {
-    transform: translateY(-26px) scale(1.3);
+    transform: translateY(1px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes factoryBreathe {
+  0%,
+  100% {
+    transform: scale(0.99);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes factoryTilt {
+  0%,
+  100% {
+    transform: rotateZ(-1.6deg) rotateY(-6deg);
+  }
+  50% {
+    transform: rotateZ(1.6deg) rotateY(6deg);
+  }
+}
+
+@keyframes factoryShadow {
+  0%,
+  100% {
+    transform: scaleX(0.94);
+    opacity: 0.28;
+  }
+  50% {
+    transform: scaleX(1.04);
+    opacity: 0.4;
+  }
+}
+
+@keyframes factorySmoke {
+  0% {
+    transform: translateY(0) scale(0.5);
     opacity: 0;
   }
+  25% {
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(-30px) scale(1.4);
+    opacity: 0;
+  }
+}
+
+.static .float {
+  transform: rotateY(-5deg);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animated .smokeLeft,
-  .animated .smokeRight {
+  .animated .float,
+  .animated .breathe,
+  .animated .tilt,
+  .animated .shadow,
+  .animated .puff1,
+  .animated .puff2,
+  .animated .puff3,
+  .animated .puff4 {
     animation: none;
+  }
+  .animated .tilt {
+    transform: rotateY(-5deg);
+  }
+  .animated .puff1,
+  .animated .puff2,
+  .animated .puff3,
+  .animated .puff4 {
     opacity: 0;
   }
 }

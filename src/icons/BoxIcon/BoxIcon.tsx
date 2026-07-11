@@ -66,46 +66,20 @@ export function BoxIcon({
             <stop className={styles.rightA} offset="0" />
             <stop className={styles.rightB} offset="1" />
           </linearGradient>
-          <linearGradient
-            id="box-tape"
-            x1="52"
-            y1="70"
-            x2="76"
-            y2="118"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop className={styles.tapeA} offset="0" />
-            <stop className={styles.tapeB} offset="1" />
-          </linearGradient>
           <radialGradient
             id="box-glow"
             cx="0"
             cy="0"
             r="1"
             gradientUnits="userSpaceOnUse"
-            gradientTransform="translate(52 44) scale(56)"
+            gradientTransform="translate(52 44) scale(54)"
           >
-            <stop offset="0" stopColor="#ffffff" stopOpacity="0.55" />
-            <stop offset="0.6" stopColor="#ffffff" stopOpacity="0.06" />
-            <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
+            <stop offset="0" stopColor="#fff4df" stopOpacity="0.32" />
+            <stop offset="0.7" stopColor="#fff4df" stopOpacity="0.04" />
+            <stop offset="1" stopColor="#fff4df" stopOpacity="0" />
           </radialGradient>
-          <linearGradient
-            id="box-shine"
-            x1="0"
-            y1="0"
-            x2="26"
-            y2="52"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop offset="0" stopColor="#ffffff" stopOpacity="0" />
-            <stop offset="0.5" stopColor="#ffffff" stopOpacity="0.85" />
-            <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
-          </linearGradient>
-          <clipPath id="box-clip">
-            <path d="M64 20 L110 46 L110 96 L64 122 L18 96 L18 46 Z" />
-          </clipPath>
           <filter id="box-drop" x="-30%" y="-25%" width="160%" height="155%">
-            <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#0a1a2a" floodOpacity="0.45" />
+            <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#3a2410" floodOpacity="0.42" />
           </filter>
         </defs>
 
@@ -116,53 +90,52 @@ export function BoxIcon({
               <path
                 d="M64 20 L110 46 L64 72 L18 46 Z"
                 fill="url(#box-top)"
-                stroke="#123049"
+                stroke="#7a5326"
                 strokeWidth="2"
                 strokeLinejoin="round"
               />
               <path
                 d="M18 46 L64 72 L64 122 L18 96 Z"
                 fill="url(#box-left)"
-                stroke="#0e2a41"
+                stroke="#5e3f1c"
                 strokeWidth="2"
                 strokeLinejoin="round"
               />
               <path
                 d="M64 72 L110 46 L110 96 L64 122 Z"
                 fill="url(#box-right)"
-                stroke="#0e2a41"
+                stroke="#5e3f1c"
                 strokeWidth="2"
                 strokeLinejoin="round"
               />
 
-              {/* tape */}
-              <g clipPath="url(#box-clip)">
-                <path d="M64 21 L79 29.5 L64 38 L49 29.5 Z" fill="url(#box-tape)" opacity="0.95" />
-                <path d="M56 73 L72 73 L72 118 L56 118 Z" fill="url(#box-tape)" />
-                <path d="M56 73 L60 73 L60 118 L56 118 Z" fill="#ffffff" opacity="0.25" />
-              </g>
+              {/* cardboard flap seams on the lid */}
+              <path
+                d="M64 20 L64 72"
+                stroke="#8a5f2c"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                opacity="0.7"
+              />
+              <path
+                d="M41 33 L87 59"
+                stroke="#8a5f2c"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                opacity="0.4"
+              />
 
-              {/* ambient + gloss */}
-              <path d="M64 20 L110 46 L64 72 L18 46 Z" fill="url(#box-glow)" />
-              <g clipPath="url(#box-clip)">
-                <rect
-                  className={styles.shine}
-                  x="-30"
-                  y="8"
-                  width="26"
-                  height="120"
-                  fill="url(#box-shine)"
-                />
-              </g>
+              {/* edge highlight + soft ambient */}
               <path
                 d="M24 47 L64 24 L104 47"
                 fill="none"
-                stroke="#ffffff"
-                strokeWidth="2.4"
+                stroke="#fff0d6"
+                strokeWidth="2.2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                opacity="0.4"
+                opacity="0.35"
               />
+              <path d="M64 20 L110 46 L64 72 L18 46 Z" fill="url(#box-glow)" />
             </g>
           </g>
         </g>

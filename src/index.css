@@ -49,9 +49,11 @@ body {
 
 #root {
   min-height: 100svh;
+  text-transform: uppercase;
 }
 
 button {
   font: inherit;
+  text-transform: inherit;
   -webkit-tap-highlight-color: transparent;
 }

@@ -1,15 +1,13 @@
 .root {
   --box-size: 28px;
 
-  /* easily themeable via CSS */
-  --box-top-a: #9ad4ff;
-  --box-top-b: #4aa8ee;
-  --box-left-a: #2f8fd6;
-  --box-left-b: #175f97;
-  --box-right-a: #4aa6e8;
-  --box-right-b: #2778b8;
-  --box-tape-a: #ffe0a0;
-  --box-tape-b: #f4b64a;
+  /* easily themeable via CSS — kraft cardboard tones */
+  --box-top-a: #e6c491;
+  --box-top-b: #cf9f5f;
+  --box-left-a: #b98a4c;
+  --box-left-b: #8f6631;
+  --box-right-a: #cf9c58;
+  --box-right-b: #a3763c;
 
   position: relative;
   display: inline-grid;
@@ -50,12 +48,6 @@
 .rightB {
   stop-color: var(--box-right-b);
 }
-.tapeA {
-  stop-color: var(--box-tape-a);
-}
-.tapeB {
-  stop-color: var(--box-tape-b);
-}
 
 .float,
 .breathe,
@@ -95,15 +87,8 @@
 .animated .tilt {
   animation: boxTilt 5.2s ease-in-out infinite;
 }
-.animated .shine {
-  animation: boxShine 4.6s ease-in-out infinite;
-}
 .animated .shadow {
   animation: boxShadow 3.4s ease-in-out infinite;
-}
-
-.shine {
-  opacity: 0;
 }
 
 @keyframes boxSway {
@@ -133,24 +118,6 @@
   }
   50% {
     transform: rotateZ(2.4deg) rotateY(7deg);
-  }
-}
-
-@keyframes boxShine {
-  0% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  35% {
-    opacity: 0.9;
-  }
-  70% {
-    transform: translateX(150px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(150px);
-    opacity: 0;
   }
 }
 

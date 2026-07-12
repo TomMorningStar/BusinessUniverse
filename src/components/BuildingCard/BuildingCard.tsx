@@ -35,7 +35,7 @@ function formatRecipe(config: BuildingConfig): string {
 function formatCompactStats(config: BuildingConfig): string {
   const cycleSeconds = config.cycleDurationMs / 1000;
   const outputs = config.outputs.map((output) => `+${output.amount}`).join(', ');
-  return `${outputs}/${cycleSeconds}с`;
+  return `${outputs}, цикл ${cycleSeconds} сек`;
 }
 
 function formatBlockReason(reason: ProductionBlockReason): string {
@@ -85,13 +85,14 @@ export function BuildingCard({ config, building }: BuildingCardProps) {
         {config.inputs.length === 0 ? (
           <p className="building-card__stats" aria-label={formatCompactStats(config)}>
             <span className="building-card__stats-visual" aria-hidden="true">
-              +<ResourceAmountIcons amounts={config.outputs} size={16} />/{cycleSeconds}с
+              +<ResourceAmountIcons amounts={config.outputs} size={16} />
+              <span className="building-card__stats-cycle">⏱ {cycleSeconds} сек</span>
             </span>
           </p>
         ) : (
           <>
             <p className="building-card__recipe">{formatRecipe(config)}</p>
-            <p className="building-card__cycle">Цикл: {cycleSeconds} с</p>
+            <p className="building-card__cycle">⏱ Цикл: {cycleSeconds} сек</p>
           </>
         )}
         <progress

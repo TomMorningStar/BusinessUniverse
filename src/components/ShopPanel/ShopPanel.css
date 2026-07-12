@@ -72,12 +72,19 @@
 
 .shop-panel__stats-visual {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 3px;
 }
 
 .shop-panel__stats-arrow {
   margin: 0 1px;
+}
+
+.shop-panel__stats-cycle {
+  margin-left: 4px;
+  color: var(--text-muted);
+  font-weight: 700;
 }
 
 .shop-panel__buy {

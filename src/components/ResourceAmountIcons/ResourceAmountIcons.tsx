@@ -15,12 +15,24 @@ export function ResourceAmountIcons({ amounts, size = 16 }: ResourceAmountIconsP
     <>
       {amounts.map((resourceAmount) => {
         const resourceConfig = RESOURCES[resourceAmount.resourceId];
-        const iconCount = Math.min(resourceAmount.amount, MAX_ICONS_PER_RESOURCE);
-        const overflowCount = resourceAmount.amount - iconCount;
+
+        if (resourceAmount.amount > MAX_ICONS_PER_RESOURCE) {
+          return (
+            <span key={resourceAmount.resourceId} className="resource-amount-icons">
+              <EmojiIcon
+                emoji={resourceConfig.emoji}
+                size={size}
+                animated
+                className="resource-amount-icons__icon"
+              />
+              <span className="resource-amount-icons__multiplier">×{resourceAmount.amount}</span>
+            </span>
+          );
+        }
 
         return (
           <span key={resourceAmount.resourceId} className="resource-amount-icons">
-            {Array.from({ length: iconCount }, (_, index) => (
+            {Array.from({ length: resourceAmount.amount }, (_, index) => (
               <EmojiIcon
                 key={index}
                 emoji={resourceConfig.emoji}
@@ -29,9 +41,6 @@ export function ResourceAmountIcons({ amounts, size = 16 }: ResourceAmountIconsP
                 className="resource-amount-icons__icon"
               />
             ))}
-            {overflowCount > 0 && (
-              <span className="resource-amount-icons__overflow">+{overflowCount}</span>
-            )}
           </span>
         );
       })}

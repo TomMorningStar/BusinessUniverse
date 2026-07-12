@@ -111,8 +111,15 @@
 
 .building-card__stats-visual {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 3px;
+}
+
+.building-card__stats-cycle {
+  margin-left: 4px;
+  color: var(--text-muted);
+  font-weight: 700;
 }
 
 .visually-hidden {

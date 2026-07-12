@@ -13,10 +13,10 @@ function formatRecipeText(config: BuildingConfig): string {
   const outputs = formatResourceAmountsText(config.outputs);
 
   if (config.inputs.length === 0) {
-    return `${outputs}, цикл ${cycleSeconds} с`;
+    return `${outputs}, цикл ${cycleSeconds} сек`;
   }
 
-  return `${formatResourceAmountsText(config.inputs)} → ${outputs}, цикл ${cycleSeconds} с`;
+  return `${formatResourceAmountsText(config.inputs)} → ${outputs}, цикл ${cycleSeconds} сек`;
 }
 
 type ShopPanelProps = {
@@ -67,7 +67,7 @@ export function ShopPanel({ category }: ShopPanelProps) {
                       </>
                     )}
                     <ResourceAmountIcons amounts={config.outputs} size={16} />
-                    <span>/{cycleSeconds}с</span>
+                    <span className="shop-panel__stats-cycle">⏱ {cycleSeconds} сек</span>
                   </span>
                 </p>
                 <span className="shop-panel__buy">

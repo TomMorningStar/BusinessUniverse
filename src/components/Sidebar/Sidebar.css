@@ -61,25 +61,9 @@
     inset 0 0 16px rgb(123 140 255 / 20%);
 }
 
-.sidebar__tab-label {
-  width: 100%;
-  font-size: 11px;
-  line-height: 1.2;
-  text-align: center;
-  color: var(--text-muted);
-  overflow-wrap: break-word;
-  transition: color var(--transition-fast);
-}
-
-.sidebar__tab[aria-pressed='true'] .sidebar__tab-label {
-  color: #c8d0ff;
-  font-weight: 700;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .sidebar__tab,
-  .sidebar__tab-icon,
-  .sidebar__tab-label {
+  .sidebar__tab-icon {
     transition: none;
   }
 }

@@ -1,19 +1,6 @@
 import { EmojiIcon } from '../EmojiIcon/EmojiIcon';
+import { SIDEBAR_TABS, type AppTab } from './tabs';
 import './Sidebar.css';
-
-export type AppTab = 'warehouse' | 'raw_material' | 'factory';
-
-type SidebarTab = {
-  id: AppTab;
-  label: string;
-  emoji: string;
-};
-
-const SIDEBAR_TABS: readonly SidebarTab[] = [
-  { id: 'warehouse', label: 'Склад', emoji: '📦' },
-  { id: 'raw_material', label: 'Сырьё', emoji: '🌾' },
-  { id: 'factory', label: 'Фабрика', emoji: '🏭' },
-];
 
 type SidebarProps = {
   activeTab: AppTab;
@@ -32,12 +19,12 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             type="button"
             className="sidebar__tab"
             aria-pressed={isActive}
+            aria-label={tab.label}
             onClick={() => onTabChange(tab.id)}
           >
             <span className="sidebar__tab-icon glass-icon" aria-hidden="true">
               <EmojiIcon emoji={tab.emoji} size={34} animated />
             </span>
-            <span className="sidebar__tab-label">{tab.label}</span>
           </button>
         );
       })}

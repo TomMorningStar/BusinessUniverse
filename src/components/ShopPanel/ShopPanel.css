@@ -22,19 +22,19 @@
 }
 
 .shop-panel__card--affordable {
-  border-color: rgb(53 224 161 / 45%);
+  border-color: rgb(53 224 161 / 28%);
   box-shadow:
     var(--glass-shadow-inset),
     var(--glass-shadow),
-    inset 0 0 26px rgb(53 224 161 / 12%);
+    inset 0 0 18px rgb(53 224 161 / 7%);
 }
 
 .shop-panel__card--affordable:hover {
   transform: translateY(-2px);
   box-shadow:
     var(--glass-shadow-inset),
-    0 22px 46px rgb(0 0 0 / 40%),
-    inset 0 0 30px rgb(53 224 161 / 16%);
+    0 16px 32px rgb(0 0 0 / 22%),
+    inset 0 0 20px rgb(53 224 161 / 9%);
 }
 
 .shop-panel__card--unaffordable {

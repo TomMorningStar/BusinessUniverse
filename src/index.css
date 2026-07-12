@@ -13,24 +13,24 @@
   --bg-primary: #070b17;
   --bg-secondary: #0b1224;
 
-  /* glass material */
+  /* glass material — thin border, near-transparent fill, small blur (iOS 26 Liquid Glass) */
   --glass-bg: linear-gradient(
     145deg,
-    rgb(255 255 255 / 14%),
-    rgb(255 255 255 / 6%) 45%,
-    rgb(255 255 255 / 3.5%)
+    rgb(255 255 255 / 8%),
+    rgb(255 255 255 / 3%) 45%,
+    rgb(255 255 255 / 1.5%)
   );
   --glass-bg-strong: linear-gradient(
     145deg,
-    rgb(255 255 255 / 22%),
-    rgb(255 255 255 / 10%) 45%,
-    rgb(255 255 255 / 5%)
+    rgb(255 255 255 / 14%),
+    rgb(255 255 255 / 6%) 45%,
+    rgb(255 255 255 / 3%)
   );
-  --glass-border: rgb(255 255 255 / 18%);
-  --glass-border-highlight: rgb(255 255 255 / 58%);
-  --glass-shadow: 0 14px 34px rgb(0 0 0 / 34%);
-  --glass-shadow-inset: inset 0 1px 0 rgb(255 255 255 / 30%), inset 0 -1px 0 rgb(255 255 255 / 5%);
-  --blur-glass: 22px;
+  --glass-border: rgb(255 255 255 / 16%);
+  --glass-border-highlight: rgb(255 255 255 / 42%);
+  --glass-shadow: 0 8px 20px rgb(0 0 0 / 18%);
+  --glass-shadow-inset: inset 0 1px 0 rgb(255 255 255 / 14%), inset 0 -1px 0 rgb(255 255 255 / 3%);
+  --blur-glass: 14px;
 
   /* text */
   --text-primary: #f3f5ff;
@@ -96,7 +96,7 @@ button {
 /* lighten the blur load on small screens */
 @media (max-width: 480px) {
   :root {
-    --blur-glass: 14px;
+    --blur-glass: 9px;
   }
 }
 

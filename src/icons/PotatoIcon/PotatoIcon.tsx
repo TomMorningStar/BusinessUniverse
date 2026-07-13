@@ -10,14 +10,12 @@ type PotatoIconProps = {
 };
 
 export function PotatoIcon({
-  size = 180,
+  size,
   animated = true,
   className = '',
   label = 'Анимированная картошка',
 }: PotatoIconProps) {
-  const style = {
-    '--potato-size': `${size}px`,
-  } as CSSProperties;
+  const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
     .filter(Boolean)

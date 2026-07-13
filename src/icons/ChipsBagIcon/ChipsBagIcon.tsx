@@ -10,14 +10,12 @@ type ChipsBagIconProps = {
 };
 
 export function ChipsBagIcon({
-  size = 180,
+  size,
   animated = true,
   className = '',
   label = 'Анимированный пакет чипсов',
 }: ChipsBagIconProps) {
-  const style = {
-    '--chips-size': `${size}px`,
-  } as CSSProperties;
+  const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
     .filter(Boolean)

@@ -1,6 +1,4 @@
 .root {
-  --wheat-size: 28px;
-
   /* easily themeable via CSS */
   --wheat-grain-a: #ffe9a8;
   --wheat-grain-b: #f2c261;
@@ -10,8 +8,8 @@
 
   position: relative;
   display: inline-grid;
-  width: var(--wheat-size);
-  height: var(--wheat-size);
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
   place-items: center;
   isolation: isolate;
   vertical-align: middle;
@@ -71,7 +69,7 @@
     rgb(40 26 4 / 16%) 45%,
     transparent 74%
   );
-  filter: blur(calc(var(--wheat-size) * 0.03));
+  filter: blur(calc(var(--icon-size, 40px) * 0.03));
   transform-origin: center;
   pointer-events: none;
 }

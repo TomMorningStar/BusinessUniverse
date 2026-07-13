@@ -12,9 +12,7 @@ type ResourceRowProps = {
 
 export function ResourceRow({ resourceId }: ResourceRowProps) {
   const slot = useGameStore((state) => state.warehouse[resourceId]);
-  const isAutoSellOn = useGameStore((state) => state.autoSell[resourceId]);
   const sellAll = useGameStore((state) => state.sellAll);
-  const toggleAutoSell = useGameStore((state) => state.toggleAutoSell);
 
   const config = RESOURCES[resourceId];
   const saleValue = getSaleIncome(resourceId, slot.amount);
@@ -28,10 +26,6 @@ export function ResourceRow({ resourceId }: ResourceRowProps) {
         {slot.amount} / {slot.capacity}
       </span>
       <span className="resource-row__value">{formatMoney(saleValue)}</span>
-      <label className="resource-row__auto-sell">
-        <input type="checkbox" checked={isAutoSellOn} onChange={() => toggleAutoSell(resourceId)} />
-        Автопродажа
-      </label>
       <span className="resource-row__sell">
         <button
           type="button"

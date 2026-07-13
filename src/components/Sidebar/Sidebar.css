@@ -41,6 +41,8 @@
   justify-content: center;
   width: 54px;
   height: 54px;
+  /* shared sidebar icon size token — same value as the large card icons */
+  --icon-size: var(--icon-size-sidebar);
   transition:
     box-shadow var(--transition-normal),
     background var(--transition-normal),

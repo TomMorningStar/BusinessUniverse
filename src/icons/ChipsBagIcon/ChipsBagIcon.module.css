@@ -1,10 +1,8 @@
 .root {
-  --chips-size: 180px;
-
   position: relative;
   display: inline-grid;
-  width: var(--chips-size);
-  height: var(--chips-size);
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
   place-items: center;
   isolation: isolate;
   vertical-align: middle;
@@ -49,7 +47,7 @@
     rgb(0 0 0 / 18%) 45%,
     transparent 75%
   );
-  filter: blur(calc(var(--chips-size) * 0.02));
+  filter: blur(calc(var(--icon-size, 40px) * 0.02));
   transform-origin: center;
   pointer-events: none;
 }

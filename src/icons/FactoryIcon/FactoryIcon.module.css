@@ -1,6 +1,4 @@
 .root {
-  --factory-size: 28px;
-
   /* easily themeable via CSS */
   --factory-wall-a: #46586a;
   --factory-wall-b: #2b3947;
@@ -11,8 +9,8 @@
 
   position: relative;
   display: inline-grid;
-  width: var(--factory-size);
-  height: var(--factory-size);
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
   place-items: center;
   isolation: isolate;
   vertical-align: middle;
@@ -75,7 +73,7 @@
     rgb(4 12 20 / 18%) 45%,
     transparent 74%
   );
-  filter: blur(calc(var(--factory-size) * 0.03));
+  filter: blur(calc(var(--icon-size, 40px) * 0.03));
   transform-origin: center;
   pointer-events: none;
 }

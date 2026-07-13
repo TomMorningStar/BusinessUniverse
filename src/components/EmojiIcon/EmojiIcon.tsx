@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react';
+import type { ComponentType, CSSProperties } from 'react';
 import { PotatoIcon } from '../../icons/PotatoIcon/PotatoIcon';
 import { ChipsBagIcon } from '../../icons/ChipsBagIcon/ChipsBagIcon';
 import { BoxIcon } from '../../icons/BoxIcon/BoxIcon';
@@ -26,15 +26,18 @@ type EmojiIconProps = {
   className?: string;
 };
 
-export function EmojiIcon({ emoji, size = 22, animated = false, className }: EmojiIconProps) {
+export function EmojiIcon({ emoji, size, animated = false, className }: EmojiIconProps) {
   const CustomIcon = CUSTOM_ICONS[emoji];
 
   if (CustomIcon) {
+    // size omitted -> the icon inherits --icon-size from its container (card/sidebar).
     return <CustomIcon size={size} animated={animated} className={className} />;
   }
 
+  const style = size === undefined ? undefined : ({ fontSize: `${size}px` } as CSSProperties);
+
   return (
-    <span className={className} aria-hidden="true">
+    <span className={className} style={style} aria-hidden="true">
       {emoji}
     </span>
   );

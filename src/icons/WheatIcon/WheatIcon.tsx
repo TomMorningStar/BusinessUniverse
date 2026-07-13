@@ -51,12 +51,12 @@ function Grain({ x, y, r, rot }: Grain) {
 }
 
 export function WheatIcon({
-  size = 28,
+  size,
   animated = false,
   className = '',
   label = 'Иконка сырья',
 }: WheatIconProps) {
-  const style = { '--wheat-size': `${size}px` } as CSSProperties;
+  const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
     .filter(Boolean)

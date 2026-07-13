@@ -1,6 +1,5 @@
 .building-card {
   position: relative;
-  overflow: hidden;
   border-radius: var(--radius-lg);
   padding: 8px;
   display: flex;
@@ -53,34 +52,47 @@
     inset 0 0 18px var(--card-glow);
 }
 
-.building-card:hover {
-  transform: translateY(-2px);
+/*
+ * Clips the reservoir fill to the card's rounded corners. Kept as a dedicated
+ * layer (instead of overflow:hidden on the card) so the quantity popover can
+ * overflow the card without being clipped.
+ */
+.building-card__fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .building-card__progress-fill {
   position: absolute;
   inset: 0;
-  z-index: 0;
   width: var(--progress, 0%);
   background: linear-gradient(90deg, var(--card-fill-b), var(--card-fill-a));
   border-right: 1px solid var(--card-edge);
   box-shadow: 0 0 18px var(--card-glow);
   transition: width 0.2s linear;
-  pointer-events: none;
 }
 
 .building-card__icon {
   position: relative;
-  z-index: 1;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* one shared token drives every large card icon, no per-icon variables */
+  --icon-size: var(--icon-size-building);
 }
 
+/*
+ * No z-index here on purpose: the icon and content already paint above the
+ * absolutely-positioned progress fill by DOM order. Giving content its own
+ * stacking context would trap the quantity popover beneath the sticky header.
+ */
 .building-card__content {
   position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -88,11 +100,25 @@
   min-width: 0;
 }
 
+.building-card__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
 .building-card__name {
   margin: 0;
   font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+.building-card__count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-success);
+  font-variant-numeric: tabular-nums;
 }
 
 .building-card__stats {
@@ -117,6 +143,56 @@
   margin-left: 4px;
   color: var(--text-muted);
   font-weight: 700;
+}
+
+.building-card__autosell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.building-card__autosell-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.building-card__autosell-toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-success);
+  cursor: pointer;
+}
+
+.building-card__autosell-toggle input:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.building-card__build {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 2px;
+}
+
+.building-card__cost {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.building-card__build-button {
+  min-height: 40px;
+  padding: 8px 18px;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .visually-hidden {

@@ -1,10 +1,8 @@
 .root {
-  --potato-size: 180px;
-
   position: relative;
   display: inline-grid;
-  width: var(--potato-size);
-  height: var(--potato-size);
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
   place-items: center;
   perspective: 720px;
   isolation: isolate;
@@ -52,7 +50,7 @@
     rgb(65 28 4 / 20%) 42%,
     transparent 75%
   );
-  filter: blur(calc(var(--potato-size) * 0.025));
+  filter: blur(calc(var(--icon-size, 40px) * 0.025));
   transform-origin: center;
   pointer-events: none;
 }

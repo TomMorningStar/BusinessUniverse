@@ -23,7 +23,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             onClick={() => onTabChange(tab.id)}
           >
             <span className="sidebar__tab-icon glass-icon" aria-hidden="true">
-              <EmojiIcon emoji={tab.emoji} size={34} animated />
+              <EmojiIcon emoji={tab.emoji} animated />
             </span>
           </button>
         );

@@ -39,6 +39,8 @@ export type BuildingRunStatus = 'idle' | 'running' | 'waiting_for_inputs' | 'out
 
 export type OwnedBuilding = {
   id: BuildingId;
+  /** How many copies of this building the player has built. Production scales by this. */
+  ownedCount: number;
   progressMs: number;
   isCycleActive: boolean;
   status: BuildingRunStatus;
@@ -62,7 +64,8 @@ export type GameData = {
 };
 
 export type GameActions = {
-  buyBuilding: (buildingId: BuildingId) => void;
+  /** Builds up to `quantity` copies, or as many as the player can afford. */
+  buyBuilding: (buildingId: BuildingId, quantity: number) => void;
   sellAll: (resourceId: ResourceId) => void;
   toggleAutoSell: (resourceId: ResourceId) => void;
   tick: (deltaMs: number) => void;

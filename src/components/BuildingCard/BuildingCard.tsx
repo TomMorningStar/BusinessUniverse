@@ -1,4 +1,3 @@
-import { useState, type CSSProperties } from 'react';
 import { getBuildTotalCost, planBuild } from '../../domain/economy';
 import { getStartBlockReason } from '../../domain/production';
 import { RESOURCES } from '../../domain/resources';
@@ -9,15 +8,10 @@ import type {
   ResourceAmount,
 } from '../../domain/types';
 import { formatMoney } from '../../utils/formatMoney';
-import { getProgressPercent } from '../../utils/getProgressPercent';
 import { useGameStore } from '../../store/useGameStore';
 import { EmojiIcon } from '../EmojiIcon/EmojiIcon';
-import { QuantityStepper } from '../QuantityStepper/QuantityStepper';
 import { ResourceAmountIcons } from '../ResourceAmountIcons/ResourceAmountIcons';
 import './BuildingCard.css';
-
-/** Batch sizes offered by the per-card build quantity picker. */
-const BUILD_QUANTITY_OPTIONS = [1, 5, 10, 25, 50, 100, 250, 500, 1000, 5000] as const;
 
 const STATUS_LABELS: Record<BuildingRunStatus, string> = {
   idle: 'Ожидание запуска',
@@ -53,12 +47,10 @@ function formatBlockReason(reason: ProductionBlockReason): string {
 
 type BuildingCardProps = {
   config: BuildingConfig;
+  quantity: number;
 };
 
-export function BuildingCard({ config }: BuildingCardProps) {
-  // Selected build quantity is per-card UI state, never persisted (resets to ×1).
-  const [quantity, setQuantity] = useState<number>(1);
-
+export function BuildingCard({ config, quantity }: BuildingCardProps) {
   const money = useGameStore((state) => state.money);
   const warehouse = useGameStore((state) => state.warehouse);
   const autoSell = useGameStore((state) => state.autoSell);
@@ -74,8 +66,6 @@ export function BuildingCard({ config }: BuildingCardProps) {
   const plan = planBuild(money, config, ownedCount, quantity);
   const canBuild = plan.count >= 1;
 
-  const progressPercent =
-    isBuilt && building ? getProgressPercent(building.progressMs, config.cycleDurationMs) : 0;
   const isBlocked =
     isBuilt &&
     building !== undefined &&
@@ -99,20 +89,11 @@ export function BuildingCard({ config }: BuildingCardProps) {
         : `building-card--${building.status}`
       : '';
 
-  const progressStyle = { '--progress': `${progressPercent}%` } as CSSProperties;
-
   return (
     <li
       className={`building-card glass ${categoryModifierClass} ${statusModifierClass}`.trim()}
-      style={progressStyle}
       title={statusText || undefined}
     >
-      {isBuilt && (
-        <div className="building-card__fill" aria-hidden="true">
-          <div className="building-card__progress-fill" />
-        </div>
-      )}
-
       <div className="building-card__icon">
         <EmojiIcon emoji={config.emoji} animated />
       </div>
@@ -120,12 +101,13 @@ export function BuildingCard({ config }: BuildingCardProps) {
       <div className="building-card__content">
         <div className="building-card__head">
           <h3 className="building-card__name">{config.name}</h3>
-          {isBuilt && (
-            <span className="building-card__count">Построено: {ownedCount}</span>
-          )}
+          {isBuilt && <span className="building-card__count">Построено: {ownedCount}</span>}
         </div>
 
-        <p className="building-card__stats" aria-label={`${formatRecipe(config)}, цикл ${cycleSeconds} сек`}>
+        <p
+          className="building-card__stats"
+          aria-label={`${formatRecipe(config)}, цикл ${cycleSeconds} сек`}
+        >
           <span className="building-card__stats-visual" aria-hidden="true">
             {config.inputs.length > 0 && (
               <>
@@ -138,9 +120,9 @@ export function BuildingCard({ config }: BuildingCardProps) {
           </span>
         </p>
 
-        {isBuilt && (
-          <div className="building-card__autosell">
-            {config.outputs.map((output) => (
+        <div className="building-card__autosell">
+          {isBuilt &&
+            config.outputs.map((output) => (
               <label key={output.resourceId} className="building-card__autosell-toggle">
                 <input
                   type="checkbox"
@@ -154,38 +136,17 @@ export function BuildingCard({ config }: BuildingCardProps) {
                 </span>
               </label>
             ))}
-          </div>
-        )}
-
-        <div className="building-card__build">
-          <QuantityStepper
-            value={quantity}
-            options={BUILD_QUANTITY_OPTIONS}
-            onChange={setQuantity}
-            label="Количество для постройки"
-          />
-          <span className="building-card__cost">Стоимость: {formatMoney(selectedCost)}</span>
           <button
             type="button"
-            className="building-card__build-button glass-btn glass-btn--success"
+            className="building-card__build-button glass-btn"
             onClick={() => buyBuilding(config.id, quantity)}
             disabled={!canBuild}
           >
-            Построить ×{quantity}
+            Построить {formatMoney(selectedCost)}
           </button>
         </div>
 
-        {isBuilt && (
-          <>
-            <progress
-              className="visually-hidden"
-              value={progressPercent}
-              max={100}
-              aria-label={`Прогресс производства: ${config.name}`}
-            />
-            <span className="visually-hidden">{statusText}</span>
-          </>
-        )}
+        {isBuilt && <span className="visually-hidden">{statusText}</span>}
       </div>
     </li>
   );

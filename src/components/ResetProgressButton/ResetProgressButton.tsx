@@ -14,11 +14,7 @@ export function ResetProgressButton() {
   };
 
   return (
-    <button
-      type="button"
-      className="reset-button glass-btn glass-btn--danger"
-      onClick={handleClick}
-    >
+    <button type="button" className="reset-button glass-btn" onClick={handleClick}>
       Сбросить прогресс
     </button>
   );

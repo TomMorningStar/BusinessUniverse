@@ -72,7 +72,7 @@ export function QuantityStepper({
     <div className="quantity-stepper" ref={rootRef}>
       <button
         type="button"
-        className="quantity-stepper__arrow"
+        className="quantity-stepper__arrow glass-btn"
         onClick={goPrev}
         disabled={atStart}
         aria-label="Меньше"
@@ -82,7 +82,7 @@ export function QuantityStepper({
 
       <button
         type="button"
-        className="quantity-stepper__value"
+        className="quantity-stepper__value glass-btn"
         onClick={() => setOpen((previous) => !previous)}
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -93,7 +93,7 @@ export function QuantityStepper({
 
       <button
         type="button"
-        className="quantity-stepper__arrow"
+        className="quantity-stepper__arrow glass-btn"
         onClick={goNext}
         disabled={atEnd}
         aria-label="Больше"

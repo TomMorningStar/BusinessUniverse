@@ -29,7 +29,7 @@ export function ResourceRow({ resourceId }: ResourceRowProps) {
       <span className="resource-row__sell">
         <button
           type="button"
-          className="resource-row__sell-button glass-btn glass-btn--success"
+          className="resource-row__sell-button glass-btn"
           onClick={() => sellAll(resourceId)}
           disabled={!canSell}
         >

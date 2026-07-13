@@ -15,16 +15,27 @@ function App() {
   useAutosave();
 
   const [activeTab, setActiveTab] = useState<AppTab>('warehouse');
+  const [buildQuantity, setBuildQuantity] = useState<number>(1);
+  const showBuildQuantityPicker = activeTab === 'raw_material' || activeTab === 'factory';
 
   return (
     <Background>
       <div className="app">
-        <Header title={TAB_LABELS[activeTab]} />
+        <Header
+          title={TAB_LABELS[activeTab]}
+          showBuildQuantityPicker={showBuildQuantityPicker}
+          buildQuantity={buildQuantity}
+          onBuildQuantityChange={setBuildQuantity}
+        />
         <div className="app__body">
           <main className="app__main">
             {activeTab === 'warehouse' && <WarehousePanel />}
-            {activeTab === 'raw_material' && <BuildingsPanel category="raw_material" />}
-            {activeTab === 'factory' && <BuildingsPanel category="factory" />}
+            {activeTab === 'raw_material' && (
+              <BuildingsPanel category="raw_material" buildQuantity={buildQuantity} />
+            )}
+            {activeTab === 'factory' && (
+              <BuildingsPanel category="factory" buildQuantity={buildQuantity} />
+            )}
           </main>
           <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
         </div>

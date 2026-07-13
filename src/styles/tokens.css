@@ -21,22 +21,7 @@
   --bg-secondary: #0b1224;
 
   /* glass material — lit edge only, no fill/shadow, minimal blur (iOS 26 Liquid Glass) */
-  /* --glass-bg: linear-gradient(
-    145deg,
-    rgb(255 255 255 / 8%),
-    rgb(255 255 255 / 3%) 45%,
-    rgb(255 255 255 / 1.5%)
-  ); */
-  /* --glass-bg-strong: linear-gradient(
-    145deg,
-    rgb(255 255 255 / 14%),
-    rgb(255 255 255 / 6%) 45%,
-    rgb(255 255 255 / 3%)
-  ); */
-  /* --glass-border: rgb(255 255 255 / 16%); */
   --glass-border-highlight: rgb(255 255 255 / 42%);
-  /* --glass-shadow: 0 8px 20px rgb(0 0 0 / 18%); */
-  /* --glass-shadow-inset: inset 0 1px 0 rgb(255 255 255 / 14%), inset 0 -1px 0 rgb(255 255 255 / 3%); */
   --blur-glass: 2px;
 
   /* text */
@@ -47,19 +32,6 @@
   /* accents */
   --accent-primary: #7b8cff;
   --accent-success: #35e0a1;
-  --accent-danger: #ff5f74;
-  --accent-warning: #ffb454;
-  --accent-primary-soft: rgb(123 140 255 / 16%);
-  --accent-success-soft: rgb(53 224 161 / 16%);
-  --accent-danger-soft: rgb(255 95 116 / 16%);
-  --accent-warning-soft: rgb(255 180 84 / 16%);
-
-  /* legacy aliases so nothing referencing the old names breaks */
-  --accent: var(--accent-primary);
-  --accent-strong: var(--accent-primary);
-  --success: var(--accent-success);
-  --danger: var(--accent-danger);
-  --warning: var(--accent-warning);
 
   /* radius */
   --radius-sm: 14px;
@@ -70,7 +42,7 @@
   /* icon sizing — shared tokens so every icon reads one value, not a per-icon var.
      `--icon-size` is what the icon components actually consume; the tokens below
      are the intended values for each context and are applied by the container. */
-  --icon-size-building: 40px;
+  --icon-size-building: 100px;
   --icon-size-sidebar: 40px;
   --icon-size-inline: 16px;
   --icon-size-resource: 28px;
@@ -78,11 +50,4 @@
   /* motion */
   --transition-fast: 160ms cubic-bezier(0.22, 1, 0.36, 1);
   --transition-normal: 240ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  :root {
-    --glass-bg: linear-gradient(145deg, rgb(30 36 60 / 92%), rgb(18 22 40 / 92%));
-    --glass-bg-strong: linear-gradient(145deg, rgb(38 46 74 / 95%), rgb(22 28 50 / 95%));
-  }
 }

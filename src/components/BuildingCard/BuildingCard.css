@@ -121,10 +121,37 @@
 }
 
 .building-card__autosell-toggle input {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
   width: 18px;
   height: 18px;
-  accent-color: var(--accent-success);
+  margin: 0;
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 5px;
+  background-color: rgb(255 255 255 / 6%);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
   cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.building-card__autosell-toggle input:checked {
+  background-color: var(--accent-success);
+  border-color: var(--accent-success);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2304140c' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5'/%3E%3C/svg%3E");
+}
+
+.building-card__autosell-toggle input:hover {
+  border-color: var(--glass-border-highlight);
+}
+
+.building-card__autosell-toggle input:active {
+  transform: scale(0.9);
 }
 
 .building-card__autosell-toggle input:focus-visible {
@@ -157,6 +184,12 @@
     transition: none;
   }
   .building-card:hover {
+    transform: none;
+  }
+  .building-card__autosell-toggle input {
+    transition: none;
+  }
+  .building-card__autosell-toggle input:active {
     transform: none;
   }
 }

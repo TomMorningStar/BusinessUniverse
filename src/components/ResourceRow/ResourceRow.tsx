@@ -20,7 +20,7 @@ export function ResourceRow({ resourceId }: ResourceRowProps) {
 
   return (
     <li className="resource-row glass">
-      <EmojiIcon emoji={config.emoji} size={28} animated className="resource-row__icon" />
+      <EmojiIcon emoji={config.emoji} animated className="resource-row__icon" />
       <span className="resource-row__name">{config.name}</span>
       <span className="resource-row__stock">
         {slot.amount} / {slot.capacity}

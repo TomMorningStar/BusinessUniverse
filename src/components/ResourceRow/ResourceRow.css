@@ -8,7 +8,8 @@
 }
 
 .resource-row__icon {
-  font-size: 22px;
+  --icon-size: var(--icon-size-resource);
+  font-size: var(--icon-size-resource);
 }
 
 .resource-row__name {

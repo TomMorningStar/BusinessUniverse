@@ -5,35 +5,10 @@ import { createInitialGameData } from '../domain/initialState';
 import { advanceAllBuildings } from '../domain/production';
 import { RESOURCES } from '../domain/resources';
 import { clearSave, loadGameData, saveGameData } from '../domain/save';
-import type {
-  BuildingId,
-  GameState,
-  OwnedBuilding,
-  ProductionEvent,
-  ResourceAmount,
-  ResourceId,
-} from '../domain/types';
+import type { BuildingId, GameState, OwnedBuilding, ResourceId } from '../domain/types';
 import { removeResources } from '../domain/warehouse';
 import { formatMoney } from '../utils/formatMoney';
 import { useNoticesStore } from './useNoticesStore';
-
-function formatResourceAmount(resource: ResourceAmount): string {
-  const config = RESOURCES[resource.resourceId];
-  return `+${resource.amount} ${config.emoji} ${config.name}`;
-}
-
-function announceProductionEvent(event: ProductionEvent): void {
-  const { addNotice } = useNoticesStore.getState();
-
-  for (const output of event.storedOutputs) {
-    addNotice(formatResourceAmount(output));
-  }
-
-  for (const output of event.autoSoldOutputs) {
-    const income = getSaleIncome(output.resourceId, output.amount);
-    addNotice(`${formatMoney(income)} за ${RESOURCES[output.resourceId].name.toLowerCase()}`);
-  }
-}
 
 export const useGameStore = create<GameState>()((set, get) => ({
   ...loadGameData(),
@@ -119,10 +94,6 @@ export const useGameStore = create<GameState>()((set, get) => ({
 
     if (result.events.length > 0) {
       get().saveGame();
-
-      for (const event of result.events) {
-        announceProductionEvent(event);
-      }
     }
   },
 

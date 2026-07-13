@@ -7,10 +7,10 @@ const MAX_ICONS_PER_RESOURCE = 8;
 
 type ResourceAmountIconsProps = {
   amounts: readonly ResourceAmount[];
-  size?: number;
 };
 
-export function ResourceAmountIcons({ amounts, size = 16 }: ResourceAmountIconsProps) {
+/** Icon size is set once via the `.resource-amount-icons__icon` class (--icon-size-inline), not per-instance inline styles. */
+export function ResourceAmountIcons({ amounts }: ResourceAmountIconsProps) {
   return (
     <>
       {amounts.map((resourceAmount) => {
@@ -21,7 +21,6 @@ export function ResourceAmountIcons({ amounts, size = 16 }: ResourceAmountIconsP
             <span key={resourceAmount.resourceId} className="resource-amount-icons">
               <EmojiIcon
                 emoji={resourceConfig.emoji}
-                size={size}
                 animated={false}
                 className="resource-amount-icons__icon"
               />
@@ -36,7 +35,6 @@ export function ResourceAmountIcons({ amounts, size = 16 }: ResourceAmountIconsP
               <EmojiIcon
                 key={index}
                 emoji={resourceConfig.emoji}
-                size={size}
                 animated={false}
                 className="resource-amount-icons__icon"
               />

@@ -111,11 +111,11 @@ export function BuildingCard({ config, quantity }: BuildingCardProps) {
           <span className="building-card__stats-visual" aria-hidden="true">
             {config.inputs.length > 0 && (
               <>
-                <ResourceAmountIcons amounts={config.inputs} size={16} />
+                <ResourceAmountIcons amounts={config.inputs} />
                 <span className="building-card__stats-arrow">→</span>
               </>
             )}
-            <ResourceAmountIcons amounts={config.outputs} size={16} />
+            <ResourceAmountIcons amounts={config.outputs} />
             <span className="building-card__stats-cycle">⏱ {cycleSeconds} сек</span>
           </span>
         </p>

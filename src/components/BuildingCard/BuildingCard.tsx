@@ -90,10 +90,14 @@ export function BuildingCard({ config, building }: BuildingCardProps) {
             </span>
           </p>
         ) : (
-          <>
-            <p className="building-card__recipe">{formatRecipe(config)}</p>
-            <p className="building-card__cycle">⏱ Цикл: {cycleSeconds} сек</p>
-          </>
+          <p className="building-card__stats" aria-label={formatRecipe(config)}>
+            <span className="building-card__stats-visual" aria-hidden="true">
+              <ResourceAmountIcons amounts={config.inputs} size={16} />
+              <span className="building-card__stats-arrow">→</span>
+              <ResourceAmountIcons amounts={config.outputs} size={16} />
+              <span className="building-card__stats-cycle">⏱ {cycleSeconds} сек</span>
+            </span>
+          </p>
         )}
         <progress
           className="visually-hidden"

@@ -1,9 +1,9 @@
 import { BUILDINGS, BUILDING_IDS } from '../../domain/buildings';
 import { canAfford } from '../../domain/economy';
 import type { BuildingCategory, BuildingConfig } from '../../domain/types';
+import { useGameStore } from '../../store/useGameStore';
 import { formatMoney } from '../../utils/formatMoney';
 import { formatResourceAmountsText } from '../../utils/formatResourceAmounts';
-import { useGameStore } from '../../store/useGameStore';
 import { EmojiIcon } from '../EmojiIcon/EmojiIcon';
 import { ResourceAmountIcons } from '../ResourceAmountIcons/ResourceAmountIcons';
 import './ShopPanel.css';

@@ -22,7 +22,7 @@ export function ResourceAmountIcons({ amounts, size = 16 }: ResourceAmountIconsP
               <EmojiIcon
                 emoji={resourceConfig.emoji}
                 size={size}
-                animated
+                animated={false}
                 className="resource-amount-icons__icon"
               />
               <span className="resource-amount-icons__multiplier">×{resourceAmount.amount}</span>
@@ -37,7 +37,7 @@ export function ResourceAmountIcons({ amounts, size = 16 }: ResourceAmountIconsP
                 key={index}
                 emoji={resourceConfig.emoji}
                 size={size}
-                animated
+                animated={false}
                 className="resource-amount-icons__icon"
               />
             ))}

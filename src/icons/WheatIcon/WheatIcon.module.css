@@ -51,7 +51,6 @@
   transform-box: fill-box;
   transform-origin: 64px 118px;
   transform-style: preserve-3d;
-  will-change: transform;
 }
 
 .breathe {
@@ -74,21 +73,24 @@
   );
   filter: blur(calc(var(--wheat-size) * 0.03));
   transform-origin: center;
-  will-change: transform, opacity;
   pointer-events: none;
 }
 
 .animated .float {
   animation: wheatSway 3.6s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .breathe {
   animation: wheatBreathe 3.2s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .tilt {
   animation: wheatTilt 5.4s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .shadow {
   animation: wheatShadow 3.6s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 @keyframes wheatSway {

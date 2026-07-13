@@ -25,17 +25,14 @@
 
 .bagGroup {
   transform-origin: 150px 265px;
-  will-change: transform;
 }
 
 .badge {
   transform-origin: 150px 160px;
-  will-change: transform, opacity;
 }
 
 .chip {
   transform-origin: 210px 240px;
-  will-change: transform;
 }
 
 .shadow {
@@ -54,24 +51,27 @@
   );
   filter: blur(calc(var(--chips-size) * 0.02));
   transform-origin: center;
-  will-change: transform, opacity;
   pointer-events: none;
 }
 
 .animated .bagGroup {
   animation: chipsBagSway 3.2s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animated .badge {
   animation: chipsBadgeGlow 3.2s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .animated .chip {
   animation: chipsBagWiggle 3.2s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animated .shadow {
   animation: chipsBagShadow 3.2s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 .static .bagGroup {

@@ -67,6 +67,25 @@ export function getStartBlockReason(
   return null;
 }
 
+/** Reuses the previous building object when nothing changed, so ticks that do not
+ * alter state keep referential equality and downstream subscribers skip re-renders. */
+function withBuildingState(
+  building: OwnedBuilding,
+  progressMs: number,
+  isCycleActive: boolean,
+  status: OwnedBuilding['status'],
+): OwnedBuilding {
+  if (
+    building.progressMs === progressMs &&
+    building.isCycleActive === isCycleActive &&
+    building.status === status
+  ) {
+    return building;
+  }
+
+  return { ...building, progressMs, isCycleActive, status };
+}
+
 export function startCycle(
   gameData: GameData,
   building: OwnedBuilding,
@@ -78,19 +97,19 @@ export function startCycle(
   if (blockReason) {
     return {
       gameData,
-      building: {
-        ...building,
-        progressMs: 0,
-        isCycleActive: false,
-        status: blockReason.type === 'missing_input' ? 'waiting_for_inputs' : 'output_blocked',
-      },
+      building: withBuildingState(
+        building,
+        0,
+        false,
+        blockReason.type === 'missing_input' ? 'waiting_for_inputs' : 'output_blocked',
+      ),
     };
   }
 
   if (config.inputs.length === 0) {
     return {
       gameData,
-      building: { ...building, progressMs: 0, isCycleActive: true, status: 'running' },
+      building: withBuildingState(building, 0, true, 'running'),
     };
   }
 
@@ -99,13 +118,13 @@ export function startCycle(
   if (!removalResult.ok) {
     return {
       gameData,
-      building: { ...building, progressMs: 0, isCycleActive: false, status: 'waiting_for_inputs' },
+      building: withBuildingState(building, 0, false, 'waiting_for_inputs'),
     };
   }
 
   return {
     gameData: { ...gameData, warehouse: removalResult.warehouse },
-    building: { ...building, progressMs: 0, isCycleActive: true, status: 'running' },
+    building: withBuildingState(building, 0, true, 'running'),
   };
 }
 
@@ -176,12 +195,7 @@ export function advanceBuilding(
   if (!deliveryResult.ok) {
     return {
       gameData,
-      building: {
-        ...building,
-        progressMs: config.cycleDurationMs,
-        isCycleActive: true,
-        status: 'output_blocked',
-      },
+      building: withBuildingState(building, config.cycleDurationMs, true, 'output_blocked'),
       event: null,
     };
   }
@@ -212,6 +226,7 @@ export function advanceAllBuildings(
   }
 
   let nextGameData = gameData;
+  let anyBuildingChanged = false;
   const events: ProductionEvent[] = [];
   const ownedBuildings: GameData['ownedBuildings'] = { ...gameData.ownedBuildings };
 
@@ -225,11 +240,21 @@ export function advanceAllBuildings(
     const result = advanceBuilding(nextGameData, building, BUILDINGS[buildingId], safeDeltaMs);
 
     nextGameData = result.gameData;
-    ownedBuildings[buildingId] = result.building;
+
+    if (result.building !== building) {
+      ownedBuildings[buildingId] = result.building;
+      anyBuildingChanged = true;
+    }
 
     if (result.event) {
       events.push(result.event);
     }
+  }
+
+  // A fully stalled tick (every building waiting/blocked, nothing consumed or
+  // produced) returns the original object so the store can skip the update.
+  if (!anyBuildingChanged && nextGameData === gameData) {
+    return { gameData, events };
   }
 
   return { gameData: { ...nextGameData, ownedBuildings }, events };

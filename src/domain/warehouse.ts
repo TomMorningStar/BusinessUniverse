@@ -13,17 +13,6 @@ export function getFreeCapacity(warehouse: Warehouse, resourceId: ResourceId): n
   return Math.max(slot.capacity - slot.amount, 0);
 }
 
-export function hasResources(
-  warehouse: Warehouse,
-  requirements: readonly ResourceAmount[],
-): boolean {
-  return requirements.every(
-    (requirement) =>
-      isValidAmount(requirement.amount) &&
-      warehouse[requirement.resourceId].amount >= requirement.amount,
-  );
-}
-
 export function canStoreOutputs(
   warehouse: Warehouse,
   outputs: readonly ResourceAmount[],

@@ -29,6 +29,14 @@ export const useNoticesStore = create<NoticesState>()((set, get) => ({
   },
 
   removeNotice: (id: number) => {
-    set({ notices: get().notices.filter((notice) => notice.id !== id) });
+    const notices = get().notices;
+
+    // The expiry timeout may fire after the notice was already dropped (capacity
+    // trim or game reset) — skip the update instead of publishing a new array.
+    if (!notices.some((notice) => notice.id === id)) {
+      return;
+    }
+
+    set({ notices: notices.filter((notice) => notice.id !== id) });
   },
 }));

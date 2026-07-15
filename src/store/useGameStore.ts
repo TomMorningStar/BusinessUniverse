@@ -7,7 +7,7 @@ import { RESOURCES } from '../domain/resources';
 import { clearSave, loadGameData, saveGameData } from '../domain/save';
 import type { BuildingId, GameState, OwnedBuilding, ResourceId } from '../domain/types';
 import { removeResources } from '../domain/warehouse';
-import { formatMoney } from '../utils/formatMoney';
+import { formatMoney } from '../shared/lib/formatMoney';
 import { useNoticesStore } from './useNoticesStore';
 
 export const useGameStore = create<GameState>()((set, get) => ({

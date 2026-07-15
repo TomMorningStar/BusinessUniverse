@@ -37,14 +37,19 @@ There is no test runner configured in this repo. After any meaningful change, ru
 Dependency direction is strictly one-way:
 
 ```
-React components → Zustand store (state/actions/selectors) → pure domain functions + typed configs → plain serializable data
+React UI (FSD layers) → Zustand store (state/actions/selectors) → pure domain functions + typed configs → plain serializable data
 ```
 
-- **`src/domain`** — pure, React-free game logic: types, constants, resource/building configs, initial-state factories, warehouse operations, economy calculations, production transitions, save validation/migration. Must not import React, Zustand, or components.
-- **`src/store`** (`useGameStore.ts`, `useNoticesStore.ts`, `selectors.ts`) — the single source of mutable game state (Zustand). Actions read config, call domain helpers, and commit one coherent update. Never duplicates formulas already defined in domain configs; never calls React hooks.
-- **`src/components`** — rendering, input, presentation formatting only. Never consumes production inputs, computes prices/recipes, advances production, or touches storage directly. No building-ID-specific branches.
-- **`src/app`** (`useGameLoop.ts`, `useAutosave.ts`) — app composition, game loop and autosave lifecycle, page-visibility handling.
-- **`src/utils`** — generic helpers with no knowledge of game entities.
+The UI follows Feature-Sliced Design (app → pages → widgets → features → entities → shared); a lower layer must never import from a higher one. `src/domain` and `src/store` sit outside the FSD UI layers as the framework-free game core that any UI layer above `shared` may import.
+
+- **`src/domain`** — pure, React-free game logic: types, constants, resource/building configs, initial-state factories, warehouse operations, economy calculations, production transitions, save validation/migration. Must not import React, Zustand, or UI code.
+- **`src/store`** (`useGameStore.ts`, `useNoticesStore.ts`, `selectors.ts`) — the single source of mutable game state (Zustand). Actions read config, call domain helpers, and commit one coherent update. Never duplicates formulas already defined in domain configs; never calls React hooks. `selectors.ts` is the canonical set of narrow selectors — components subscribe to the smallest slice they need (primitives over objects; `progressMs` changes every tick, so nothing subscribes to whole `OwnedBuilding` objects).
+- **`src/app`** — entry composition (`App.tsx`), game loop and autosave lifecycle (`useGameLoop.ts`, `useAutosave.ts`), page-visibility handling, global styles (`app/styles/`: tokens, glass, base).
+- **`src/pages/game`** — the game page: tab state and layout composition of widgets.
+- **`src/widgets`** — large self-contained UI blocks (`header`, `sidebar`, `buildings-panel`, `warehouse-panel`, `production-notice`, `background`). Each slice exposes its public API through `index.ts`.
+- **`src/features`** — user operations (`reset-progress`). Small actions that are internal details of one component stay in that component.
+- **`src/entities`** — entity UI (`building/ui/BuildingCard`, `resource/ui/ResourceRow`, `resource/ui/ResourceAmountIcons`). Rendering, input, presentation formatting only: never consumes production inputs, computes prices/recipes, advances production, or touches storage directly. No building-ID-specific branches.
+- **`src/shared`** — reusable code with no knowledge of game entities: `ui/EmojiIcon`, `ui/QuantityStepper`, `ui/icons/*`, `lib/formatMoney`. Must not import entities, features, widgets, pages, or app.
 
 Key architectural rules:
 
@@ -55,7 +60,7 @@ Key architectural rules:
 - **Persistence** (`src/domain/save.ts`): storage key `business-universe-save`, schema version `2` (`SAVE_SCHEMA_VERSION`). Flow is always `parseSave → migrateSave → sanitizeSave(fallback) → set(...)` — raw parsed JSON is never spread directly into store state. An unrecognized/future version is not treated as current data. Any change to persisted fields needs a migration (bump `SAVE_SCHEMA_VERSION` and upgrade known older versions, as `migrateV1ToV2` does for `ownedCount`) or an explicit incompatibility decision.
 - **Derived state is never persisted** (progress %, formatted currency, button/status text) — compute it from persisted primitives.
 - **Platform integration boundary**: Yandex Games (or any platform) integration should sit behind a narrow adapter so the game keeps running locally without the platform iframe; domain types must not leak platform SDK types.
-- **Design tokens** (`src/styles/tokens.css`): colors, glass material, radii, motion, and icon sizing live in one global token sheet; reusable "Liquid Glass" surface classes (`.glass`, `.glass-btn`, `.glass-icon`) live in `src/styles/glass.css` — use them rather than re-implementing the effect per component. Component CSS references these variables instead of hard-coding values. Icon components consume `--icon-size`, which the container sets from the per-context tokens (`--icon-size-building`, `--icon-size-sidebar`, …).
+- **Design tokens** (`src/app/styles/tokens.css`): colors, glass material, radii, motion, and icon sizing live in one global token sheet; reusable "Liquid Glass" surface classes (`.glass`, `.glass-btn`, `.glass-icon`) live in `src/app/styles/glass.css` — use them rather than re-implementing the effect per component. Component CSS references these variables instead of hard-coding values. Icon components consume `--icon-size`, which the container sets from the per-context tokens (`--icon-size-building`, `--icon-size-sidebar`, …).
 
 ## Engineering constraints
 

@@ -1,0 +1,60 @@
+.root {
+  --bg-intensity: 1;
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  background: #06171c;
+}
+
+.background {
+  position: fixed;
+  inset: -3%;
+  z-index: -3;
+  width: 106%;
+  height: 106%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+  transform: translateZ(0) scale(calc(1 + (var(--bg-intensity) - 1) * 0.015));
+  filter: saturate(calc(1 + (var(--bg-intensity) - 1) * 0.2))
+    contrast(calc(1 + (var(--bg-intensity) - 1) * 0.08));
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 28%, rgba(0, 0, 0, 0.2)),
+    radial-gradient(circle at 50% 42%, transparent 28%, rgba(0, 0, 0, 0.26) 100%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  min-height: inherit;
+}
+
+@media (max-width: 720px) {
+  .background {
+    inset: -6%;
+    width: 112%;
+    height: 112%;
+    object-position: 57% center;
+  }
+
+  .vignette {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.05), transparent 24%, rgba(0, 0, 0, 0.25)),
+      radial-gradient(circle at 50% 38%, transparent 24%, rgba(0, 0, 0, 0.32) 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background {
+    transform: none;
+  }
+}

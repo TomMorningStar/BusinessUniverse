@@ -13,25 +13,38 @@ import type {
   OwnedBuilding,
   ResourceId,
   Warehouse,
+  WarehouseSlot,
 } from './types';
 
 export const SAVE_STORAGE_KEY = 'business-universe-save';
-export const SAVE_SCHEMA_VERSION = 2;
+export const SAVE_SCHEMA_VERSION = 3;
 
 /** Legacy v1 buildings had no `ownedCount` — presence in the map meant "built once". */
 type PersistedOwnedBuildingV1 = Omit<OwnedBuilding, 'ownedCount'>;
+
+/** Resources that existed in v1–v2 saves, before `wheat` was added in v3. */
+type ResourceIdV2 = 'potato' | 'chips';
 
 export type PersistedGameStateV1 = {
   version: 1;
   savedAt: number;
   money: number;
-  warehouse: Warehouse;
+  warehouse: Record<ResourceIdV2, WarehouseSlot>;
   ownedBuildings: Partial<Record<BuildingId, PersistedOwnedBuildingV1>>;
-  autoSell: Record<ResourceId, boolean>;
+  autoSell: Record<ResourceIdV2, boolean>;
 };
 
 export type PersistedGameStateV2 = {
   version: 2;
+  savedAt: number;
+  money: number;
+  warehouse: Record<ResourceIdV2, WarehouseSlot>;
+  ownedBuildings: Partial<Record<BuildingId, OwnedBuilding>>;
+  autoSell: Record<ResourceIdV2, boolean>;
+};
+
+export type PersistedGameStateV3 = {
+  version: 3;
   savedAt: number;
   money: number;
   warehouse: Warehouse;
@@ -143,7 +156,7 @@ function sanitizeAutoSell(raw: unknown): Record<ResourceId, boolean> {
   return autoSell;
 }
 
-export function selectPersistedState(gameData: GameData): PersistedGameStateV2 {
+export function selectPersistedState(gameData: GameData): PersistedGameStateV3 {
   return {
     version: SAVE_SCHEMA_VERSION,
     savedAt: Date.now(),
@@ -185,20 +198,47 @@ function migrateV1ToV2(v1: Record<string, unknown>): Record<string, unknown> {
 }
 
 /**
- * Migration boundary. Known versions are upgraded to the current schema; an
- * unrecognized or future schema version must not be treated as current data.
+ * v2 → v3: the `wheat` resource was added. Older saves predate it, so they get
+ * an empty wheat slot and autosell disabled — the same values a fresh state
+ * would contain for the new resource.
+ */
+function migrateV2ToV3(v2: Record<string, unknown>): Record<string, unknown> {
+  const warehouse = isRecord(v2.warehouse) ? v2.warehouse : {};
+  const autoSell = isRecord(v2.autoSell) ? v2.autoSell : {};
+
+  return {
+    ...v2,
+    version: 3,
+    warehouse: {
+      ...warehouse,
+      wheat: { amount: 0, capacity: RESOURCES.wheat.initialCapacity },
+    },
+    autoSell: { ...autoSell, wheat: false },
+  };
+}
+
+/**
+ * Migration boundary. Known versions are upgraded step by step to the current
+ * schema; an unrecognized or future schema version must not be treated as
+ * current data.
  */
 export function migrateSave(parsed: unknown): unknown {
   if (!isRecord(parsed)) {
     return null;
   }
 
-  if (parsed.version === SAVE_SCHEMA_VERSION) {
-    return parsed;
+  let candidate = parsed;
+
+  if (candidate.version === 1) {
+    candidate = migrateV1ToV2(candidate);
   }
 
-  if (parsed.version === 1) {
-    return migrateV1ToV2(parsed);
+  if (candidate.version === 2) {
+    candidate = migrateV2ToV3(candidate);
+  }
+
+  if (candidate.version === SAVE_SCHEMA_VERSION) {
+    return candidate;
   }
 
   return null;

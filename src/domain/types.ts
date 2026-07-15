@@ -1,6 +1,6 @@
-export type ResourceId = 'potato' | 'chips';
+export type ResourceId = 'potato' | 'chips' | 'wheat';
 
-export type BuildingId = 'potato_farm' | 'chips_factory';
+export type BuildingId = 'potato_farm' | 'chips_factory' | 'wheat_field';
 
 export type ResourceAmount = {
   resourceId: ResourceId;

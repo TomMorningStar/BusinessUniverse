@@ -17,13 +17,16 @@ import type {
 } from './types';
 
 export const SAVE_STORAGE_KEY = 'business-universe-save';
-export const SAVE_SCHEMA_VERSION = 3;
+export const SAVE_SCHEMA_VERSION = 4;
 
 /** Legacy v1 buildings had no `ownedCount` — presence in the map meant "built once". */
 type PersistedOwnedBuildingV1 = Omit<OwnedBuilding, 'ownedCount'>;
 
 /** Resources that existed in v1–v2 saves, before `wheat` was added in v3. */
 type ResourceIdV2 = 'potato' | 'chips';
+
+/** Resources that existed in v3 saves, before `orange` was added in v4. */
+type ResourceIdV3 = ResourceIdV2 | 'wheat';
 
 export type PersistedGameStateV1 = {
   version: 1;
@@ -45,6 +48,15 @@ export type PersistedGameStateV2 = {
 
 export type PersistedGameStateV3 = {
   version: 3;
+  savedAt: number;
+  money: number;
+  warehouse: Record<ResourceIdV3, WarehouseSlot>;
+  ownedBuildings: Partial<Record<BuildingId, OwnedBuilding>>;
+  autoSell: Record<ResourceIdV3, boolean>;
+};
+
+export type PersistedGameStateV4 = {
+  version: 4;
   savedAt: number;
   money: number;
   warehouse: Warehouse;
@@ -156,7 +168,7 @@ function sanitizeAutoSell(raw: unknown): Record<ResourceId, boolean> {
   return autoSell;
 }
 
-export function selectPersistedState(gameData: GameData): PersistedGameStateV3 {
+export function selectPersistedState(gameData: GameData): PersistedGameStateV4 {
   return {
     version: SAVE_SCHEMA_VERSION,
     savedAt: Date.now(),
@@ -218,6 +230,26 @@ function migrateV2ToV3(v2: Record<string, unknown>): Record<string, unknown> {
 }
 
 /**
+ * v3 → v4: the `orange` resource was added. Older saves predate it, so they get
+ * an empty orange slot and autosell disabled — the same values a fresh state
+ * would contain for the new resource.
+ */
+function migrateV3ToV4(v3: Record<string, unknown>): Record<string, unknown> {
+  const warehouse = isRecord(v3.warehouse) ? v3.warehouse : {};
+  const autoSell = isRecord(v3.autoSell) ? v3.autoSell : {};
+
+  return {
+    ...v3,
+    version: 4,
+    warehouse: {
+      ...warehouse,
+      orange: { amount: 0, capacity: RESOURCES.orange.initialCapacity },
+    },
+    autoSell: { ...autoSell, orange: false },
+  };
+}
+
+/**
  * Migration boundary. Known versions are upgraded step by step to the current
  * schema; an unrecognized or future schema version must not be treated as
  * current data.
@@ -235,6 +267,10 @@ export function migrateSave(parsed: unknown): unknown {
 
   if (candidate.version === 2) {
     candidate = migrateV2ToV3(candidate);
+  }
+
+  if (candidate.version === 3) {
+    candidate = migrateV3ToV4(candidate);
   }
 
   if (candidate.version === SAVE_SCHEMA_VERSION) {

@@ -16,7 +16,7 @@ import type {
 } from './types';
 
 export const SAVE_STORAGE_KEY = 'business-universe-save';
-export const SAVE_SCHEMA_VERSION = 2;
+export const SAVE_SCHEMA_VERSION = 3;
 
 /** Legacy v1 buildings had no `ownedCount` — presence in the map meant "built once". */
 type PersistedOwnedBuildingV1 = Omit<OwnedBuilding, 'ownedCount'>;
@@ -32,6 +32,15 @@ export type PersistedGameStateV1 = {
 
 export type PersistedGameStateV2 = {
   version: 2;
+  savedAt: number;
+  money: number;
+  warehouse: Warehouse;
+  ownedBuildings: Partial<Record<BuildingId, OwnedBuilding>>;
+  autoSell: Record<ResourceId, boolean>;
+};
+
+export type PersistedGameStateV3 = {
+  version: 3;
   savedAt: number;
   money: number;
   warehouse: Warehouse;
@@ -143,7 +152,7 @@ function sanitizeAutoSell(raw: unknown): Record<ResourceId, boolean> {
   return autoSell;
 }
 
-export function selectPersistedState(gameData: GameData): PersistedGameStateV2 {
+export function selectPersistedState(gameData: GameData): PersistedGameStateV3 {
   return {
     version: SAVE_SCHEMA_VERSION,
     savedAt: Date.now(),
@@ -185,6 +194,14 @@ function migrateV1ToV2(v1: Record<string, unknown>): Record<string, unknown> {
 }
 
 /**
+ * v2 → v3: the orange production chain added two resources and two buildings.
+ * Missing resource slots and autosell flags are filled by the sanitizer.
+ */
+function migrateV2ToV3(v2: Record<string, unknown>): Record<string, unknown> {
+  return { ...v2, version: 3 };
+}
+
+/**
  * Migration boundary. Known versions are upgraded to the current schema; an
  * unrecognized or future schema version must not be treated as current data.
  */
@@ -197,8 +214,12 @@ export function migrateSave(parsed: unknown): unknown {
     return parsed;
   }
 
+  if (parsed.version === 2) {
+    return migrateV2ToV3(parsed);
+  }
+
   if (parsed.version === 1) {
-    return migrateV1ToV2(parsed);
+    return migrateV2ToV3(migrateV1ToV2(parsed));
   }
 
   return null;

@@ -10,12 +10,12 @@ type BoxIconProps = {
 };
 
 export function BoxIcon({
-  size = 28,
+  size,
   animated = false,
   className = '',
   label = 'Иконка склада',
 }: BoxIconProps) {
-  const style = { '--box-size': `${size}px` } as CSSProperties;
+  const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
     .filter(Boolean)

@@ -1,0 +1,53 @@
+/*
+ * Global design tokens for Business Universe.
+ * One place to tune the whole look: colors, glass material, radii, motion, and
+ * icon sizing. Component styles should reference these variables rather than
+ * hard-coding values.
+ */
+
+:root {
+  color-scheme: dark;
+  font:
+    16px/1.5 -apple-system,
+    'SF Pro Text',
+    system-ui,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  color: var(--text-primary);
+
+  /* backgrounds */
+  --bg-primary: #070b17;
+  --bg-secondary: #0b1224;
+
+  /* glass material — lit edge only, no fill/shadow, minimal blur (iOS 26 Liquid Glass) */
+  --glass-border-highlight: rgb(255 255 255 / 42%);
+  --blur-glass: 2px;
+
+  /* text */
+  --text-primary: #f3f5ff;
+  --text-secondary: rgb(220 226 255 / 62%);
+  --text-muted: rgb(220 226 255 / 42%);
+
+  /* accents */
+  --accent-primary: #7b8cff;
+  --accent-success: #35e0a1;
+
+  /* radius */
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-pill: 999px;
+
+  /* icon sizing — shared tokens so every icon reads one value, not a per-icon var.
+     `--icon-size` is what the icon components actually consume; the tokens below
+     are the intended values for each context and are applied by the container. */
+  --icon-size-building: 100px;
+  --icon-size-sidebar: 40px;
+  --icon-size-inline: 16px;
+  --icon-size-resource: 28px;
+
+  /* motion */
+  --transition-fast: 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-normal: 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}

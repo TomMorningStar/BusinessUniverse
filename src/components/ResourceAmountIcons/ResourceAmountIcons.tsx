@@ -7,31 +7,38 @@ const MAX_ICONS_PER_RESOURCE = 8;
 
 type ResourceAmountIconsProps = {
   amounts: readonly ResourceAmount[];
-  size?: number;
 };
 
-export function ResourceAmountIcons({ amounts, size = 16 }: ResourceAmountIconsProps) {
+/** Icon size is set once via the `.resource-amount-icons__icon` class (--icon-size-inline), not per-instance inline styles. */
+export function ResourceAmountIcons({ amounts }: ResourceAmountIconsProps) {
   return (
     <>
       {amounts.map((resourceAmount) => {
         const resourceConfig = RESOURCES[resourceAmount.resourceId];
-        const iconCount = Math.min(resourceAmount.amount, MAX_ICONS_PER_RESOURCE);
-        const overflowCount = resourceAmount.amount - iconCount;
+
+        if (resourceAmount.amount > MAX_ICONS_PER_RESOURCE) {
+          return (
+            <span key={resourceAmount.resourceId} className="resource-amount-icons">
+              <EmojiIcon
+                emoji={resourceConfig.emoji}
+                animated={false}
+                className="resource-amount-icons__icon"
+              />
+              <span className="resource-amount-icons__multiplier">×{resourceAmount.amount}</span>
+            </span>
+          );
+        }
 
         return (
           <span key={resourceAmount.resourceId} className="resource-amount-icons">
-            {Array.from({ length: iconCount }, (_, index) => (
+            {Array.from({ length: resourceAmount.amount }, (_, index) => (
               <EmojiIcon
                 key={index}
                 emoji={resourceConfig.emoji}
-                size={size}
-                animated
+                animated={false}
                 className="resource-amount-icons__icon"
               />
             ))}
-            {overflowCount > 0 && (
-              <span className="resource-amount-icons__overflow">+{overflowCount}</span>
-            )}
           </span>
         );
       })}

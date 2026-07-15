@@ -1,0 +1,101 @@
+.quantity-stepper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.quantity-stepper__arrow,
+.quantity-stepper__value {
+  min-height: 34px;
+}
+
+.quantity-stepper__arrow {
+  width: 34px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  line-height: 1;
+}
+
+.quantity-stepper__value {
+  min-width: 58px;
+  padding: 0 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.quantity-stepper__arrow:active:not(:disabled),
+.quantity-stepper__value:active {
+  transform: scale(0.94);
+}
+
+.quantity-stepper__arrow:disabled {
+  opacity: 0.4;
+}
+
+.quantity-stepper__option:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.quantity-stepper__popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 40;
+  transform: translateX(-50%);
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(58px, 1fr));
+  gap: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+  border-radius: var(--radius-md);
+}
+
+.quantity-stepper__option {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  cursor: pointer;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.quantity-stepper__option:hover {
+  color: var(--text-primary);
+}
+
+.quantity-stepper__option--active {
+  color: var(--text-primary);
+  border-color: rgb(123 140 255 / 40%);
+  background: linear-gradient(
+    150deg,
+    rgb(123 140 255 / 22%),
+    rgb(123 140 255 / 8%) 60%,
+    rgb(255 255 255 / 3%)
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quantity-stepper__option {
+    transition: none;
+  }
+
+  .quantity-stepper__arrow:active:not(:disabled),
+  .quantity-stepper__value:active {
+    transform: none;
+  }
+}

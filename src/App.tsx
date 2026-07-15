@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { Background } from './components/Background/Background';
 import { Header } from './components/Header/Header';
 import { WarehousePanel } from './components/WarehousePanel/WarehousePanel';
 import { BuildingsPanel } from './components/BuildingsPanel/BuildingsPanel';
-import { ShopPanel } from './components/ShopPanel/ShopPanel';
 import { ProductionNotice } from './components/ProductionNotice/ProductionNotice';
-import { Sidebar, type AppTab } from './components/Sidebar/Sidebar';
+import { Sidebar } from './components/Sidebar/Sidebar';
+import { TAB_LABELS, type AppTab } from './components/Sidebar/tabs';
 import { useGameLoop } from './app/useGameLoop';
 import { useAutosave } from './app/useAutosave';
 import './App.css';
@@ -14,30 +15,33 @@ function App() {
   useAutosave();
 
   const [activeTab, setActiveTab] = useState<AppTab>('warehouse');
+  const [buildQuantity, setBuildQuantity] = useState<number>(1);
+  const showBuildQuantityPicker = activeTab === 'raw_material' || activeTab === 'factory';
 
   return (
-    <div className="app">
-      <Header />
-      <div className="app__body">
-        <main className="app__main">
-          {activeTab === 'warehouse' && <WarehousePanel />}
-          {activeTab === 'raw_material' && (
-            <>
-              <BuildingsPanel category="raw_material" />
-              <ShopPanel category="raw_material" />
-            </>
-          )}
-          {activeTab === 'factory' && (
-            <>
-              <BuildingsPanel category="factory" />
-              <ShopPanel category="factory" />
-            </>
-          )}
-        </main>
-        <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+    <Background>
+      <div className="app">
+        <Header
+          title={TAB_LABELS[activeTab]}
+          showBuildQuantityPicker={showBuildQuantityPicker}
+          buildQuantity={buildQuantity}
+          onBuildQuantityChange={setBuildQuantity}
+        />
+        <div className="app__body">
+          <main className="app__main">
+            {activeTab === 'warehouse' && <WarehousePanel />}
+            {activeTab === 'raw_material' && (
+              <BuildingsPanel category="raw_material" buildQuantity={buildQuantity} />
+            )}
+            {activeTab === 'factory' && (
+              <BuildingsPanel category="factory" buildQuantity={buildQuantity} />
+            )}
+          </main>
+          <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+        </div>
+        <ProductionNotice />
       </div>
-      <ProductionNotice />
-    </div>
+    </Background>
   );
 }
 

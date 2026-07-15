@@ -41,6 +41,8 @@
   justify-content: center;
   width: 54px;
   height: 54px;
+  /* shared sidebar icon size token — same value as the large card icons */
+  --icon-size: var(--icon-size-sidebar);
   transition:
     box-shadow var(--transition-normal),
     background var(--transition-normal),
@@ -50,36 +52,19 @@
 .sidebar__tab[aria-pressed='true'] .sidebar__tab-icon {
   background: linear-gradient(
     150deg,
-    rgb(123 140 255 / 42%),
-    rgb(123 140 255 / 14%) 60%,
-    rgb(255 255 255 / 5%)
+    rgb(123 140 255 / 22%),
+    rgb(123 140 255 / 8%) 60%,
+    rgb(255 255 255 / 3%)
   );
-  border-color: rgb(123 140 255 / 58%);
+  border-color: rgb(123 140 255 / 32%);
   box-shadow:
-    var(--glass-shadow-inset),
-    0 8px 22px rgb(123 140 255 / 32%),
-    inset 0 0 16px rgb(123 140 255 / 20%);
-}
-
-.sidebar__tab-label {
-  width: 100%;
-  font-size: 11px;
-  line-height: 1.2;
-  text-align: center;
-  color: var(--text-muted);
-  overflow-wrap: break-word;
-  transition: color var(--transition-fast);
-}
-
-.sidebar__tab[aria-pressed='true'] .sidebar__tab-label {
-  color: #c8d0ff;
-  font-weight: 700;
+    0 6px 16px rgb(123 140 255 / 18%),
+    inset 0 0 10px rgb(123 140 255 / 12%);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .sidebar__tab,
-  .sidebar__tab-icon,
-  .sidebar__tab-label {
+  .sidebar__tab-icon {
     transition: none;
   }
 }

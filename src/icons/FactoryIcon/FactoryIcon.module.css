@@ -1,6 +1,4 @@
 .root {
-  --factory-size: 28px;
-
   /* easily themeable via CSS */
   --factory-wall-a: #46586a;
   --factory-wall-b: #2b3947;
@@ -11,8 +9,8 @@
 
   position: relative;
   display: inline-grid;
-  width: var(--factory-size);
-  height: var(--factory-size);
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
   place-items: center;
   isolation: isolate;
   vertical-align: middle;
@@ -55,7 +53,6 @@
   transform-box: fill-box;
   transform-origin: 64px 114px;
   transform-style: preserve-3d;
-  will-change: transform;
 }
 
 .breathe {
@@ -76,9 +73,8 @@
     rgb(4 12 20 / 18%) 45%,
     transparent 74%
   );
-  filter: blur(calc(var(--factory-size) * 0.03));
+  filter: blur(calc(var(--icon-size, 40px) * 0.03));
   transform-origin: center;
-  will-change: transform, opacity;
   pointer-events: none;
 }
 
@@ -93,35 +89,42 @@
   opacity: 0;
   transform-box: fill-box;
   transform-origin: center;
-  will-change: transform, opacity;
 }
 
 .animated .float {
   animation: factorySway 3.8s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .breathe {
   animation: factoryBreathe 3.4s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .tilt {
   animation: factoryTilt 5.6s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .shadow {
   animation: factoryShadow 3.4s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 .animated .puff1 {
   animation: factorySmoke 2.8s ease-out infinite;
+  will-change: transform, opacity;
 }
 .animated .puff2 {
   animation: factorySmoke 2.8s ease-out infinite;
   animation-delay: 1.4s;
+  will-change: transform, opacity;
 }
 .animated .puff3 {
   animation: factorySmoke 2.8s ease-out infinite;
   animation-delay: 0.7s;
+  will-change: transform, opacity;
 }
 .animated .puff4 {
   animation: factorySmoke 2.8s ease-out infinite;
   animation-delay: 2.1s;
+  will-change: transform, opacity;
 }
 
 @keyframes factorySway {

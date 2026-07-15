@@ -8,8 +8,7 @@ export function WarehousePanel() {
   const storedResourceIds = RESOURCE_IDS.filter((resourceId) => warehouse[resourceId].amount > 0);
 
   return (
-    <section className="warehouse-panel" aria-labelledby="warehouse-panel-title">
-      <h2 id="warehouse-panel-title">Склад</h2>
+    <section className="warehouse-panel" aria-label="Склад">
       {storedResourceIds.length > 0 && (
         <ul className="warehouse-panel__list">
           {storedResourceIds.map((resourceId) => (

@@ -16,10 +16,22 @@ import type {
 } from './types';
 
 export const SAVE_STORAGE_KEY = 'business-universe-save';
-export const SAVE_SCHEMA_VERSION = 1;
+export const SAVE_SCHEMA_VERSION = 2;
+
+/** Legacy v1 buildings had no `ownedCount` — presence in the map meant "built once". */
+type PersistedOwnedBuildingV1 = Omit<OwnedBuilding, 'ownedCount'>;
 
 export type PersistedGameStateV1 = {
   version: 1;
+  savedAt: number;
+  money: number;
+  warehouse: Warehouse;
+  ownedBuildings: Partial<Record<BuildingId, PersistedOwnedBuildingV1>>;
+  autoSell: Record<ResourceId, boolean>;
+};
+
+export type PersistedGameStateV2 = {
+  version: 2;
   savedAt: number;
   money: number;
   warehouse: Warehouse;
@@ -65,9 +77,12 @@ function sanitizeOwnedBuilding(raw: unknown, buildingId: BuildingId): OwnedBuild
     sanitizeNonNegativeInteger(raw.progressMs, 0),
     config.cycleDurationMs,
   );
+  // A stored building record represents at least one built copy.
+  const ownedCount = Math.max(1, sanitizeNonNegativeInteger(raw.ownedCount, 1));
 
   return {
     id: buildingId,
+    ownedCount,
     progressMs,
     isCycleActive,
     status: sanitizeStatus(raw.status, isCycleActive),
@@ -128,7 +143,7 @@ function sanitizeAutoSell(raw: unknown): Record<ResourceId, boolean> {
   return autoSell;
 }
 
-export function selectPersistedState(gameData: GameData): PersistedGameStateV1 {
+export function selectPersistedState(gameData: GameData): PersistedGameStateV2 {
   return {
     version: SAVE_SCHEMA_VERSION,
     savedAt: Date.now(),
@@ -152,15 +167,41 @@ export function parseSave(raw: string): unknown {
 }
 
 /**
- * Migration boundary: only version 1 exists today. An unrecognized or future
- * schema version must not be treated as v1 data.
+ * v1 → v2: buildings gained an `ownedCount`. A building present in a v1 save was
+ * built exactly once, so every stored record migrates to `ownedCount: 1`; absent
+ * buildings stay absent (an implicit count of 0).
+ */
+function migrateV1ToV2(v1: Record<string, unknown>): Record<string, unknown> {
+  const rawOwned = isRecord(v1.ownedBuildings) ? v1.ownedBuildings : {};
+  const ownedBuildings: Record<string, unknown> = {};
+
+  for (const [buildingId, building] of Object.entries(rawOwned)) {
+    if (isRecord(building)) {
+      ownedBuildings[buildingId] = { ...building, ownedCount: 1 };
+    }
+  }
+
+  return { ...v1, version: 2, ownedBuildings };
+}
+
+/**
+ * Migration boundary. Known versions are upgraded to the current schema; an
+ * unrecognized or future schema version must not be treated as current data.
  */
 export function migrateSave(parsed: unknown): unknown {
-  if (!isRecord(parsed) || parsed.version !== SAVE_SCHEMA_VERSION) {
+  if (!isRecord(parsed)) {
     return null;
   }
 
-  return parsed;
+  if (parsed.version === SAVE_SCHEMA_VERSION) {
+    return parsed;
+  }
+
+  if (parsed.version === 1) {
+    return migrateV1ToV2(parsed);
+  }
+
+  return null;
 }
 
 export function sanitizeSave(candidate: unknown, fallback: GameData): GameData {

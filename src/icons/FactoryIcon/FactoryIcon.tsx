@@ -10,12 +10,12 @@ type FactoryIconProps = {
 };
 
 export function FactoryIcon({
-  size = 28,
+  size,
   animated = false,
   className = '',
   label = 'Иконка фабрики',
 }: FactoryIconProps) {
-  const style = { '--factory-size': `${size}px` } as CSSProperties;
+  const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
     .filter(Boolean)

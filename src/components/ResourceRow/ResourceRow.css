@@ -8,7 +8,8 @@
 }
 
 .resource-row__icon {
-  font-size: 22px;
+  --icon-size: var(--icon-size-resource);
+  font-size: var(--icon-size-resource);
 }
 
 .resource-row__name {
@@ -29,25 +30,6 @@
   font-weight: 700;
   min-width: 70px;
   font-variant-numeric: tabular-nums;
-}
-
-.resource-row__auto-sell {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  color: var(--text-secondary);
-}
-
-.resource-row__auto-sell input {
-  accent-color: var(--accent-success);
-  width: 18px;
-  height: 18px;
-}
-
-.resource-row__auto-sell input:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
 }
 
 .resource-row__sell {

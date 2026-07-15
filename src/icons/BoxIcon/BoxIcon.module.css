@@ -1,6 +1,4 @@
 .root {
-  --box-size: 28px;
-
   /* easily themeable via CSS — kraft cardboard tones */
   --box-top-a: #e6c491;
   --box-top-b: #cf9f5f;
@@ -11,8 +9,8 @@
 
   position: relative;
   display: inline-grid;
-  width: var(--box-size);
-  height: var(--box-size);
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
   place-items: center;
   isolation: isolate;
   vertical-align: middle;
@@ -55,7 +53,6 @@
   transform-box: fill-box;
   transform-origin: center;
   transform-style: preserve-3d;
-  will-change: transform;
 }
 
 .shadow {
@@ -72,23 +69,26 @@
     rgb(4 16 28 / 18%) 45%,
     transparent 72%
   );
-  filter: blur(calc(var(--box-size) * 0.03));
+  filter: blur(calc(var(--icon-size, 40px) * 0.03));
   transform-origin: center;
-  will-change: transform, opacity;
   pointer-events: none;
 }
 
 .animated .float {
   animation: boxSway 3.4s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .breathe {
   animation: boxBreathe 3.4s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .tilt {
   animation: boxTilt 5.2s ease-in-out infinite;
+  will-change: transform;
 }
 .animated .shadow {
   animation: boxShadow 3.4s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 @keyframes boxSway {

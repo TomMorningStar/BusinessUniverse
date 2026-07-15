@@ -21,18 +21,28 @@ export function getSafeDeltaMs(rawDeltaMs: number): number {
 
 export type ProductionInputs = Pick<GameData, 'warehouse' | 'autoSell'>;
 
+/** A recipe amount scaled by how many copies of the building are running. */
+function scaleAmounts(amounts: readonly ResourceAmount[], count: number): ResourceAmount[] {
+  return amounts.map((amount) => ({
+    resourceId: amount.resourceId,
+    amount: amount.amount * count,
+  }));
+}
+
 export function getStartBlockReason(
   gameData: ProductionInputs,
   config: BuildingConfig,
+  count = 1,
 ): ProductionBlockReason | null {
   for (const input of config.inputs) {
+    const required = input.amount * count;
     const available = gameData.warehouse[input.resourceId].amount;
 
-    if (available < input.amount) {
+    if (available < required) {
       return {
         type: 'missing_input',
         resourceId: input.resourceId,
-        missingAmount: input.amount - available,
+        missingAmount: required - available,
       };
     }
   }
@@ -42,13 +52,14 @@ export function getStartBlockReason(
       continue;
     }
 
+    const required = output.amount * count;
     const freeCapacity = getFreeCapacity(gameData.warehouse, output.resourceId);
 
-    if (freeCapacity < output.amount) {
+    if (freeCapacity < required) {
       return {
         type: 'output_full',
         resourceId: output.resourceId,
-        requiredSpace: output.amount - freeCapacity,
+        requiredSpace: required - freeCapacity,
       };
     }
   }
@@ -61,7 +72,8 @@ export function startCycle(
   building: OwnedBuilding,
   config: BuildingConfig,
 ): { gameData: GameData; building: OwnedBuilding } {
-  const blockReason = getStartBlockReason(gameData, config);
+  const count = building.ownedCount;
+  const blockReason = getStartBlockReason(gameData, config, count);
 
   if (blockReason) {
     return {
@@ -82,7 +94,7 @@ export function startCycle(
     };
   }
 
-  const removalResult = removeResources(gameData.warehouse, config.inputs);
+  const removalResult = removeResources(gameData.warehouse, scaleAmounts(config.inputs, count));
 
   if (!removalResult.ok) {
     return {
@@ -100,6 +112,7 @@ export function startCycle(
 function deliverOutputs(
   gameData: GameData,
   config: BuildingConfig,
+  count: number,
 ):
   | {
       ok: true;
@@ -108,7 +121,8 @@ function deliverOutputs(
       autoSoldOutputs: readonly ResourceAmount[];
     }
   | { ok: false } {
-  const storedOutputConfigs = config.outputs.filter(
+  const scaledOutputs = scaleAmounts(config.outputs, count);
+  const storedOutputConfigs = scaledOutputs.filter(
     (output) => !gameData.autoSell[output.resourceId],
   );
 
@@ -121,7 +135,7 @@ function deliverOutputs(
   const storedOutputs: ResourceAmount[] = [];
   const autoSoldOutputs: ResourceAmount[] = [];
 
-  for (const output of config.outputs) {
+  for (const output of scaledOutputs) {
     if (gameData.autoSell[output.resourceId]) {
       money += getSaleIncome(output.resourceId, output.amount);
       autoSoldOutputs.push(output);
@@ -157,7 +171,7 @@ export function advanceBuilding(
     return { gameData, building: { ...building, progressMs, status: 'running' }, event: null };
   }
 
-  const deliveryResult = deliverOutputs(gameData, config);
+  const deliveryResult = deliverOutputs(gameData, config, building.ownedCount);
 
   if (!deliveryResult.ok) {
     return {
@@ -204,7 +218,7 @@ export function advanceAllBuildings(
   for (const buildingId of ownedBuildingIds) {
     const building = ownedBuildings[buildingId];
 
-    if (!building) {
+    if (!building || building.ownedCount < 1) {
       continue;
     }
 

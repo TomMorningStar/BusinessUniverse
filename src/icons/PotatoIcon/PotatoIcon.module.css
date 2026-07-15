@@ -1,10 +1,8 @@
 .root {
-  --potato-size: 180px;
-
   position: relative;
   display: inline-grid;
-  width: var(--potato-size);
-  height: var(--potato-size);
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
   place-items: center;
   perspective: 720px;
   isolation: isolate;
@@ -20,7 +18,6 @@
   overflow: visible;
   transform-origin: 50% 64%;
   transform-style: preserve-3d;
-  will-change: transform;
   user-select: none;
   pointer-events: none;
   filter: drop-shadow(0 5px 3px rgb(84 35 4 / 18%)) drop-shadow(0 14px 12px rgb(84 35 4 / 18%));
@@ -37,7 +34,6 @@
 .glint {
   transform-origin: 115px 96px;
   mix-blend-mode: screen;
-  will-change: transform, opacity;
 }
 
 .shadow {
@@ -54,14 +50,14 @@
     rgb(65 28 4 / 20%) 42%,
     transparent 75%
   );
-  filter: blur(calc(var(--potato-size) * 0.025));
+  filter: blur(calc(var(--icon-size, 40px) * 0.025));
   transform-origin: center;
-  will-change: transform, opacity;
   pointer-events: none;
 }
 
 .animated .potato {
   animation: potatoIconTurn 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  will-change: transform;
 }
 
 .animated .bodyGroup {
@@ -74,10 +70,12 @@
 
 .animated .glint {
   animation: potatoIconGlint 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  will-change: transform, opacity;
 }
 
 .animated .shadow {
   animation: potatoIconShadow 2.8s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+  will-change: transform, opacity;
 }
 
 .static .potato {

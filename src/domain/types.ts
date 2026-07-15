@@ -1,6 +1,10 @@
-export type ResourceId = 'potato' | 'chips';
+export type ResourceId = 'potato' | 'chips' | 'orange' | 'orange_juice';
 
-export type BuildingId = 'potato_farm' | 'chips_factory';
+export type BuildingId =
+  | 'potato_farm'
+  | 'chips_factory'
+  | 'orange_grove'
+  | 'juice_factory';
 
 export type ResourceAmount = {
   resourceId: ResourceId;

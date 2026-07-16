@@ -10,6 +10,18 @@ export const selectAutoSell = (state: GameState) => state.autoSell;
 export const selectResourceSlot = (resourceId: ResourceId) => (state: GameState) =>
   state.warehouse[resourceId];
 
+/** Warehouse slots for a fixed set of resources (a recipe's inputs/outputs).
+ * Pair with `useShallow`: a slot reference changes only when that resource's
+ * amount changes, so the subscriber re-renders only for its own resources — not
+ * on every unrelated warehouse update. */
+export const selectResourceSlots = (resourceIds: readonly ResourceId[]) => (state: GameState) =>
+  resourceIds.map((resourceId) => state.warehouse[resourceId]);
+
+/** Auto-sell flags for a fixed set of resources (a building's outputs). Pair with
+ * `useShallow` so a toggle only re-renders the cards whose outputs it affects. */
+export const selectAutoSellFlags = (resourceIds: readonly ResourceId[]) => (state: GameState) =>
+  resourceIds.map((resourceId) => state.autoSell[resourceId]);
+
 /** Resource ids with a non-empty warehouse slot; pair with `useShallow` so the
  * subscriber only re-renders when the membership actually changes. */
 export const selectStoredResourceIds = (state: GameState) =>

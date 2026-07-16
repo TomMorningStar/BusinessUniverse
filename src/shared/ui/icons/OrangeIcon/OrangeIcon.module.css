@@ -1,0 +1,189 @@
+.root {
+  /* easily themeable via CSS */
+  --orange-peel-a: #ffe3a1;
+  --orange-peel-b: #ffb03e;
+  --orange-peel-c: #f08414;
+  --orange-peel-d: #c25c07;
+  --orange-leaf-a: #90c358;
+  --orange-leaf-b: #4e7a2b;
+
+  position: relative;
+  display: inline-grid;
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
+  place-items: center;
+  isolation: isolate;
+  vertical-align: middle;
+}
+
+.icon {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  user-select: none;
+  pointer-events: none;
+}
+
+.peelA {
+  stop-color: var(--orange-peel-a);
+}
+.peelB {
+  stop-color: var(--orange-peel-b);
+}
+.peelC {
+  stop-color: var(--orange-peel-c);
+}
+.peelD {
+  stop-color: var(--orange-peel-d);
+}
+.leafA {
+  stop-color: var(--orange-leaf-a);
+}
+.leafB {
+  stop-color: var(--orange-leaf-b);
+}
+
+.pores {
+  fill: #c96a10;
+  opacity: 0.35;
+}
+
+.float,
+.bob,
+.leaf,
+.glint {
+  transform-box: view-box;
+}
+
+/* the fruit hangs from the branch tip, so it swings around that point */
+.float {
+  transform-origin: 64px 22px;
+}
+
+/* uniform scale only — the circle must never deform */
+.bob {
+  transform-origin: 64px 74px;
+}
+
+.leaf {
+  transform-origin: 71px 26px;
+}
+
+.glint {
+  transform-origin: 48px 60px;
+}
+
+.shadow {
+  position: absolute;
+  z-index: 1;
+  bottom: 4%;
+  left: 26%;
+  width: 48%;
+  height: 10%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(64 30 3 / 36%) 0%,
+    rgb(64 30 3 / 16%) 45%,
+    transparent 74%
+  );
+  filter: blur(calc(var(--icon-size, 40px) * 0.03));
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.animated .float {
+  animation: orangeSway 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+.animated .bob {
+  animation: orangeBreathe 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+.animated .leaf {
+  /* same rhythm as the fruit, but lagging slightly behind it */
+  animation: orangeLeaf 4.2s ease-in-out -0.55s infinite;
+  will-change: transform;
+}
+.animated .glint {
+  animation: orangeGlint 4.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.animated .shadow {
+  animation: orangeShadow 4.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes orangeSway {
+  0%,
+  100% {
+    transform: rotateZ(-3.5deg);
+  }
+  50% {
+    transform: rotateZ(3.5deg);
+  }
+}
+
+@keyframes orangeBreathe {
+  0%,
+  100% {
+    transform: scale(0.995);
+  }
+  50% {
+    transform: scale(1.015);
+  }
+}
+
+@keyframes orangeLeaf {
+  0%,
+  100% {
+    transform: rotateZ(-6deg);
+  }
+  50% {
+    transform: rotateZ(8deg);
+  }
+}
+
+@keyframes orangeGlint {
+  0%,
+  100% {
+    transform: translate3d(-1.5px, 1px, 0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate3d(2px, -1.5px, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes orangeShadow {
+  0%,
+  100% {
+    transform: translateX(-6%) scaleX(0.94);
+    opacity: 0.32;
+  }
+  50% {
+    transform: translateX(6%) scaleX(0.94);
+    opacity: 0.32;
+  }
+}
+
+.static .float {
+  transform: rotateZ(-2deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated .float,
+  .animated .bob,
+  .animated .leaf,
+  .animated .glint,
+  .animated .shadow {
+    animation: none;
+  }
+  .animated .float {
+    transform: rotateZ(-2deg);
+  }
+}

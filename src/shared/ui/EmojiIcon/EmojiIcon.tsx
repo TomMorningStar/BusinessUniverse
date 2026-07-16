@@ -4,6 +4,7 @@ import { ChipsBagIcon } from '../icons/ChipsBagIcon/ChipsBagIcon';
 import { BoxIcon } from '../icons/BoxIcon/BoxIcon';
 import { WheatIcon } from '../icons/WheatIcon/WheatIcon';
 import { FactoryIcon } from '../icons/FactoryIcon/FactoryIcon';
+import { OrangeIcon } from '../icons/OrangeIcon/OrangeIcon';
 
 type CustomIconProps = {
   size?: number;
@@ -17,6 +18,7 @@ const CUSTOM_ICONS: Record<string, ComponentType<CustomIconProps>> = {
   '📦': BoxIcon,
   '🌾': WheatIcon,
   '🏭': FactoryIcon,
+  '🍊': OrangeIcon,
 };
 
 type EmojiIconProps = {

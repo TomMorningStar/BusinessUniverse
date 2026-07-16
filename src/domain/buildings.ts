@@ -21,6 +21,26 @@ export const BUILDINGS = {
     inputs: [{ resourceId: 'potato', amount: 10 }],
     outputs: [{ resourceId: 'chips', amount: 2 }],
   },
+  wheat_field: {
+    id: 'wheat_field',
+    name: 'Пшеничное поле',
+    emoji: '🌾',
+    category: 'raw_material',
+    purchaseCost: 300,
+    cycleDurationMs: 6_000,
+    inputs: [],
+    outputs: [{ resourceId: 'wheat', amount: 6 }],
+  },
+  orange_grove: {
+    id: 'orange_grove',
+    name: 'Апельсиновая роща',
+    emoji: '🍊',
+    category: 'raw_material',
+    purchaseCost: 700,
+    cycleDurationMs: 8_000,
+    inputs: [],
+    outputs: [{ resourceId: 'orange', amount: 8 }],
+  },
 } as const satisfies Record<BuildingId, BuildingConfig>;
 
 export const BUILDING_IDS = Object.keys(BUILDINGS) as BuildingId[];

@@ -9,7 +9,6 @@
   flex: 1 1 auto;
   gap: 8px;
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
   padding-bottom: 24px;
 }
@@ -24,13 +23,7 @@
 }
 
 @media (max-width: 720px) {
-  .app__body {
-    flex-direction: column;
-    gap: 0;
-    padding-bottom: 88px;
-  }
-
   .app__main {
-    padding: 16px 14px 0;
+    padding: 16px 0 0 14px;
   }
 }

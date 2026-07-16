@@ -4,7 +4,7 @@
   padding: 8px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   gap: 14px;
 
   /* production-typed status colors (raw material by default) */
@@ -63,6 +63,7 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 4px 12px;
+  justify-content: space-between;
 }
 
 .building-card__name {
@@ -77,6 +78,7 @@
   font-weight: 700;
   color: var(--accent-success);
   font-variant-numeric: tabular-nums;
+  padding-right: 4px;
 }
 
 .building-card__stats {

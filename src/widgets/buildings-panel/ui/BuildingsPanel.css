@@ -7,7 +7,7 @@
   gap: 14px;
 }
 
-@media (min-width: 760px) {
+@media (min-width: 1024px) {
   .buildings-panel__list {
     grid-template-columns: repeat(2, 1fr);
   }

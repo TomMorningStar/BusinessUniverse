@@ -51,3 +51,9 @@
   --transition-fast: 160ms cubic-bezier(0.22, 1, 0.36, 1);
   --transition-normal: 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+@media (max-width: 720px) {
+  :root {
+    --icon-size-building: 80px;
+  }
+}

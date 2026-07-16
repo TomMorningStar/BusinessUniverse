@@ -1,5 +1,5 @@
 import { BUILDINGS, BUILDING_IDS } from './buildings';
-import { MAX_TICK_MS } from './constants';
+import { MAX_CYCLES_PER_TICK, MAX_TICK_MS } from './constants';
 import { getSaleIncome } from './economy';
 import type {
   BuildingConfig,
@@ -27,6 +27,25 @@ function scaleAmounts(amounts: readonly ResourceAmount[], count: number): Resour
     resourceId: amount.resourceId,
     amount: amount.amount * count,
   }));
+}
+
+/** Sums a batch of outputs into an accumulator keyed by resource, so several
+ * cycles completed in one tick surface as a single per-resource total. */
+function mergeAmounts(
+  accumulator: ResourceAmount[],
+  additions: readonly ResourceAmount[],
+): ResourceAmount[] {
+  for (const addition of additions) {
+    const existing = accumulator.find((entry) => entry.resourceId === addition.resourceId);
+
+    if (existing) {
+      existing.amount += addition.amount;
+    } else {
+      accumulator.push({ resourceId: addition.resourceId, amount: addition.amount });
+    }
+  }
+
+  return accumulator;
 }
 
 export function getStartBlockReason(
@@ -180,38 +199,58 @@ export function advanceBuilding(
   config: BuildingConfig,
   safeDeltaMs: number,
 ): { gameData: GameData; building: OwnedBuilding; event: ProductionEvent | null } {
-  if (!building.isCycleActive) {
-    return { ...startCycle(gameData, building, config), event: null };
+  let currentData = gameData;
+  let current = building;
+  let remainingMs = safeDeltaMs;
+  let completedCycles = 0;
+  const storedOutputs: ResourceAmount[] = [];
+  const autoSoldOutputs: ResourceAmount[] = [];
+
+  // Advance as much of the elapsed time as fits, starting/completing whole cycles
+  // in sequence so leftover time carries into the next cycle instead of being
+  // dropped. This keeps production frame-rate-independent: the same real time
+  // yields the same result whether it arrives as one big delta or many small ones.
+  while (remainingMs > 0 && completedCycles < MAX_CYCLES_PER_TICK) {
+    if (!current.isCycleActive) {
+      const startResult = startCycle(currentData, current, config);
+      currentData = startResult.gameData;
+      current = startResult.building;
+
+      // Still not running ⇒ blocked on inputs or output space; no time can pass.
+      if (!current.isCycleActive) {
+        break;
+      }
+    }
+
+    const remainingInCycle = config.cycleDurationMs - current.progressMs;
+
+    if (remainingInCycle > remainingMs) {
+      current = withBuildingState(current, current.progressMs + remainingMs, true, 'running');
+      break;
+    }
+
+    const deliveryResult = deliverOutputs(currentData, config, current.ownedCount);
+
+    if (!deliveryResult.ok) {
+      // Output cannot be stored: hold at full progress until space frees up.
+      current = withBuildingState(current, config.cycleDurationMs, true, 'output_blocked');
+      break;
+    }
+
+    currentData = deliveryResult.gameData;
+    remainingMs -= remainingInCycle;
+    completedCycles += 1;
+    mergeAmounts(storedOutputs, deliveryResult.storedOutputs);
+    mergeAmounts(autoSoldOutputs, deliveryResult.autoSoldOutputs);
+
+    // Reset for the next cycle; the loop re-enters startCycle with the leftover time.
+    current = { ...current, progressMs: 0, isCycleActive: false, status: 'idle' };
   }
 
-  const progressMs = building.progressMs + safeDeltaMs;
+  const event =
+    completedCycles > 0 ? { buildingId: building.id, storedOutputs, autoSoldOutputs } : null;
 
-  if (progressMs < config.cycleDurationMs) {
-    return { gameData, building: { ...building, progressMs, status: 'running' }, event: null };
-  }
-
-  const deliveryResult = deliverOutputs(gameData, config, building.ownedCount);
-
-  if (!deliveryResult.ok) {
-    return {
-      gameData,
-      building: withBuildingState(building, config.cycleDurationMs, true, 'output_blocked'),
-      event: null,
-    };
-  }
-
-  return {
-    ...startCycle(
-      deliveryResult.gameData,
-      { ...building, progressMs: 0, isCycleActive: false, status: 'idle' },
-      config,
-    ),
-    event: {
-      buildingId: building.id,
-      storedOutputs: deliveryResult.storedOutputs,
-      autoSoldOutputs: deliveryResult.autoSoldOutputs,
-    },
-  };
+  return { gameData: currentData, building: current, event };
 }
 
 export function advanceAllBuildings(

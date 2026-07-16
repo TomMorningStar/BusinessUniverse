@@ -30,3 +30,14 @@ button {
   text-transform: inherit;
   -webkit-tap-highlight-color: transparent;
 }
+
+/*
+ * Freezes the CSS animations of an icon subtree while it is off-screen or the tab
+ * is hidden (toggled by shared/lib/iconAnimation.ts). Paused animations keep their
+ * current frame, so they resume seamlessly. Icon animations run on descendants of
+ * the marked container, hence the universal selector scoped to the paused subtree.
+ */
+.icon-anim-paused,
+.icon-anim-paused * {
+  animation-play-state: paused !important;
+}

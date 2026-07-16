@@ -88,12 +88,11 @@ export const useGameStore = create<GameState>()((set, get) => ({
     const state = get();
     const result = advanceAllBuildings(state, deltaMs);
 
+    // Production is a hot path (runs every simulation step). It never writes to
+    // storage; persistence is handled by the periodic autosave, `pagehide`, and
+    // the discrete user actions below (buy/sell/toggle/reset).
     if (result.gameData !== state) {
       set(result.gameData);
-    }
-
-    if (result.events.length > 0) {
-      get().saveGame();
     }
   },
 

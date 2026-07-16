@@ -133,3 +133,27 @@
     transform: none;
   }
 }
+
+/*
+ * Mobile fallback. `backdrop-filter` forces a per-element offscreen capture of the
+ * backdrop; with many glass surfaces on screen that is costly on weak devices.
+ * Below the mobile breakpoint we drop the blur and compensate with a slightly more
+ * opaque fill so text keeps its separation from the busy background. The lit edge
+ * (::before) and reflection (::after) stay, so the surfaces still read as glass.
+ * Desktop keeps the real Liquid Glass material unchanged.
+ */
+@media (max-width: 720px) {
+  .glass,
+  .glass-btn {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .glass {
+    background-color: rgb(11 18 36 / 42%);
+  }
+
+  .glass-btn {
+    background-color: rgb(255 255 255 / 6%);
+  }
+}

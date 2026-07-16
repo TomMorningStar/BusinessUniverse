@@ -3,6 +3,7 @@ import { Background } from '../../../widgets/background';
 import { BuildingsPanel } from '../../../widgets/buildings-panel';
 import { Header } from '../../../widgets/header';
 import { ProductionNotice } from '../../../widgets/production-notice';
+import { SettingsPanel } from '../../../widgets/settings-panel';
 import { Sidebar, TAB_LABELS, type AppTab } from '../../../widgets/sidebar';
 import { WarehousePanel } from '../../../widgets/warehouse-panel';
 import './GamePage.css';
@@ -30,6 +31,7 @@ export function GamePage() {
             {activeTab === 'factory' && (
               <BuildingsPanel category="factory" buildQuantity={buildQuantity} />
             )}
+            {activeTab === 'settings' && <SettingsPanel />}
           </main>
           <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
         </div>

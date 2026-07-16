@@ -1,0 +1,167 @@
+.root {
+  /* easily themeable via CSS */
+  --gear-steel-a: #e2e7ff;
+  --gear-steel-b: #99a5f4;
+  --gear-steel-c: #5a66cf;
+  --gear-steel-d: #3a4294;
+  --gear-gold-a: #ffe3a1;
+  --gear-gold-b: #f0a83a;
+  --gear-gold-c: #c97a12;
+
+  position: relative;
+  display: inline-grid;
+  width: var(--icon-size, 40px);
+  height: var(--icon-size, 40px);
+  place-items: center;
+  isolation: isolate;
+  vertical-align: middle;
+}
+
+.icon {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  user-select: none;
+  pointer-events: none;
+}
+
+.steelA {
+  stop-color: var(--gear-steel-a);
+}
+.steelB {
+  stop-color: var(--gear-steel-b);
+}
+.steelC {
+  stop-color: var(--gear-steel-c);
+}
+.steelD {
+  stop-color: var(--gear-steel-d);
+}
+.goldA {
+  stop-color: var(--gear-gold-a);
+}
+.goldB {
+  stop-color: var(--gear-gold-b);
+}
+.goldC {
+  stop-color: var(--gear-gold-c);
+}
+
+.breathe,
+.gearMain,
+.gearSmall,
+.glint {
+  transform-box: view-box;
+}
+
+.breathe {
+  transform-origin: 64px 64px;
+}
+
+.gearMain {
+  transform-origin: 58px 72px;
+}
+
+.gearSmall {
+  transform-origin: 99px 38px;
+}
+
+.glint {
+  transform-origin: 46px 58px;
+}
+
+.shadow {
+  position: absolute;
+  z-index: 1;
+  bottom: 4%;
+  left: 24%;
+  width: 52%;
+  height: 10%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(16 20 48 / 40%) 0%,
+    rgb(16 20 48 / 18%) 45%,
+    transparent 74%
+  );
+  filter: blur(calc(var(--icon-size, 40px) * 0.03));
+  transform-origin: center;
+  pointer-events: none;
+}
+
+/* full 360° linear turns keep the loop perfectly seamless */
+.animated .gearMain {
+  animation: gearSpin 9s linear infinite;
+  will-change: transform;
+}
+.animated .gearSmall {
+  animation: gearSpinReverse 4.5s linear infinite;
+  will-change: transform;
+}
+.animated .breathe {
+  animation: gearBreathe 4.2s ease-in-out infinite;
+  will-change: transform;
+}
+.animated .glint {
+  animation: gearGlint 4.2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes gearSpin {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}
+
+@keyframes gearSpinReverse {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(-360deg);
+  }
+}
+
+@keyframes gearBreathe {
+  0%,
+  100% {
+    transform: scale(0.99);
+  }
+  50% {
+    transform: scale(1.015);
+  }
+}
+
+@keyframes gearGlint {
+  0%,
+  100% {
+    transform: translate3d(-1px, 0.5px, 0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate3d(1.5px, -1px, 0);
+    opacity: 1;
+  }
+}
+
+.static .gearMain {
+  transform: rotateZ(12deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated .gearMain,
+  .animated .gearSmall,
+  .animated .breathe,
+  .animated .glint {
+    animation: none;
+  }
+  .animated .gearMain {
+    transform: rotateZ(12deg);
+  }
+}

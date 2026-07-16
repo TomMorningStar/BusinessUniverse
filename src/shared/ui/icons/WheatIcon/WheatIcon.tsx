@@ -50,12 +50,7 @@ function Grain({ x, y, r, rot }: Grain) {
   );
 }
 
-export function WheatIcon({
-  size,
-  animated = false,
-  className = '',
-  label = 'Иконка сырья',
-}: WheatIconProps) {
+export function WheatIcon({ size, animated = false, className = '', label }: WheatIconProps) {
   const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
@@ -63,7 +58,13 @@ export function WheatIcon({
     .join(' ');
 
   return (
-    <span className={rootClassName} style={style} role="img" aria-label={label}>
+    <span
+      className={rootClassName}
+      style={style}
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+    >
       <span className={styles.shadow} aria-hidden="true" />
 
       <svg

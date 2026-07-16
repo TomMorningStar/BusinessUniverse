@@ -1,4 +1,5 @@
-import { formatMoney } from '../../../shared/lib/formatMoney';
+import { useTranslation } from 'react-i18next';
+import { formatMoney } from '../../../shared/i18n';
 import { QuantityStepper } from '../../../shared/ui/QuantityStepper/QuantityStepper';
 import { selectMoney } from '../../../store/selectors';
 import { useGameStore } from '../../../store/useGameStore';
@@ -20,6 +21,8 @@ export function Header({
   buildQuantity,
   onBuildQuantityChange,
 }: HeaderProps) {
+  const { t } = useTranslation();
+
   return (
     <header className="app-header">
       <h1 className="app-header__title">{title}</h1>
@@ -28,7 +31,7 @@ export function Header({
           value={buildQuantity}
           options={BUILD_QUANTITY_OPTIONS}
           onChange={onBuildQuantityChange}
-          label="Количество для постройки"
+          label={t('header.buildQuantity')}
         />
       )}
       <MoneyDisplay />
@@ -39,6 +42,8 @@ export function Header({
 /** Isolated so frequent money updates re-render only this element, not the whole header. */
 function MoneyDisplay() {
   const money = useGameStore(selectMoney);
+  // Subscribes to language changes so the number re-formats for the new locale.
+  useTranslation();
 
   return (
     <div className="app-header__money glass-btn" aria-live="polite">

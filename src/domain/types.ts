@@ -7,9 +7,12 @@ export type ResourceAmount = {
   amount: number;
 };
 
+/**
+ * Configs carry no display names: user-facing text lives in the i18n
+ * dictionaries and is resolved by id (`resources.<id>.name`) at the UI level.
+ */
 export type ResourceConfig = {
   id: ResourceId;
-  name: string;
   emoji: string;
   sellPrice: number;
   initialCapacity: number;
@@ -19,7 +22,6 @@ export type BuildingCategory = 'raw_material' | 'factory';
 
 export type BuildingConfig = {
   id: BuildingId;
-  name: string;
   emoji: string;
   category: BuildingCategory;
   purchaseCost: number;

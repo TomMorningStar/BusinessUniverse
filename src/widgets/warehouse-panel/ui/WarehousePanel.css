@@ -6,3 +6,12 @@
   flex-direction: column;
   gap: 12px;
 }
+
+.warehouse-panel__empty {
+  margin: 0;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}

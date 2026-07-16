@@ -1,0 +1,110 @@
+.language-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 760px;
+}
+
+.language-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.language-panel__back {
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.language-panel__description {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.language-panel__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.language-panel__card {
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 12px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.language-panel__card:hover {
+  transform: translateY(-1px);
+  border-color: var(--glass-border-highlight);
+}
+
+.language-panel__card:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.language-panel__card:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+.language-panel__card--selected {
+  border-color: rgb(53 224 161 / 45%);
+  box-shadow: inset 0 0 18px rgb(53 224 161 / 10%);
+}
+
+.language-panel__flag {
+  --flag-width: 36px;
+}
+
+.language-panel__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.language-panel__check {
+  flex-shrink: 0;
+  width: 1.2em;
+  text-align: center;
+  font-weight: 800;
+  color: var(--accent-success);
+}
+
+@media (max-width: 480px) {
+  .language-panel__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .language-panel__card {
+    transition: none;
+  }
+
+  .language-panel__card:hover,
+  .language-panel__card:active {
+    transform: none;
+  }
+}

@@ -20,6 +20,7 @@ npm run typecheck       # tsc -b --pretty false
 npm run lint            # eslint .
 npm run format          # prettier --write .
 npm run format:check    # prettier --check .
+npm run i18n:check      # translation dictionaries key-parity check (en is the reference)
 npm run build           # tsc -b && vite build
 npm run preview         # preview production build
 ```
@@ -65,6 +66,6 @@ Key architectural rules:
 ## Engineering constraints
 
 - Strict TypeScript everywhere; avoid `any` (if unavoidable due to a third-party API, isolate and comment why).
-- All user-facing text is Russian (notices, building status labels, README); code identifiers and comments are English.
+- All user-facing text goes through i18n dictionaries (`src/shared/i18n`, 8 locales, `en` fallback, keys resolved by entity/status id); no hardcoded UI strings in JSX, configs, or the store. The manual language choice persists under its own `business-universe:language` key, separate from the game save. Domain and store never call `t()` — they return ids/typed payloads translated at the UI level. Code identifiers and comments are English. Run `npm run i18n:check` after dictionary changes.
 - Never write saves on every animation frame.
 - Never mutate nested state accidentally — commit one coherent state update per action.

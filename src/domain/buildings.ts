@@ -3,7 +3,6 @@ import type { BuildingConfig, BuildingId } from './types';
 export const BUILDINGS = {
   potato_farm: {
     id: 'potato_farm',
-    name: 'Картофельная ферма',
     emoji: '🥔',
     category: 'raw_material',
     purchaseCost: 100,
@@ -13,7 +12,6 @@ export const BUILDINGS = {
   },
   chips_factory: {
     id: 'chips_factory',
-    name: 'Завод чипсов',
     emoji: '🏭',
     category: 'factory',
     purchaseCost: 500,
@@ -23,7 +21,6 @@ export const BUILDINGS = {
   },
   wheat_field: {
     id: 'wheat_field',
-    name: 'Пшеничное поле',
     emoji: '🌾',
     category: 'raw_material',
     purchaseCost: 300,
@@ -33,7 +30,6 @@ export const BUILDINGS = {
   },
   orange_grove: {
     id: 'orange_grove',
-    name: 'Апельсиновая роща',
     emoji: '🍊',
     category: 'raw_material',
     purchaseCost: 700,

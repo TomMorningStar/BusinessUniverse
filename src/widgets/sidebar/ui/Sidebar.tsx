@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { EmojiIcon } from '../../../shared/ui/EmojiIcon/EmojiIcon';
 import { SIDEBAR_TABS, type AppTab } from '../model/tabs';
 import './Sidebar.css';
@@ -8,8 +9,10 @@ type SidebarProps = {
 };
 
 export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
+  const { t } = useTranslation();
+
   return (
-    <nav className="sidebar glass" aria-label="Разделы">
+    <nav className="sidebar glass" aria-label={t('nav.sections')}>
       {SIDEBAR_TABS.map((tab) => {
         const isActive = tab.id === activeTab;
 
@@ -19,7 +22,7 @@ export function Sidebar({ activeTab, onTabChange }: SidebarProps) {
             type="button"
             className="sidebar__tab"
             aria-pressed={isActive}
-            aria-label={tab.label}
+            aria-label={t(`tabs.${tab.id}`)}
             onClick={() => onTabChange(tab.id)}
           >
             <span className="sidebar__tab-icon glass-icon" aria-hidden="true">

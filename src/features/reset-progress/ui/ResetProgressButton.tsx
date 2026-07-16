@@ -1,4 +1,5 @@
 import { useGameStore } from '../../../store/useGameStore';
+import './ResetProgressButton.css';
 
 export function ResetProgressButton() {
   const resetGame = useGameStore((state) => state.resetGame);

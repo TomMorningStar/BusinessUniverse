@@ -1,4 +1,3 @@
-import { ResetProgressButton } from '../../../features/reset-progress';
 import { formatMoney } from '../../../shared/lib/formatMoney';
 import { QuantityStepper } from '../../../shared/ui/QuantityStepper/QuantityStepper';
 import { selectMoney } from '../../../store/selectors';
@@ -33,7 +32,6 @@ export function Header({
         />
       )}
       <MoneyDisplay />
-      <ResetProgressButton />
     </header>
   );
 }

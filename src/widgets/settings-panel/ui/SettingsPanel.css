@@ -1,0 +1,13 @@
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.settings-panel .glass-btn {
+  min-height: 48px;
+  font-size: 14px;
+}

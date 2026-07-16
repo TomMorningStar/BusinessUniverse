@@ -3,11 +3,9 @@ import { BUILDINGS } from '../domain/buildings';
 import { getSaleIncome, planBuild } from '../domain/economy';
 import { createInitialGameData } from '../domain/initialState';
 import { advanceAllBuildings } from '../domain/production';
-import { RESOURCES } from '../domain/resources';
 import { clearSave, loadGameData, saveGameData } from '../domain/save';
 import type { BuildingId, GameState, OwnedBuilding, ResourceId } from '../domain/types';
 import { removeResources } from '../domain/warehouse';
-import { formatMoney } from '../shared/lib/formatMoney';
 import { useNoticesStore } from './useNoticesStore';
 
 export const useGameStore = create<GameState>()((set, get) => ({
@@ -43,7 +41,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
       },
     });
     get().saveGame();
-    useNoticesStore.getState().addNotice(`${config.name} ×${plan.count}`);
+    useNoticesStore.getState().addNotice({ kind: 'building_built', buildingId, count: plan.count });
   },
 
   sellAll: (resourceId: ResourceId) => {
@@ -69,7 +67,7 @@ export const useGameStore = create<GameState>()((set, get) => ({
     get().saveGame();
     useNoticesStore
       .getState()
-      .addNotice(`${formatMoney(income)} за ${RESOURCES[resourceId].name.toLowerCase()}`);
+      .addNotice({ kind: 'resources_sold', resourceId, amount: slot.amount, income });
   },
 
   toggleAutoSell: (resourceId: ResourceId) => {

@@ -1,22 +1,20 @@
+import { useTranslation } from 'react-i18next';
 import { useGameStore } from '../../../store/useGameStore';
 import './ResetProgressButton.css';
 
 export function ResetProgressButton() {
+  const { t } = useTranslation();
   const resetGame = useGameStore((state) => state.resetGame);
 
   const handleClick = () => {
-    const confirmed = window.confirm(
-      'Сбросить прогресс? Все деньги, здания и склад будут удалены безвозвратно.',
-    );
-
-    if (confirmed) {
+    if (window.confirm(t('reset.confirm'))) {
       resetGame();
     }
   };
 
   return (
     <button type="button" className="reset-button glass-btn" onClick={handleClick}>
-      Сбросить прогресс
+      {t('reset.button')}
     </button>
   );
 }

@@ -9,12 +9,7 @@ type FactoryIconProps = {
   label?: string;
 };
 
-export function FactoryIcon({
-  size,
-  animated = false,
-  className = '',
-  label = 'Иконка фабрики',
-}: FactoryIconProps) {
+export function FactoryIcon({ size, animated = false, className = '', label }: FactoryIconProps) {
   const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
@@ -22,7 +17,13 @@ export function FactoryIcon({
     .join(' ');
 
   return (
-    <span className={rootClassName} style={style} role="img" aria-label={label}>
+    <span
+      className={rootClassName}
+      style={style}
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+    >
       <span className={styles.shadow} aria-hidden="true" />
 
       <svg

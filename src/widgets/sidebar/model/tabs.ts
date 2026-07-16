@@ -2,20 +2,13 @@ export type AppTab = 'warehouse' | 'raw_material' | 'factory' | 'settings';
 
 export type SidebarTab = {
   id: AppTab;
-  label: string;
   emoji: string;
 };
 
-export const TAB_LABELS: Record<AppTab, string> = {
-  warehouse: 'Склад',
-  raw_material: 'Сырьё',
-  factory: 'Фабрика',
-  settings: 'Настройки',
-};
-
+/** Labels come from the `tabs.*` i18n keys — the id doubles as the key segment. */
 export const SIDEBAR_TABS: readonly SidebarTab[] = [
-  { id: 'warehouse', label: TAB_LABELS.warehouse, emoji: '📦' },
-  { id: 'raw_material', label: TAB_LABELS.raw_material, emoji: '🌾' },
-  { id: 'factory', label: TAB_LABELS.factory, emoji: '🏭' },
-  { id: 'settings', label: TAB_LABELS.settings, emoji: '⚙️' },
+  { id: 'warehouse', emoji: '📦' },
+  { id: 'raw_material', emoji: '🌾' },
+  { id: 'factory', emoji: '🏭' },
+  { id: 'settings', emoji: '⚙️' },
 ];

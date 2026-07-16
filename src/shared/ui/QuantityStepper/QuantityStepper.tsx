@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './QuantityStepper.css';
 
 type QuantityStepperProps = {
@@ -6,7 +7,8 @@ type QuantityStepperProps = {
   options: readonly number[];
   onChange: (value: number) => void;
   formatValue?: (value: number) => string;
-  label?: string;
+  /** Accessible name of the value button; the caller passes an already-translated string. */
+  label: string;
 };
 
 const defaultFormat = (value: number) => `×${value}`;
@@ -21,8 +23,9 @@ export function QuantityStepper({
   options,
   onChange,
   formatValue = defaultFormat,
-  label = 'Количество',
+  label,
 }: QuantityStepperProps) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -75,7 +78,7 @@ export function QuantityStepper({
         className="quantity-stepper__arrow glass-btn"
         onClick={goPrev}
         disabled={atStart}
-        aria-label="Меньше"
+        aria-label={t('stepper.less')}
       >
         ◀
       </button>
@@ -96,7 +99,7 @@ export function QuantityStepper({
         className="quantity-stepper__arrow glass-btn"
         onClick={goNext}
         disabled={atEnd}
-        aria-label="Больше"
+        aria-label={t('stepper.more')}
       >
         ▶
       </button>

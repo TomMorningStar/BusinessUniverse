@@ -25,12 +25,7 @@ const PORES: ReadonlyArray<{ x: number; y: number; r: number }> = [
   { x: 58, y: 104, r: 1.5 },
 ];
 
-export function OrangeIcon({
-  size,
-  animated = false,
-  className = '',
-  label = 'Апельсин',
-}: OrangeIconProps) {
+export function OrangeIcon({ size, animated = false, className = '', label }: OrangeIconProps) {
   const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
@@ -38,7 +33,13 @@ export function OrangeIcon({
     .join(' ');
 
   return (
-    <span className={rootClassName} style={style} role="img" aria-label={label}>
+    <span
+      className={rootClassName}
+      style={style}
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+    >
       <span className={styles.shadow} aria-hidden="true" />
 
       <svg

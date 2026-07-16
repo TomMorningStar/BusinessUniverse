@@ -1,9 +1,15 @@
 import { create } from 'zustand';
+import type { BuildingId, ResourceId } from '../domain/types';
 
-export type Notice = {
-  id: number;
-  message: string;
-};
+/**
+ * Notices are machine-readable events; the presentation layer (ProductionNotice)
+ * translates them into the active language. The store never builds UI strings.
+ */
+export type NoticePayload =
+  | { kind: 'building_built'; buildingId: BuildingId; count: number }
+  | { kind: 'resources_sold'; resourceId: ResourceId; amount: number; income: number };
+
+export type Notice = NoticePayload & { id: number };
 
 const MAX_NOTICES = 4;
 const NOTICE_LIFETIME_MS = 4000;
@@ -12,16 +18,16 @@ let nextNoticeId = 0;
 
 type NoticesState = {
   notices: readonly Notice[];
-  addNotice: (message: string) => void;
+  addNotice: (payload: NoticePayload) => void;
   removeNotice: (id: number) => void;
 };
 
 export const useNoticesStore = create<NoticesState>()((set, get) => ({
   notices: [],
 
-  addNotice: (message: string) => {
+  addNotice: (payload: NoticePayload) => {
     const id = nextNoticeId++;
-    set({ notices: [...get().notices, { id, message }].slice(-MAX_NOTICES) });
+    set({ notices: [...get().notices, { ...payload, id }].slice(-MAX_NOTICES) });
 
     setTimeout(() => {
       get().removeNotice(id);

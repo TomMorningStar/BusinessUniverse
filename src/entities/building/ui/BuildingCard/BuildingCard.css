@@ -86,6 +86,9 @@
   font-size: 14px;
   font-weight: 600;
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .building-card__stats-visual {
@@ -103,6 +106,37 @@
   margin-left: 4px;
   color: var(--text-muted);
   font-weight: 700;
+}
+
+/* warehouse fill of the building's outputs: small box icon + progress bar */
+.building-card__storage {
+  --icon-size: 15px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.building-card__storage-bar {
+  width: 64px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 10%);
+  overflow: hidden;
+}
+
+.building-card__storage-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent-success);
+  transition: width var(--transition-fast);
+}
+
+.building-card__storage-fill--full {
+  background: rgb(255 180 84);
 }
 
 .building-card__autosell {
@@ -190,5 +224,8 @@
   }
   .building-card__autosell-toggle input:active {
     transform: none;
+  }
+  .building-card__storage-fill {
+    transition: none;
   }
 }

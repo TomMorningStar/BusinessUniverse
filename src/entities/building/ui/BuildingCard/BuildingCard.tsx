@@ -1,19 +1,21 @@
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import { useShallow } from 'zustand/react/shallow';
 import { getBuildTotalCost, planBuild } from '../../../../domain/economy';
 import { getStartBlockReason } from '../../../../domain/production';
 import { RESOURCES } from '../../../../domain/resources';
 import type {
   BuildingConfig,
-  BuildingRunStatus,
   ProductionBlockReason,
   ResourceAmount,
   ResourceId,
   Warehouse,
 } from '../../../../domain/types';
 import { ResourceAmountIcons } from '../../../resource';
-import { formatMoney } from '../../../../shared/lib/formatMoney';
+import { formatMoney, formatNumber, formatPercent } from '../../../../shared/i18n';
 import { useIconAnimationPause } from '../../../../shared/lib/iconAnimation';
 import { EmojiIcon } from '../../../../shared/ui/EmojiIcon/EmojiIcon';
+import { BoxIcon } from '../../../../shared/ui/icons/BoxIcon/BoxIcon';
 import {
   selectAutoSellFlags,
   selectBuildingOwnedCount,
@@ -24,36 +26,36 @@ import {
 import { useGameStore } from '../../../../store/useGameStore';
 import './BuildingCard.css';
 
-const STATUS_LABELS: Record<BuildingRunStatus, string> = {
-  idle: 'Ожидание запуска',
-  running: 'Производство',
-  waiting_for_inputs: 'Ожидает сырьё',
-  output_blocked: 'Склад заполнен',
-};
-
-function formatResourceAmount(resourceAmount: ResourceAmount): string {
-  const config = RESOURCES[resourceAmount.resourceId];
-  return `${resourceAmount.amount} ${config.emoji} ${config.name}`;
+/** Emoji + localized name, e.g. "🥔 Картошка" — used inside translated templates. */
+function describeResource(resourceId: ResourceId, t: TFunction): string {
+  return `${RESOURCES[resourceId].emoji} ${t(`resources.${resourceId}.name`)}`;
 }
 
-function formatRecipe(config: BuildingConfig): string {
-  const outputs = config.outputs.map(formatResourceAmount).join(', ');
+function formatResourceAmount(resourceAmount: ResourceAmount, t: TFunction): string {
+  return `${resourceAmount.amount} ${describeResource(resourceAmount.resourceId, t)}`;
+}
+
+function formatRecipe(config: BuildingConfig, t: TFunction): string {
+  const outputs = config.outputs.map((output) => formatResourceAmount(output, t)).join(', ');
 
   if (config.inputs.length === 0) {
     return outputs;
   }
 
-  return `${config.inputs.map(formatResourceAmount).join(', ')} → ${outputs}`;
+  return `${config.inputs.map((input) => formatResourceAmount(input, t)).join(', ')} → ${outputs}`;
 }
 
-function formatBlockReason(reason: ProductionBlockReason): string {
-  const resourceConfig = RESOURCES[reason.resourceId];
+function formatBlockReason(reason: ProductionBlockReason, t: TFunction): string {
+  const resource = describeResource(reason.resourceId, t);
 
   if (reason.type === 'missing_input') {
-    return `Не хватает ${resourceConfig.emoji} ${resourceConfig.name}: нужно ещё ${reason.missingAmount}`;
+    return t('production.missingResource', {
+      resource,
+      missing: formatNumber(reason.missingAmount),
+    });
   }
 
-  return `Склад заполнен: ${resourceConfig.emoji} ${resourceConfig.name}`;
+  return t('production.outputFull', { resource });
 }
 
 type BuildingCardProps = {
@@ -68,6 +70,7 @@ type BuildingCardProps = {
  * below, so an auto-sell payout or a resource tick never re-renders the icon.
  */
 export function BuildingCard({ config, quantity }: BuildingCardProps) {
+  const { t } = useTranslation();
   const ownedCount = useGameStore(selectBuildingOwnedCount(config.id));
   const status = useGameStore(selectBuildingStatus(config.id));
   const iconRef = useIconAnimationPause();
@@ -76,7 +79,7 @@ export function BuildingCard({ config, quantity }: BuildingCardProps) {
   const cycleSeconds = config.cycleDurationMs / 1000;
 
   const isBlocked = isBuilt && (status === 'waiting_for_inputs' || status === 'output_blocked');
-  const statusLabel = isBuilt && status !== null ? STATUS_LABELS[status] : '';
+  const statusLabel = isBuilt && status !== null ? t(`buildingStatus.${status}`) : '';
 
   const categoryModifierClass =
     config.category === 'factory' ? 'building-card--factory' : 'building-card--raw';
@@ -98,13 +101,22 @@ export function BuildingCard({ config, quantity }: BuildingCardProps) {
 
       <div className="building-card__content">
         <div className="building-card__head">
-          <h3 className="building-card__name">{config.name}</h3>
-          {isBuilt && <span className="building-card__count">Построено: {ownedCount}</span>}
+          <h3 className="building-card__name" title={t(`buildings.${config.id}.description`)}>
+            {t(`buildings.${config.id}.name`)}
+          </h3>
+          {isBuilt && (
+            <span className="building-card__count">
+              {t('buildingCard.owned', { value: formatNumber(ownedCount) })}
+            </span>
+          )}
         </div>
 
         <p
           className="building-card__stats"
-          aria-label={`${formatRecipe(config)}, цикл ${cycleSeconds} сек`}
+          aria-label={t('buildingCard.recipeAria', {
+            recipe: formatRecipe(config, t),
+            seconds: cycleSeconds,
+          })}
         >
           <span className="building-card__stats-visual" aria-hidden="true">
             {config.inputs.length > 0 && (
@@ -114,8 +126,11 @@ export function BuildingCard({ config, quantity }: BuildingCardProps) {
               </>
             )}
             <ResourceAmountIcons amounts={config.outputs} />
-            <span className="building-card__stats-cycle">⏱ {cycleSeconds} сек</span>
+            <span className="building-card__stats-cycle">
+              {t('buildingCard.cycleSeconds', { seconds: cycleSeconds })}
+            </span>
           </span>
+          <StorageIndicator config={config} />
         </p>
 
         <div className="building-card__autosell">
@@ -135,6 +150,47 @@ export function BuildingCard({ config, quantity }: BuildingCardProps) {
   );
 }
 
+/**
+ * Warehouse fill for this building's output resources: a small warehouse icon
+ * plus a progress bar. Subscribes only to the output slots (via `useShallow`),
+ * so it refreshes with the relevant stock without touching the heavy card part.
+ */
+function StorageIndicator({ config }: { config: BuildingConfig }) {
+  const { t } = useTranslation();
+  const outputIds = config.outputs.map((output) => output.resourceId);
+  const slots = useGameStore(useShallow(selectResourceSlots(outputIds)));
+
+  const totalAmount = slots.reduce((sum, slot) => sum + slot.amount, 0);
+  const totalCapacity = slots.reduce((sum, slot) => sum + slot.capacity, 0);
+  const ratio = totalCapacity > 0 ? Math.min(totalAmount / totalCapacity, 1) : 0;
+
+  const label = t('buildingCard.storage', {
+    amount: formatNumber(totalAmount),
+    capacity: formatNumber(totalCapacity),
+  });
+
+  return (
+    <span
+      className="building-card__storage"
+      role="img"
+      aria-label={label}
+      title={`${label} (${formatPercent(ratio)})`}
+    >
+      <BoxIcon className="building-card__storage-icon" />
+      <span className="building-card__storage-bar">
+        <span
+          className={
+            ratio >= 1
+              ? 'building-card__storage-fill building-card__storage-fill--full'
+              : 'building-card__storage-fill'
+          }
+          style={{ width: `${ratio * 100}%` }}
+        />
+      </span>
+    </span>
+  );
+}
+
 /** Subscribes only to money, so auto-sell payouts re-render just the button. */
 function BuildButton({
   config,
@@ -145,10 +201,11 @@ function BuildButton({
   ownedCount: number;
   quantity: number;
 }) {
+  const { t } = useTranslation();
   const money = useGameStore(selectMoney);
   const buyBuilding = useGameStore((state) => state.buyBuilding);
 
-  const selectedCost = getBuildTotalCost(config, ownedCount, quantity);
+  const cost = formatMoney(getBuildTotalCost(config, ownedCount, quantity));
   const canBuild = planBuild(money, config, ownedCount, quantity).count >= 1;
 
   return (
@@ -157,14 +214,20 @@ function BuildButton({
       className="building-card__build-button glass-btn"
       onClick={() => buyBuilding(config.id, quantity)}
       disabled={!canBuild}
+      aria-label={t('buildingCard.buildCountAria', {
+        count: quantity,
+        quantity: formatNumber(quantity),
+        cost,
+      })}
     >
-      Построить {formatMoney(selectedCost)}
+      {t('buildingCard.build', { cost })}
     </button>
   );
 }
 
 /** Subscribes only to the auto-sell flags of this building's outputs. */
 function AutoSellToggles({ config }: { config: BuildingConfig }) {
+  const { t } = useTranslation();
   const outputIds = config.outputs.map((output) => output.resourceId);
   const flags = useGameStore(useShallow(selectAutoSellFlags(outputIds)));
   const toggleAutoSell = useGameStore((state) => state.toggleAutoSell);
@@ -180,8 +243,10 @@ function AutoSellToggles({ config }: { config: BuildingConfig }) {
           />
           <span>
             {config.outputs.length > 1
-              ? `Автопродажа: ${RESOURCES[output.resourceId].name}`
-              : 'Автопродажа'}
+              ? t('buildingCard.autoSellNamed', {
+                  resource: t(`resources.${output.resourceId}.name`),
+                })
+              : t('buildingCard.autoSell')}
           </span>
         </label>
       ))}
@@ -204,6 +269,7 @@ function BlockReasonText({
   ownedCount: number;
   fallback: string;
 }) {
+  const { t } = useTranslation();
   const inputIds = config.inputs.map((input) => input.resourceId);
   const outputIds = config.outputs.map((output) => output.resourceId);
   const inputSlots = useGameStore(useShallow(selectResourceSlots(inputIds)));
@@ -226,7 +292,7 @@ function BlockReasonText({
   });
 
   const reason = getStartBlockReason({ warehouse, autoSell }, config, ownedCount);
-  const text = reason ? formatBlockReason(reason) : fallback;
+  const text = reason ? formatBlockReason(reason, t) : fallback;
 
   return <span className="visually-hidden">{text}</span>;
 }

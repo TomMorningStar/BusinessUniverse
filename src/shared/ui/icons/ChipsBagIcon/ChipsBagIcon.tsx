@@ -9,12 +9,7 @@ type ChipsBagIconProps = {
   label?: string;
 };
 
-export function ChipsBagIcon({
-  size,
-  animated = true,
-  className = '',
-  label = 'Анимированный пакет чипсов',
-}: ChipsBagIconProps) {
+export function ChipsBagIcon({ size, animated = true, className = '', label }: ChipsBagIconProps) {
   const style = size === undefined ? undefined : ({ '--icon-size': `${size}px` } as CSSProperties);
 
   const rootClassName = [styles.root, animated ? styles.animated : styles.static, className]
@@ -22,7 +17,13 @@ export function ChipsBagIcon({
     .join(' ');
 
   return (
-    <span className={rootClassName} style={style} role="img" aria-label={label}>
+    <span
+      className={rootClassName}
+      style={style}
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+    >
       <span className={styles.shadow} aria-hidden="true" />
 
       <svg

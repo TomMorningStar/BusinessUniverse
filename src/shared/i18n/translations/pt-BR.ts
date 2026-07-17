@@ -38,12 +38,27 @@ export const ptBR = {
       name: 'Laranjal',
       description: 'Colhe laranjas frescas prontas para venda.',
     },
+    lumberjack: {
+      name: 'Lenhador',
+      description: 'Coleta madeira, o recurso básico de construção.',
+    },
+    sawmill: {
+      name: 'Serraria',
+      description: 'Transforma madeira em tábuas para construção.',
+    },
+    quarry: {
+      name: 'Pedreira',
+      description: 'Extrai pedra para a construção de edifícios.',
+    },
   },
   resources: {
     potato: { name: 'Batatas' },
     chips: { name: 'Chips' },
     wheat: { name: 'Trigo' },
     orange: { name: 'Laranjas' },
+    wood: { name: 'Madeira' },
+    planks: { name: 'Tábuas' },
+    stone: { name: 'Pedra' },
   },
   buildingStatus: {
     idle: 'Aguardando início',
@@ -66,6 +81,7 @@ export const ptBR = {
     autoSell: 'Venda automática',
     autoSellNamed: 'Venda automática: {{resource}}',
     storage: 'Armazém: {{amount}} de {{capacity}}',
+    missingForBuild: 'Falta para construir: {{list}}',
   },
   warehouse: {
     empty: 'O armazém ainda está vazio — construa edifícios e os produtos aparecerão aqui.',

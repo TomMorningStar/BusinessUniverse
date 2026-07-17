@@ -25,6 +25,24 @@ export const RESOURCES = {
     sellPrice: 14,
     initialCapacity: 120,
   },
+  wood: {
+    id: 'wood',
+    emoji: '🪵',
+    sellPrice: 3,
+    initialCapacity: 150,
+  },
+  stone: {
+    id: 'stone',
+    emoji: '🪨',
+    sellPrice: 4,
+    initialCapacity: 120,
+  },
+  planks: {
+    id: 'planks',
+    emoji: '🚧',
+    sellPrice: 12,
+    initialCapacity: 80,
+  },
 } as const satisfies Record<ResourceId, ResourceConfig>;
 
 export const RESOURCE_IDS = Object.keys(RESOURCES) as ResourceId[];

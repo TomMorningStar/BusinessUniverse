@@ -40,12 +40,27 @@ export const en = {
       name: 'Orange grove',
       description: 'Harvests fresh oranges ready for sale.',
     },
+    lumberjack: {
+      name: 'Lumberjack',
+      description: 'Harvests wood — the basic construction resource.',
+    },
+    sawmill: {
+      name: 'Sawmill',
+      description: 'Turns wood into planks for construction.',
+    },
+    quarry: {
+      name: 'Quarry',
+      description: 'Mines stone for building construction.',
+    },
   },
   resources: {
     potato: { name: 'Potatoes' },
     chips: { name: 'Chips' },
     wheat: { name: 'Wheat' },
     orange: { name: 'Oranges' },
+    wood: { name: 'Wood' },
+    planks: { name: 'Planks' },
+    stone: { name: 'Stone' },
   },
   buildingStatus: {
     idle: 'Waiting to start',
@@ -67,6 +82,7 @@ export const en = {
     autoSell: 'Auto-sell',
     autoSellNamed: 'Auto-sell: {{resource}}',
     storage: 'Warehouse: {{amount}} of {{capacity}}',
+    missingForBuild: 'Missing to build: {{list}}',
   },
   warehouse: {
     empty: 'The warehouse is empty for now — build something and the goods will arrive here.',

@@ -38,12 +38,27 @@ export const fr = {
       name: 'Orangeraie',
       description: 'Récolte des oranges fraîches prêtes à la vente.',
     },
+    lumberjack: {
+      name: 'Bûcheron',
+      description: 'Récolte du bois, la ressource de construction de base.',
+    },
+    sawmill: {
+      name: 'Scierie',
+      description: 'Transforme le bois en planches de construction.',
+    },
+    quarry: {
+      name: 'Carrière',
+      description: 'Extrait de la pierre pour la construction des bâtiments.',
+    },
   },
   resources: {
     potato: { name: 'Pommes de terre' },
     chips: { name: 'Chips' },
     wheat: { name: 'Blé' },
     orange: { name: 'Oranges' },
+    wood: { name: 'Bois' },
+    planks: { name: 'Planches' },
+    stone: { name: 'Pierre' },
   },
   buildingStatus: {
     idle: 'En attente de démarrage',
@@ -66,6 +81,7 @@ export const fr = {
     autoSell: 'Vente auto',
     autoSellNamed: 'Vente auto : {{resource}}',
     storage: 'Entrepôt : {{amount}} sur {{capacity}}',
+    missingForBuild: 'Manque pour construire : {{list}}',
   },
   warehouse: {
     empty:

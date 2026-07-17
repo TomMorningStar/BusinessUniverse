@@ -1,6 +1,13 @@
-export type ResourceId = 'potato' | 'chips' | 'wheat' | 'orange';
+export type ResourceId = 'potato' | 'chips' | 'wheat' | 'orange' | 'wood' | 'planks' | 'stone';
 
-export type BuildingId = 'potato_farm' | 'chips_factory' | 'wheat_field' | 'orange_grove';
+export type BuildingId =
+  | 'potato_farm'
+  | 'chips_factory'
+  | 'wheat_field'
+  | 'orange_grove'
+  | 'lumberjack'
+  | 'sawmill'
+  | 'quarry';
 
 export type ResourceAmount = {
   resourceId: ResourceId;
@@ -20,15 +27,27 @@ export type ResourceConfig = {
 
 export type BuildingCategory = 'raw_material' | 'factory';
 
+/**
+ * Cost of the first copy (`ownedCount === 0`): a money amount plus, for buildings
+ * beyond the earliest "bootstrap" tier, a list of stored resources the warehouse
+ * must hold. `resources` is empty for bootstrap buildings (e.g. `potato_farm`,
+ * `lumberjack`, `quarry`) so the player is never blocked from the very first
+ * purchase by resources they have no way to produce yet.
+ */
+export type ConstructionCost = {
+  money: number;
+  resources: readonly ResourceAmount[];
+};
+
 export type BuildingConfig = {
   id: BuildingId;
   emoji: string;
   category: BuildingCategory;
-  /** Cost of the first copy (`ownedCount === 0`). Later copies scale by `costGrowthRate`. */
-  purchaseCost: number;
-  /** Per-copy price multiplier: `unitCost = purchaseCost * costGrowthRate ** ownedCount`.
-   * Must be > 1 so mass-buying a single building type has diminishing returns instead of
-   * staying the best move forever. */
+  constructionCost: ConstructionCost;
+  /** Per-copy price multiplier applied to both `constructionCost.money` and every
+   * `constructionCost.resources` amount: `unitCost = baseCost * costGrowthRate **
+   * ownedCount`. Must be > 1 so mass-buying a single building type has diminishing
+   * returns instead of staying the best move forever. */
   costGrowthRate: number;
   cycleDurationMs: number;
   inputs: readonly ResourceAmount[];

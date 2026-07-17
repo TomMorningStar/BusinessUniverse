@@ -38,12 +38,27 @@ export const it = {
       name: 'Aranceto',
       description: 'Raccoglie arance fresche pronte per la vendita.',
     },
+    lumberjack: {
+      name: 'Boscaiolo',
+      description: 'Raccoglie legno, la risorsa base per le costruzioni.',
+    },
+    sawmill: {
+      name: 'Segheria',
+      description: 'Trasforma il legno in assi da costruzione.',
+    },
+    quarry: {
+      name: 'Cava',
+      description: 'Estrae pietra per la costruzione degli edifici.',
+    },
   },
   resources: {
     potato: { name: 'Patate' },
     chips: { name: 'Patatine' },
     wheat: { name: 'Grano' },
     orange: { name: 'Arance' },
+    wood: { name: 'Legno' },
+    planks: { name: 'Assi' },
+    stone: { name: 'Pietra' },
   },
   buildingStatus: {
     idle: 'In attesa di avvio',
@@ -66,6 +81,7 @@ export const it = {
     autoSell: 'Vendita automatica',
     autoSellNamed: 'Vendita automatica: {{resource}}',
     storage: 'Magazzino: {{amount}} su {{capacity}}',
+    missingForBuild: 'Manca per costruire: {{list}}',
   },
   warehouse: {
     empty: 'Il magazzino per ora è vuoto: costruisci edifici e le merci arriveranno qui.',

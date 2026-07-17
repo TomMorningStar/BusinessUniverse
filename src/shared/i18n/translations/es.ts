@@ -38,12 +38,27 @@ export const es = {
       name: 'Naranjal',
       description: 'Recoge naranjas frescas listas para vender.',
     },
+    lumberjack: {
+      name: 'Leñador',
+      description: 'Recolecta madera, el recurso básico de construcción.',
+    },
+    sawmill: {
+      name: 'Aserradero',
+      description: 'Convierte la madera en tablones para la construcción.',
+    },
+    quarry: {
+      name: 'Cantera',
+      description: 'Extrae piedra para la construcción de edificios.',
+    },
   },
   resources: {
     potato: { name: 'Patatas' },
     chips: { name: 'Patatas fritas' },
     wheat: { name: 'Trigo' },
     orange: { name: 'Naranjas' },
+    wood: { name: 'Madera' },
+    planks: { name: 'Tablones' },
+    stone: { name: 'Piedra' },
   },
   buildingStatus: {
     idle: 'En espera de inicio',
@@ -66,6 +81,7 @@ export const es = {
     autoSell: 'Venta automática',
     autoSellNamed: 'Venta automática: {{resource}}',
     storage: 'Almacén: {{amount}} de {{capacity}}',
+    missingForBuild: 'Falta para construir: {{list}}',
   },
   warehouse: {
     empty: 'El almacén está vacío por ahora: construye edificios y los productos llegarán aquí.',

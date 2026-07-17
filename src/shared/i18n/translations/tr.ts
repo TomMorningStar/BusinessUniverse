@@ -38,12 +38,27 @@ export const tr = {
       name: 'Portakal bahçesi',
       description: 'Satışa hazır taze portakallar toplar.',
     },
+    lumberjack: {
+      name: 'Oduncu',
+      description: 'İnşaatın temel hammaddesi olan odunu toplar.',
+    },
+    sawmill: {
+      name: 'Kereste fabrikası',
+      description: 'Odunu inşaat için keresteye dönüştürür.',
+    },
+    quarry: {
+      name: 'Taş ocağı',
+      description: 'Bina inşaatı için taş çıkarır.',
+    },
   },
   resources: {
     potato: { name: 'Patates' },
     chips: { name: 'Cips' },
     wheat: { name: 'Buğday' },
     orange: { name: 'Portakal' },
+    wood: { name: 'Odun' },
+    planks: { name: 'Kereste' },
+    stone: { name: 'Taş' },
   },
   buildingStatus: {
     idle: 'Başlatma bekleniyor',
@@ -65,6 +80,7 @@ export const tr = {
     autoSell: 'Otomatik satış',
     autoSellNamed: 'Otomatik satış: {{resource}}',
     storage: 'Depo: {{amount}} / {{capacity}}',
+    missingForBuild: 'İnşa için eksik: {{list}}',
   },
   warehouse: {
     empty: 'Depo şimdilik boş — binalar inşa edin, ürünler burada görünecek.',

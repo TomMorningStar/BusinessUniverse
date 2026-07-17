@@ -38,12 +38,27 @@ export const de = {
       name: 'Orangenhain',
       description: 'Erntet frische Orangen, bereit zum Verkauf.',
     },
+    lumberjack: {
+      name: 'Holzfäller',
+      description: 'Schlägt Holz – den grundlegenden Baustoff.',
+    },
+    sawmill: {
+      name: 'Sägewerk',
+      description: 'Verarbeitet Holz zu Brettern für den Bau.',
+    },
+    quarry: {
+      name: 'Steinbruch',
+      description: 'Fördert Stein für den Gebäudebau.',
+    },
   },
   resources: {
     potato: { name: 'Kartoffeln' },
     chips: { name: 'Chips' },
     wheat: { name: 'Weizen' },
     orange: { name: 'Orangen' },
+    wood: { name: 'Holz' },
+    planks: { name: 'Bretter' },
+    stone: { name: 'Stein' },
   },
   buildingStatus: {
     idle: 'Wartet auf Start',
@@ -65,6 +80,7 @@ export const de = {
     autoSell: 'Auto-Verkauf',
     autoSellNamed: 'Auto-Verkauf: {{resource}}',
     storage: 'Lager: {{amount}} von {{capacity}}',
+    missingForBuild: 'Fehlt zum Bauen: {{list}}',
   },
   warehouse: {
     empty: 'Das Lager ist noch leer – baue Gebäude, und die Waren erscheinen hier.',

@@ -38,12 +38,27 @@ export const ru = {
       name: 'Апельсиновая роща',
       description: 'Собирает свежие апельсины, готовые к продаже.',
     },
+    lumberjack: {
+      name: 'Лесоруб',
+      description: 'Заготавливает дерево — базовый строительный ресурс.',
+    },
+    sawmill: {
+      name: 'Лесопилка',
+      description: 'Превращает дерево в доски для строительства.',
+    },
+    quarry: {
+      name: 'Каменоломня',
+      description: 'Добывает камень для строительства зданий.',
+    },
   },
   resources: {
     potato: { name: 'Картошка' },
     chips: { name: 'Чипсы' },
     wheat: { name: 'Пшеница' },
     orange: { name: 'Апельсины' },
+    wood: { name: 'Дерево' },
+    planks: { name: 'Доски' },
+    stone: { name: 'Камень' },
   },
   buildingStatus: {
     idle: 'Ожидание запуска',
@@ -67,6 +82,7 @@ export const ru = {
     autoSell: 'Автопродажа',
     autoSellNamed: 'Автопродажа: {{resource}}',
     storage: 'Склад: {{amount}} из {{capacity}}',
+    missingForBuild: 'Не хватает для постройки: {{list}}',
   },
   warehouse: {
     empty: 'Склад пока пуст — постройте здания, и товары появятся здесь.',

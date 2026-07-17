@@ -1,7 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import { useShallow } from 'zustand/react/shallow';
-import { getBuildTotalCost, planBuild } from '../../../../domain/economy';
+import {
+  getBuildTotalCost,
+  getConstructionShortfall,
+  planBuild,
+  type BuildTotalCost,
+  type ConstructionShortfall,
+} from '../../../../domain/economy';
 import { getStartBlockReason } from '../../../../domain/production';
 import { RESOURCES } from '../../../../domain/resources';
 import type {
@@ -56,6 +62,28 @@ function formatBlockReason(reason: ProductionBlockReason, t: TFunction): string 
   }
 
   return t('production.outputFull', { resource });
+}
+
+/** Money + every required resource, e.g. "500 ₽, 15 🚧 Доски, 10 🪨 Камень". */
+function formatConstructionCost(cost: BuildTotalCost, t: TFunction): string {
+  const parts = [
+    formatMoney(cost.money),
+    ...cost.resources.map((resource) => formatResourceAmount(resource, t)),
+  ];
+  return parts.join(', ');
+}
+
+/** Only the parts actually missing right now, in the same "money, resources" order. */
+function formatConstructionShortfall(shortfall: ConstructionShortfall, t: TFunction): string {
+  const parts: string[] = [];
+
+  if (shortfall.missingMoney > 0) {
+    parts.push(formatMoney(shortfall.missingMoney));
+  }
+
+  parts.push(...shortfall.missingResources.map((resource) => formatResourceAmount(resource, t)));
+
+  return parts.join(', ');
 }
 
 type BuildingCardProps = {
@@ -191,7 +219,11 @@ function StorageIndicator({ config }: { config: BuildingConfig }) {
   );
 }
 
-/** Subscribes only to money, so auto-sell payouts re-render just the button. */
+/**
+ * Subscribes to money plus only this building's own construction-resource slots
+ * (via `useShallow`), so an auto-sell payout or an unrelated resource tick
+ * re-renders just this button, not the whole card.
+ */
 function BuildButton({
   config,
   ownedCount,
@@ -203,25 +235,43 @@ function BuildButton({
 }) {
   const { t } = useTranslation();
   const money = useGameStore(selectMoney);
+  const costResourceIds = config.constructionCost.resources.map((resource) => resource.resourceId);
+  const costResourceSlots = useGameStore(useShallow(selectResourceSlots(costResourceIds)));
   const buyBuilding = useGameStore((state) => state.buyBuilding);
 
-  const cost = formatMoney(getBuildTotalCost(config, ownedCount, quantity));
-  const canBuild = planBuild(money, config, ownedCount, quantity).count >= 1;
+  const warehouse = {} as Warehouse;
+  costResourceIds.forEach((resourceId, index) => {
+    warehouse[resourceId] = costResourceSlots[index];
+  });
+
+  const plan = planBuild(money, warehouse, config, ownedCount, quantity);
+  const canBuild = plan.count >= 1;
+  const cost = formatConstructionCost(getBuildTotalCost(config, ownedCount, quantity), t);
+  const shortfall = canBuild
+    ? null
+    : getConstructionShortfall(money, warehouse, config, ownedCount);
 
   return (
-    <button
-      type="button"
-      className="building-card__build-button glass-btn"
-      onClick={() => buyBuilding(config.id, quantity)}
-      disabled={!canBuild}
-      aria-label={t('buildingCard.buildCountAria', {
-        count: quantity,
-        quantity: formatNumber(quantity),
-        cost,
-      })}
-    >
-      {t('buildingCard.build', { cost })}
-    </button>
+    <div className="building-card__build-block">
+      <button
+        type="button"
+        className="building-card__build-button glass-btn"
+        onClick={() => buyBuilding(config.id, quantity)}
+        disabled={!canBuild}
+        aria-label={t('buildingCard.buildCountAria', {
+          count: quantity,
+          quantity: formatNumber(quantity),
+          cost,
+        })}
+      >
+        {t('buildingCard.build', { cost })}
+      </button>
+      {shortfall && (
+        <p className="building-card__missing-resources">
+          {t('buildingCard.missingForBuild', { list: formatConstructionShortfall(shortfall, t) })}
+        </p>
+      )}
+    </div>
   );
 }
 

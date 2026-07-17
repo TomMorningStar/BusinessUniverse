@@ -11,17 +11,18 @@ export function getSaleIncome(resourceId: ResourceId, amount: number): number {
 
 /**
  * Cost of the next single copy of a building, given how many are already owned.
- * Flat today; if per-copy price escalation is ever introduced, this is the only
- * place to change it — everything else sums this over a range of copies.
+ * Grows geometrically with `ownedCount` (`costGrowthRate` per copy) so mass-buying
+ * one building forever has diminishing returns instead of staying the best move at
+ * every stage of the game — this is the only place that computes a unit cost;
+ * everything else sums this over a range of copies.
  */
 export function getBuildingUnitCost(config: BuildingConfig, ownedCount: number): number {
-  void ownedCount;
-  return config.purchaseCost;
+  return Math.round(config.purchaseCost * config.costGrowthRate ** ownedCount);
 }
 
 /**
  * Total price of buying `quantity` copies starting from `ownedCount`, summed as a
- * sequence of individual purchases (so escalating prices would compound correctly).
+ * sequence of individual purchases so the per-copy price growth compounds correctly.
  */
 export function getBuildTotalCost(
   config: BuildingConfig,

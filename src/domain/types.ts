@@ -24,7 +24,12 @@ export type BuildingConfig = {
   id: BuildingId;
   emoji: string;
   category: BuildingCategory;
+  /** Cost of the first copy (`ownedCount === 0`). Later copies scale by `costGrowthRate`. */
   purchaseCost: number;
+  /** Per-copy price multiplier: `unitCost = purchaseCost * costGrowthRate ** ownedCount`.
+   * Must be > 1 so mass-buying a single building type has diminishing returns instead of
+   * staying the best move forever. */
+  costGrowthRate: number;
   cycleDurationMs: number;
   inputs: readonly ResourceAmount[];
   outputs: readonly ResourceAmount[];

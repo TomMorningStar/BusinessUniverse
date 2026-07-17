@@ -10,7 +10,7 @@ Business Universe — a browser idle/tycoon game (React + TypeScript). Core loop
 money → potato farm → potatoes → chips factory → chips → money
 ```
 
-The playable MVP baseline is complete. This repo is now maintained through **targeted, explicitly-requested changes**, not a task backlog — see "Scope discipline" below before doing anything not directly asked for.
+The playable MVP baseline is complete. Feature growth beyond the MVP is planned in **`DEVELOPMENT_ROADMAP.md`** — the staged plan (P0/P1/P2 priorities, numbered stages, and a "Рекомендуемый порядок первых задач" sequence of discrete Task 1..15) toward a population-driven economic strategy game (construction resources → housing → population → workforce → production → needs → class advancement → contracts/research/prestige), rather than an ever-growing pile of unrelated resources. None of that system exists in code yet — today's codebase is still the plain MVP loop above (single settler-free chain, no workforce/needs/construction-resource layer, no platform adapter, no test runner). Read the roadmap before starting feature work, but implement only the one stage/task actually requested — see "Scope discipline" below before doing anything not directly asked for.
 
 ## Commands
 
@@ -25,11 +25,13 @@ npm run build           # tsc -b && vite build
 npm run preview         # preview production build
 ```
 
-There is no test runner configured in this repo. After any meaningful change, run `typecheck`, `lint`, `format:check`, and `build` (plus `i18n:check` if translation dictionaries changed), and fix every failure. Never claim a check passed without actually running it.
+There is no test runner configured in this repo yet (`DEVELOPMENT_ROADMAP.md` Stage 0 plans to add Vitest — don't assume it exists until that stage is actually done). After any meaningful change, run `typecheck`, `lint`, `format:check`, and `build` (plus `i18n:check` if translation dictionaries changed, and `npm test` once a runner exists), and fix every failure. Never claim a check passed without actually running it.
 
 ## Scope discipline (read this first)
 
-- Implement only what the user explicitly requested. Do not pick another backlog item, redesign unrelated UI, migrate libraries, rewrite working modules, change game balance, or add a dependency/backend/SDK on your own initiative.
+- Implement only what the user explicitly requested — including roadmap-driven work: if asked to run a roadmap stage or "Task N" from `DEVELOPMENT_ROADMAP.md`, implement exactly that one item, plan it first, and stop; never self-select or chain into the next stage/task.
+- Do not pick another backlog item, redesign unrelated UI, migrate libraries, rewrite working modules, change game balance, or add a dependency/backend/SDK on your own initiative.
+- Before starting, check whether the change touches persisted save fields (needs a `SAVE_SCHEMA_VERSION` bump + migration, see Architecture) or introduces new user-facing strings (needs keys in all 8 locales + `i18n:check`, see Localization).
 - If code and documentation disagree, trust the code, then report the mismatch rather than silently changing behavior to match stale docs.
 - Prefer the smallest coherent change that fully solves the request; keep refactors scoped to what the task requires.
 

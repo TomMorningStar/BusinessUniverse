@@ -36,3 +36,10 @@ export const selectBuildingOwnedCount = (buildingId: BuildingId) => (state: Game
 
 export const selectBuildingStatus = (buildingId: BuildingId) => (state: GameState) =>
   state.ownedBuildings[buildingId]?.status ?? null;
+
+/** Owned counts for a fixed set of buildings (population capacity/workforce only
+ * cares about counts, not progress/status). Pair with `useShallow` so population
+ * summaries re-render on purchases, not on every production tick's progress churn. */
+export const selectBuildingOwnedCounts =
+  (buildingIds: readonly BuildingId[]) => (state: GameState) =>
+    buildingIds.map((buildingId) => state.ownedBuildings[buildingId]?.ownedCount ?? 0);

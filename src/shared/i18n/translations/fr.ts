@@ -5,6 +5,7 @@ export const fr = {
     warehouse: 'Entrepôt',
     raw_material: 'Matières premières',
     factory: 'Usine',
+    housing: 'Logement',
     settings: 'Paramètres',
   },
   nav: {
@@ -50,6 +51,14 @@ export const fr = {
       name: 'Carrière',
       description: 'Extrait de la pierre pour la construction des bâtiments.',
     },
+    settler_house: {
+      name: 'Maison de colons',
+      description: 'Loge les colons nécessaires à la production de matières premières.',
+    },
+    artisan_house: {
+      name: 'Maison d’artisans',
+      description: 'Loge les artisans nécessaires aux usines de transformation.',
+    },
   },
   resources: {
     potato: { name: 'Pommes de terre' },
@@ -60,10 +69,19 @@ export const fr = {
     planks: { name: 'Planches' },
     stone: { name: 'Pierre' },
   },
+  population: {
+    settler: { name: 'Colons' },
+    artisan: { name: 'Artisans' },
+    summary: {
+      title: 'Population',
+      classRow: '{{className}} : total {{total}}, employés {{employed}}, disponibles {{available}}',
+    },
+  },
   buildingStatus: {
     idle: 'En attente de démarrage',
     running: 'Production',
     waiting_for_inputs: 'En attente de matières premières',
+    waiting_for_workers: 'En attente de travailleurs',
     output_blocked: 'Entrepôt plein',
   },
   production: {
@@ -74,6 +92,9 @@ export const fr = {
     owned: 'Construits : {{value}}',
     cycleSeconds: '⏱ {{seconds}} s',
     recipeAria: '{{recipe}}, cycle de {{seconds}} s',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, cycle de {{seconds}} s, nécessite {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Loge : {{amount}} {{class}}',
     build: 'Construire {{cost}}',
     buildCountAria_one: 'Construire {{quantity}} bâtiment pour {{cost}}',
     buildCountAria_many: 'Construire {{quantity}} bâtiments pour {{cost}}',

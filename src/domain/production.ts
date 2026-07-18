@@ -1,10 +1,12 @@
 import { BUILDINGS, BUILDING_IDS } from './buildings';
 import { MAX_CYCLES_PER_TICK, MAX_TICK_MS } from './constants';
 import { getSaleIncome } from './economy';
+import { allocateWorkforce } from './population';
 import type {
   BuildingConfig,
   GameData,
   OwnedBuilding,
+  OwnedCounts,
   ProductionBlockReason,
   ProductionEvent,
   ResourceAmount,
@@ -109,8 +111,20 @@ export function startCycle(
   gameData: GameData,
   building: OwnedBuilding,
   config: BuildingConfig,
+  isStaffed = true,
 ): { gameData: GameData; building: OwnedBuilding } {
   const count = building.ownedCount;
+
+  // Workforce is checked before inputs/output space: an unstaffed building never
+  // starts a cycle regardless of what it has in stock — "buildings without
+  // workers don't produce" takes priority over every other precondition.
+  if (config.workforce && !isStaffed) {
+    return {
+      gameData,
+      building: withBuildingState(building, 0, false, 'waiting_for_workers'),
+    };
+  }
+
   const blockReason = getStartBlockReason(gameData, config, count);
 
   if (blockReason) {
@@ -198,6 +212,7 @@ export function advanceBuilding(
   building: OwnedBuilding,
   config: BuildingConfig,
   safeDeltaMs: number,
+  isStaffed = true,
 ): { gameData: GameData; building: OwnedBuilding; event: ProductionEvent | null } {
   let currentData = gameData;
   let current = building;
@@ -212,7 +227,7 @@ export function advanceBuilding(
   // yields the same result whether it arrives as one big delta or many small ones.
   while (remainingMs > 0 && completedCycles < MAX_CYCLES_PER_TICK) {
     if (!current.isCycleActive) {
-      const startResult = startCycle(currentData, current, config);
+      const startResult = startCycle(currentData, current, config, isStaffed);
       currentData = startResult.gameData;
       current = startResult.building;
 
@@ -264,6 +279,15 @@ export function advanceAllBuildings(
     return { gameData, events: [] };
   }
 
+  // Workforce is a fixed-priority competition across ALL owned buildings sharing a
+  // population class, so it is resolved once per tick — before any building
+  // advances — rather than re-derived independently inside each building's check.
+  const ownedCounts: OwnedCounts = {};
+  for (const buildingId of ownedBuildingIds) {
+    ownedCounts[buildingId] = gameData.ownedBuildings[buildingId]?.ownedCount ?? 0;
+  }
+  const workforce = allocateWorkforce(ownedCounts);
+
   let nextGameData = gameData;
   let anyBuildingChanged = false;
   const events: ProductionEvent[] = [];
@@ -271,12 +295,20 @@ export function advanceAllBuildings(
 
   for (const buildingId of ownedBuildingIds) {
     const building = ownedBuildings[buildingId];
+    const config = BUILDINGS[buildingId];
 
     if (!building || building.ownedCount < 1) {
       continue;
     }
 
-    const result = advanceBuilding(nextGameData, building, BUILDINGS[buildingId], safeDeltaMs);
+    // Housing buildings have no recipe (empty outputs) and never run a production
+    // cycle — they only exist to grant population capacity, checked above.
+    if (config.outputs.length === 0) {
+      continue;
+    }
+
+    const isStaffed = workforce.statusByBuilding[buildingId]?.staffed ?? true;
+    const result = advanceBuilding(nextGameData, building, config, safeDeltaMs, isStaffed);
 
     nextGameData = result.gameData;
 

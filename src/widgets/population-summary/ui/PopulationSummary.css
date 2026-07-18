@@ -1,0 +1,28 @@
+.population-summary {
+  margin: 0 0 12px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+}
+
+.population-summary__title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.population-summary__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.population-summary__row {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}

@@ -5,6 +5,7 @@ export const de = {
     warehouse: 'Lager',
     raw_material: 'Rohstoffe',
     factory: 'Fabrik',
+    housing: 'Wohnen',
     settings: 'Einstellungen',
   },
   nav: {
@@ -50,6 +51,14 @@ export const de = {
       name: 'Steinbruch',
       description: 'Fördert Stein für den Gebäudebau.',
     },
+    settler_house: {
+      name: 'Siedlerhaus',
+      description: 'Beherbergt Siedler, die für die Rohstoffproduktion nötig sind.',
+    },
+    artisan_house: {
+      name: 'Handwerkerhaus',
+      description: 'Beherbergt Handwerker, die für Verarbeitungsfabriken nötig sind.',
+    },
   },
   resources: {
     potato: { name: 'Kartoffeln' },
@@ -60,10 +69,20 @@ export const de = {
     planks: { name: 'Bretter' },
     stone: { name: 'Stein' },
   },
+  population: {
+    settler: { name: 'Siedler' },
+    artisan: { name: 'Handwerker' },
+    summary: {
+      title: 'Bevölkerung',
+      classRow:
+        '{{className}}: gesamt {{total}}, beschäftigt {{employed}}, verfügbar {{available}}',
+    },
+  },
   buildingStatus: {
     idle: 'Wartet auf Start',
     running: 'Produktion',
     waiting_for_inputs: 'Wartet auf Rohstoffe',
+    waiting_for_workers: 'Wartet auf Arbeiter',
     output_blocked: 'Lager ist voll',
   },
   production: {
@@ -74,6 +93,9 @@ export const de = {
     owned: 'Gebaut: {{value}}',
     cycleSeconds: '⏱ {{seconds}} Sek.',
     recipeAria: '{{recipe}}, Zyklus {{seconds}} Sek.',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, Zyklus {{seconds}} Sek., benötigt {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Beherbergt: {{amount}} {{class}}',
     build: 'Bauen für {{cost}}',
     buildCountAria_one: '{{quantity}} Gebäude für {{cost}} bauen',
     buildCountAria_other: '{{quantity}} Gebäude für {{cost}} bauen',

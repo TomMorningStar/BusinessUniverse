@@ -5,6 +5,7 @@ export const ru = {
     warehouse: 'Склад',
     raw_material: 'Сырьё',
     factory: 'Фабрика',
+    housing: 'Жильё',
     settings: 'Настройки',
   },
   nav: {
@@ -50,6 +51,14 @@ export const ru = {
       name: 'Каменоломня',
       description: 'Добывает камень для строительства зданий.',
     },
+    settler_house: {
+      name: 'Дом поселенцев',
+      description: 'Даёт жильё поселенцам, необходимым для сырьевого производства.',
+    },
+    artisan_house: {
+      name: 'Дом ремесленников',
+      description: 'Даёт жильё ремесленникам, необходимым для переработки.',
+    },
   },
   resources: {
     potato: { name: 'Картошка' },
@@ -60,10 +69,19 @@ export const ru = {
     planks: { name: 'Доски' },
     stone: { name: 'Камень' },
   },
+  population: {
+    settler: { name: 'Поселенцы' },
+    artisan: { name: 'Ремесленники' },
+    summary: {
+      title: 'Население',
+      classRow: '{{className}}: всего {{total}}, занято {{employed}}, свободно {{available}}',
+    },
+  },
   buildingStatus: {
     idle: 'Ожидание запуска',
     running: 'Производство',
     waiting_for_inputs: 'Ожидает сырьё',
+    waiting_for_workers: 'Ожидает рабочих',
     output_blocked: 'Склад заполнен',
   },
   production: {
@@ -74,6 +92,9 @@ export const ru = {
     owned: 'Построено: {{value}}',
     cycleSeconds: '⏱ {{seconds}} сек',
     recipeAria: '{{recipe}}, цикл {{seconds}} сек',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, цикл {{seconds}} сек, требуется {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Вмещает: {{amount}} {{class}}',
     build: 'Построить {{cost}}',
     buildCountAria_one: 'Построить {{quantity}} здание за {{cost}}',
     buildCountAria_few: 'Построить {{quantity}} здания за {{cost}}',

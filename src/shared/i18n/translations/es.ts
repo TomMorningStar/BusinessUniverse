@@ -5,6 +5,7 @@ export const es = {
     warehouse: 'Almacén',
     raw_material: 'Materias primas',
     factory: 'Fábrica',
+    housing: 'Vivienda',
     settings: 'Ajustes',
   },
   nav: {
@@ -50,6 +51,14 @@ export const es = {
       name: 'Cantera',
       description: 'Extrae piedra para la construcción de edificios.',
     },
+    settler_house: {
+      name: 'Casa de colonos',
+      description: 'Aloja a los colonos necesarios para la producción de materias primas.',
+    },
+    artisan_house: {
+      name: 'Casa de artesanos',
+      description: 'Aloja a los artesanos necesarios para las fábricas de procesamiento.',
+    },
   },
   resources: {
     potato: { name: 'Patatas' },
@@ -60,10 +69,19 @@ export const es = {
     planks: { name: 'Tablones' },
     stone: { name: 'Piedra' },
   },
+  population: {
+    settler: { name: 'Colonos' },
+    artisan: { name: 'Artesanos' },
+    summary: {
+      title: 'Población',
+      classRow: '{{className}}: total {{total}}, ocupados {{employed}}, disponibles {{available}}',
+    },
+  },
   buildingStatus: {
     idle: 'En espera de inicio',
     running: 'Producción',
     waiting_for_inputs: 'Esperando materias primas',
+    waiting_for_workers: 'Esperando trabajadores',
     output_blocked: 'Almacén lleno',
   },
   production: {
@@ -74,6 +92,9 @@ export const es = {
     owned: 'Construidos: {{value}}',
     cycleSeconds: '⏱ {{seconds}} s',
     recipeAria: '{{recipe}}, ciclo de {{seconds}} s',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, ciclo de {{seconds}} s, requiere {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Aloja: {{amount}} {{class}}',
     build: 'Construir {{cost}}',
     buildCountAria_one: 'Construir {{quantity}} edificio por {{cost}}',
     buildCountAria_many: 'Construir {{quantity}} edificios por {{cost}}',

@@ -12,6 +12,8 @@ import { getStartBlockReason } from '../../../../domain/production';
 import { RESOURCES } from '../../../../domain/resources';
 import type {
   BuildingConfig,
+  BuildingRunStatus,
+  PopulationClassId,
   ProductionBlockReason,
   ResourceAmount,
   ResourceId,
@@ -50,6 +52,11 @@ function formatRecipe(config: BuildingConfig, t: TFunction): string {
 
   return `${config.inputs.map((input) => formatResourceAmount(input, t)).join(', ')} → ${outputs}`;
 }
+
+const POPULATION_CLASS_EMOJI: Record<PopulationClassId, string> = {
+  settler: '👤',
+  artisan: '👷',
+};
 
 function formatBlockReason(reason: ProductionBlockReason, t: TFunction): string {
   const resource = describeResource(reason.resourceId, t);
@@ -104,15 +111,25 @@ export function BuildingCard({ config, quantity }: BuildingCardProps) {
   const iconRef = useIconAnimationPause();
 
   const isBuilt = ownedCount >= 1;
+  const isHousing = config.category === 'housing';
   const cycleSeconds = config.cycleDurationMs / 1000;
 
-  const isBlocked = isBuilt && (status === 'waiting_for_inputs' || status === 'output_blocked');
-  const statusLabel = isBuilt && status !== null ? t(`buildingStatus.${status}`) : '';
+  // Housing buildings are skipped by the production tick entirely (see
+  // `advanceAllBuildings`), so their `status` never leaves its initial value —
+  // showing it would be meaningless ("waiting to start" for a building that
+  // never runs a cycle), so all status UI is suppressed for them.
+  const isBlocked =
+    !isHousing &&
+    isBuilt &&
+    (status === 'waiting_for_inputs' ||
+      status === 'waiting_for_workers' ||
+      status === 'output_blocked');
+  const statusLabel = !isHousing && isBuilt && status !== null ? t(`buildingStatus.${status}`) : '';
 
   const categoryModifierClass =
     config.category === 'factory' ? 'building-card--factory' : 'building-card--raw';
   const statusModifierClass =
-    isBuilt && status !== null
+    !isHousing && isBuilt && status !== null
       ? isBlocked
         ? 'building-card--blocked'
         : `building-card--${status}`
@@ -139,37 +156,67 @@ export function BuildingCard({ config, quantity }: BuildingCardProps) {
           )}
         </div>
 
-        <p
-          className="building-card__stats"
-          aria-label={t('buildingCard.recipeAria', {
-            recipe: formatRecipe(config, t),
-            seconds: cycleSeconds,
-          })}
-        >
-          <span className="building-card__stats-visual" aria-hidden="true">
-            {config.inputs.length > 0 && (
-              <>
-                <ResourceAmountIcons amounts={config.inputs} />
-                <span className="building-card__stats-arrow">→</span>
-              </>
-            )}
-            <ResourceAmountIcons amounts={config.outputs} />
-            <span className="building-card__stats-cycle">
-              {t('buildingCard.cycleSeconds', { seconds: cycleSeconds })}
+        {isHousing ? (
+          <p className="building-card__stats">
+            {t('buildingCard.housingCapacity', {
+              amount: formatNumber(config.housing!.capacity),
+              class: t(`population.${config.housing!.populationClassId}.name`),
+            })}
+          </p>
+        ) : (
+          <p
+            className="building-card__stats"
+            aria-label={
+              config.workforce
+                ? t('buildingCard.recipeAriaWithWorkforce', {
+                    recipe: formatRecipe(config, t),
+                    seconds: cycleSeconds,
+                    workforceCount: config.workforce.required,
+                    workforceClass: t(`population.${config.workforce.populationClassId}.name`),
+                  })
+                : t('buildingCard.recipeAria', {
+                    recipe: formatRecipe(config, t),
+                    seconds: cycleSeconds,
+                  })
+            }
+          >
+            <span className="building-card__stats-visual" aria-hidden="true">
+              {config.inputs.length > 0 && (
+                <>
+                  <ResourceAmountIcons amounts={config.inputs} />
+                  <span className="building-card__stats-arrow">→</span>
+                </>
+              )}
+              <ResourceAmountIcons amounts={config.outputs} />
+              <span className="building-card__stats-cycle">
+                {t('buildingCard.cycleSeconds', { seconds: cycleSeconds })}
+              </span>
+              {config.workforce && (
+                <span className="building-card__stats-workforce">
+                  {POPULATION_CLASS_EMOJI[config.workforce.populationClassId]} ×
+                  {config.workforce.required}
+                </span>
+              )}
             </span>
-          </span>
-          <StorageIndicator config={config} />
-        </p>
+            <StorageIndicator config={config} />
+          </p>
+        )}
 
         <div className="building-card__autosell">
-          {isBuilt && <AutoSellToggles config={config} />}
+          {!isHousing && isBuilt && <AutoSellToggles config={config} />}
           <BuildButton config={config} ownedCount={ownedCount} quantity={quantity} />
         </div>
 
-        {isBuilt &&
+        {!isHousing &&
+          isBuilt &&
           status !== null &&
           (isBlocked ? (
-            <BlockReasonText config={config} ownedCount={ownedCount} fallback={statusLabel} />
+            <BlockReasonText
+              config={config}
+              ownedCount={ownedCount}
+              status={status}
+              fallback={statusLabel}
+            />
           ) : (
             <span className="visually-hidden">{statusLabel}</span>
           ))}
@@ -313,10 +360,12 @@ function AutoSellToggles({ config }: { config: BuildingConfig }) {
 function BlockReasonText({
   config,
   ownedCount,
+  status,
   fallback,
 }: {
   config: BuildingConfig;
   ownedCount: number;
+  status: BuildingRunStatus;
   fallback: string;
 }) {
   const { t } = useTranslation();
@@ -341,7 +390,14 @@ function BlockReasonText({
     autoSell[resourceId] = outputAutoSell[index];
   });
 
-  const reason = getStartBlockReason({ warehouse, autoSell }, config, ownedCount);
+  // Workforce is checked before inputs/output space in the domain (see
+  // `startCycle`), so when that is the actual reason, don't independently ask
+  // `getStartBlockReason` — it only knows about inputs/outputs and could report a
+  // coincidental, lower-priority shortfall that contradicts the visible status.
+  const reason =
+    status === 'waiting_for_workers'
+      ? null
+      : getStartBlockReason({ warehouse, autoSell }, config, ownedCount);
   const text = reason ? formatBlockReason(reason, t) : fallback;
 
   return <span className="visually-hidden">{text}</span>;

@@ -5,6 +5,7 @@ export const tr = {
     warehouse: 'Depo',
     raw_material: 'Hammaddeler',
     factory: 'Fabrika',
+    housing: 'Konut',
     settings: 'Ayarlar',
   },
   nav: {
@@ -50,6 +51,14 @@ export const tr = {
       name: 'Taş ocağı',
       description: 'Bina inşaatı için taş çıkarır.',
     },
+    settler_house: {
+      name: 'Yerleşimci evi',
+      description: 'Hammadde üretimi için gereken yerleşimcileri barındırır.',
+    },
+    artisan_house: {
+      name: 'Zanaatkâr evi',
+      description: 'İşleme fabrikaları için gereken zanaatkârları barındırır.',
+    },
   },
   resources: {
     potato: { name: 'Patates' },
@@ -60,10 +69,19 @@ export const tr = {
     planks: { name: 'Kereste' },
     stone: { name: 'Taş' },
   },
+  population: {
+    settler: { name: 'Yerleşimciler' },
+    artisan: { name: 'Zanaatkârlar' },
+    summary: {
+      title: 'Nüfus',
+      classRow: '{{className}}: toplam {{total}}, çalışan {{employed}}, boşta {{available}}',
+    },
+  },
   buildingStatus: {
     idle: 'Başlatma bekleniyor',
     running: 'Üretim',
     waiting_for_inputs: 'Hammadde bekleniyor',
+    waiting_for_workers: 'İşçi bekleniyor',
     output_blocked: 'Depo dolu',
   },
   production: {
@@ -74,6 +92,9 @@ export const tr = {
     owned: 'İnşa edildi: {{value}}',
     cycleSeconds: '⏱ {{seconds}} sn',
     recipeAria: '{{recipe}}, döngü {{seconds}} sn',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, döngü {{seconds}} sn, {{workforceCount}} {{workforceClass}} gerektirir',
+    housingCapacity: 'Barındırır: {{amount}} {{class}}',
     build: 'İnşa et: {{cost}}',
     buildCountAria_one: '{{cost}} karşılığında {{quantity}} bina inşa et',
     buildCountAria_other: '{{cost}} karşılığında {{quantity}} bina inşa et',

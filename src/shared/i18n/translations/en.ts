@@ -7,6 +7,7 @@ export const en = {
     warehouse: 'Warehouse',
     raw_material: 'Raw materials',
     factory: 'Factory',
+    housing: 'Housing',
     settings: 'Settings',
   },
   nav: {
@@ -52,6 +53,14 @@ export const en = {
       name: 'Quarry',
       description: 'Mines stone for building construction.',
     },
+    settler_house: {
+      name: 'Settler house',
+      description: 'Houses settlers needed to run raw-material production.',
+    },
+    artisan_house: {
+      name: 'Artisan house',
+      description: 'Houses artisans needed to run processing factories.',
+    },
   },
   resources: {
     potato: { name: 'Potatoes' },
@@ -62,10 +71,19 @@ export const en = {
     planks: { name: 'Planks' },
     stone: { name: 'Stone' },
   },
+  population: {
+    settler: { name: 'Settlers' },
+    artisan: { name: 'Artisans' },
+    summary: {
+      title: 'Population',
+      classRow: '{{className}}: {{total}} total, {{employed}} employed, {{available}} available',
+    },
+  },
   buildingStatus: {
     idle: 'Waiting to start',
     running: 'Production',
     waiting_for_inputs: 'Waiting for materials',
+    waiting_for_workers: 'Waiting for workers',
     output_blocked: 'Storage is full',
   },
   production: {
@@ -76,6 +94,9 @@ export const en = {
     owned: 'Owned: {{value}}',
     cycleSeconds: '⏱ {{seconds}} sec',
     recipeAria: '{{recipe}}, cycle {{seconds}} sec',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, cycle {{seconds}} sec, needs {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Houses: {{amount}} {{class}}',
     build: 'Build {{cost}}',
     buildCountAria_one: 'Build {{quantity}} building for {{cost}}',
     buildCountAria_other: 'Build {{quantity}} buildings for {{cost}}',

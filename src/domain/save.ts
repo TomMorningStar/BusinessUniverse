@@ -80,6 +80,7 @@ const VALID_STATUSES: readonly BuildingRunStatus[] = [
   'idle',
   'running',
   'waiting_for_inputs',
+  'waiting_for_workers',
   'output_blocked',
 ];
 

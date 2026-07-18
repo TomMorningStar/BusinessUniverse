@@ -1,4 +1,10 @@
-export const INITIAL_MONEY = 100;
+/**
+ * 160 covers exactly one settler house (60) plus one potato farm (100): the
+ * smallest bootstrap sequence that ends with a staffed, producing building.
+ * Population (Этап 3) made housing a prerequisite for every production
+ * building, so the starting purse has to cover both the house and the farm.
+ */
+export const INITIAL_MONEY = 160;
 
 export const MAX_TICK_MS = 1000;
 

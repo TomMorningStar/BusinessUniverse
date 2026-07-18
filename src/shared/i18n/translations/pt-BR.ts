@@ -5,6 +5,7 @@ export const ptBR = {
     warehouse: 'Armazém',
     raw_material: 'Matérias-primas',
     factory: 'Fábrica',
+    housing: 'Moradia',
     settings: 'Configurações',
   },
   nav: {
@@ -50,6 +51,14 @@ export const ptBR = {
       name: 'Pedreira',
       description: 'Extrai pedra para a construção de edifícios.',
     },
+    settler_house: {
+      name: 'Casa de colonos',
+      description: 'Abriga os colonos necessários para a produção de matérias-primas.',
+    },
+    artisan_house: {
+      name: 'Casa de artesãos',
+      description: 'Abriga os artesãos necessários para as fábricas de processamento.',
+    },
   },
   resources: {
     potato: { name: 'Batatas' },
@@ -60,10 +69,20 @@ export const ptBR = {
     planks: { name: 'Tábuas' },
     stone: { name: 'Pedra' },
   },
+  population: {
+    settler: { name: 'Colonos' },
+    artisan: { name: 'Artesãos' },
+    summary: {
+      title: 'População',
+      classRow:
+        '{{className}}: total {{total}}, empregados {{employed}}, disponíveis {{available}}',
+    },
+  },
   buildingStatus: {
     idle: 'Aguardando início',
     running: 'Produção',
     waiting_for_inputs: 'Aguardando matérias-primas',
+    waiting_for_workers: 'Aguardando trabalhadores',
     output_blocked: 'Armazém cheio',
   },
   production: {
@@ -74,6 +93,9 @@ export const ptBR = {
     owned: 'Construídos: {{value}}',
     cycleSeconds: '⏱ {{seconds}} s',
     recipeAria: '{{recipe}}, ciclo de {{seconds}} s',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, ciclo de {{seconds}} s, requer {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Abriga: {{amount}} {{class}}',
     build: 'Construir {{cost}}',
     buildCountAria_one: 'Construir {{quantity}} edifício por {{cost}}',
     buildCountAria_many: 'Construir {{quantity}} edifícios por {{cost}}',

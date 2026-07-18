@@ -5,6 +5,7 @@ export const it = {
     warehouse: 'Magazzino',
     raw_material: 'Materie prime',
     factory: 'Fabbrica',
+    housing: 'Alloggi',
     settings: 'Impostazioni',
   },
   nav: {
@@ -50,6 +51,14 @@ export const it = {
       name: 'Cava',
       description: 'Estrae pietra per la costruzione degli edifici.',
     },
+    settler_house: {
+      name: 'Casa dei coloni',
+      description: 'Ospita i coloni necessari per la produzione di materie prime.',
+    },
+    artisan_house: {
+      name: 'Casa degli artigiani',
+      description: 'Ospita gli artigiani necessari per le fabbriche di lavorazione.',
+    },
   },
   resources: {
     potato: { name: 'Patate' },
@@ -60,10 +69,19 @@ export const it = {
     planks: { name: 'Assi' },
     stone: { name: 'Pietra' },
   },
+  population: {
+    settler: { name: 'Coloni' },
+    artisan: { name: 'Artigiani' },
+    summary: {
+      title: 'Popolazione',
+      classRow: '{{className}}: totale {{total}}, occupati {{employed}}, disponibili {{available}}',
+    },
+  },
   buildingStatus: {
     idle: 'In attesa di avvio',
     running: 'Produzione',
     waiting_for_inputs: 'In attesa di materie prime',
+    waiting_for_workers: 'In attesa di lavoratori',
     output_blocked: 'Magazzino pieno',
   },
   production: {
@@ -74,6 +92,9 @@ export const it = {
     owned: 'Costruiti: {{value}}',
     cycleSeconds: '⏱ {{seconds}} s',
     recipeAria: '{{recipe}}, ciclo di {{seconds}} s',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, ciclo di {{seconds}} s, richiede {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Ospita: {{amount}} {{class}}',
     build: 'Costruisci {{cost}}',
     buildCountAria_one: 'Costruisci {{quantity}} edificio per {{cost}}',
     buildCountAria_many: 'Costruisci {{quantity}} edifici per {{cost}}',

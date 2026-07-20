@@ -19,6 +19,12 @@ export type ResourceAmount = {
   amount: number;
 };
 
+export type BuildingCategory = 'raw_material' | 'construction' | 'factory' | 'housing';
+
+/** Groups resources by which building category produces them (housing produces
+ * no resources, so it's excluded); drives the warehouse panel's filter buttons. */
+export type ResourceCategory = Exclude<BuildingCategory, 'housing'>;
+
 /**
  * Configs carry no display names: user-facing text lives in the i18n
  * dictionaries and is resolved by id (`resources.<id>.name`) at the UI level.
@@ -28,9 +34,8 @@ export type ResourceConfig = {
   emoji: string;
   sellPrice: number;
   initialCapacity: number;
+  category: ResourceCategory;
 };
-
-export type BuildingCategory = 'raw_material' | 'factory' | 'housing';
 
 /**
  * Cost of the first copy (`ownedCount === 0`): a money amount plus, for buildings

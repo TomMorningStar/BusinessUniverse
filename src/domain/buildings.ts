@@ -63,7 +63,7 @@ export const BUILDINGS = {
   lumberjack: {
     id: 'lumberjack',
     emoji: '🪵',
-    category: 'raw_material',
+    category: 'construction',
     constructionCost: { money: 150, resources: [] },
     costGrowthRate: 1.07,
     cycleDurationMs: 5_000,
@@ -74,7 +74,7 @@ export const BUILDINGS = {
   quarry: {
     id: 'quarry',
     emoji: '🪨',
-    category: 'raw_material',
+    category: 'construction',
     constructionCost: { money: 250, resources: [] },
     costGrowthRate: 1.07,
     cycleDurationMs: 6_000,

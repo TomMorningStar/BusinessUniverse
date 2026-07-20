@@ -3,7 +3,8 @@ import type { TranslationDict } from '../types';
 export const ru = {
   tabs: {
     warehouse: 'Склад',
-    raw_material: 'Сырьё',
+    construction: 'Стройматериалы',
+    raw_material: 'Плантации',
     factory: 'Фабрика',
     housing: 'Жильё',
     settings: 'Настройки',
@@ -21,6 +22,7 @@ export const ru = {
   },
   panels: {
     buildings: 'Здания',
+    warehouse: 'Склад',
   },
   buildings: {
     potato_farm: {
@@ -109,6 +111,8 @@ export const ru = {
     empty: 'Склад пока пуст — постройте здания, и товары появятся здесь.',
     sellAll: 'Продать всё',
     emptyRow: 'Пусто',
+    filterAll: 'Все',
+    filterAria: 'Фильтр по категории',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

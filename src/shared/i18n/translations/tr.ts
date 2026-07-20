@@ -3,6 +3,7 @@ import type { TranslationDict } from '../types';
 export const tr = {
   tabs: {
     warehouse: 'Depo',
+    construction: 'İnşaat malzemeleri',
     raw_material: 'Hammaddeler',
     factory: 'Fabrika',
     housing: 'Konut',
@@ -21,6 +22,7 @@ export const tr = {
   },
   panels: {
     buildings: 'Binalar',
+    warehouse: 'Depo',
   },
   buildings: {
     potato_farm: {
@@ -107,6 +109,8 @@ export const tr = {
     empty: 'Depo şimdilik boş — binalar inşa edin, ürünler burada görünecek.',
     sellAll: 'Hepsini sat',
     emptyRow: 'Boş',
+    filterAll: 'Tümü',
+    filterAria: 'Kategoriye göre filtrele',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

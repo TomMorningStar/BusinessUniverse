@@ -5,6 +5,7 @@
 export const en = {
   tabs: {
     warehouse: 'Warehouse',
+    construction: 'Construction materials',
     raw_material: 'Raw materials',
     factory: 'Factory',
     housing: 'Housing',
@@ -23,6 +24,7 @@ export const en = {
   },
   panels: {
     buildings: 'Buildings',
+    warehouse: 'Warehouse',
   },
   buildings: {
     potato_farm: {
@@ -109,6 +111,8 @@ export const en = {
     empty: 'The warehouse is empty for now — build something and the goods will arrive here.',
     sellAll: 'Sell all',
     emptyRow: 'Empty',
+    filterAll: 'All',
+    filterAria: 'Filter by category',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

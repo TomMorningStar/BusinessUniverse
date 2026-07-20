@@ -1,5 +1,5 @@
-import { RESOURCE_IDS } from '../domain/resources';
-import type { BuildingId, GameState, ResourceId } from '../domain/types';
+import { RESOURCE_IDS, RESOURCES } from '../domain/resources';
+import type { BuildingId, GameState, ResourceCategory, ResourceId } from '../domain/types';
 
 export const selectMoney = (state: GameState) => state.money;
 
@@ -22,10 +22,15 @@ export const selectResourceSlots = (resourceIds: readonly ResourceId[]) => (stat
 export const selectAutoSellFlags = (resourceIds: readonly ResourceId[]) => (state: GameState) =>
   resourceIds.map((resourceId) => state.autoSell[resourceId]);
 
-/** Resource ids with a non-empty warehouse slot; pair with `useShallow` so the
+/** Resource ids with a non-empty warehouse slot, optionally narrowed to one
+ * category (`'all'` keeps every category); pair with `useShallow` so the
  * subscriber only re-renders when the membership actually changes. */
-export const selectStoredResourceIds = (state: GameState) =>
-  RESOURCE_IDS.filter((resourceId) => state.warehouse[resourceId].amount > 0);
+export const selectStoredResourceIds = (category: ResourceCategory | 'all') => (state: GameState) =>
+  RESOURCE_IDS.filter(
+    (resourceId) =>
+      (category === 'all' || RESOURCES[resourceId].category === category) &&
+      state.warehouse[resourceId].amount > 0,
+  );
 
 /* Building fields are selected as primitives (not the whole OwnedBuilding):
  * `progressMs` changes every game tick, so an object subscription would

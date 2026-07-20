@@ -20,7 +20,10 @@ export function GamePage() {
   const [settingsView, setSettingsView] = useState<SettingsView>('menu');
   const [buildQuantity, setBuildQuantity] = useState<number>(1);
   const showBuildQuantityPicker =
-    activeTab === 'raw_material' || activeTab === 'factory' || activeTab === 'housing';
+    activeTab === 'raw_material' ||
+    activeTab === 'construction' ||
+    activeTab === 'factory' ||
+    activeTab === 'housing';
 
   const handleTabChange = (tab: AppTab) => {
     // Leaving (or re-entering) settings always lands on the menu, not a stale sub-view.
@@ -45,6 +48,9 @@ export function GamePage() {
             {activeTab === 'warehouse' && <WarehousePanel />}
             {activeTab === 'raw_material' && (
               <BuildingsPanel category="raw_material" buildQuantity={buildQuantity} />
+            )}
+            {activeTab === 'construction' && (
+              <BuildingsPanel category="construction" buildQuantity={buildQuantity} />
             )}
             {activeTab === 'factory' && (
               <BuildingsPanel category="factory" buildQuantity={buildQuantity} />

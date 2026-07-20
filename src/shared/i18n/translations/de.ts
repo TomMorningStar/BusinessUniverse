@@ -3,6 +3,7 @@ import type { TranslationDict } from '../types';
 export const de = {
   tabs: {
     warehouse: 'Lager',
+    construction: 'Baumaterialien',
     raw_material: 'Rohstoffe',
     factory: 'Fabrik',
     housing: 'Wohnen',
@@ -21,6 +22,7 @@ export const de = {
   },
   panels: {
     buildings: 'Gebäude',
+    warehouse: 'Lager',
   },
   buildings: {
     potato_farm: {
@@ -108,6 +110,8 @@ export const de = {
     empty: 'Das Lager ist noch leer – baue Gebäude, und die Waren erscheinen hier.',
     sellAll: 'Alles verkaufen',
     emptyRow: 'Leer',
+    filterAll: 'Alle',
+    filterAria: 'Nach Kategorie filtern',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

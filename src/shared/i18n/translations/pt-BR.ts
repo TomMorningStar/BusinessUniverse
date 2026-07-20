@@ -3,6 +3,7 @@ import type { TranslationDict } from '../types';
 export const ptBR = {
   tabs: {
     warehouse: 'Armazém',
+    construction: 'Materiais de construção',
     raw_material: 'Matérias-primas',
     factory: 'Fábrica',
     housing: 'Moradia',
@@ -21,6 +22,7 @@ export const ptBR = {
   },
   panels: {
     buildings: 'Construções',
+    warehouse: 'Armazém',
   },
   buildings: {
     potato_farm: {
@@ -109,6 +111,8 @@ export const ptBR = {
     empty: 'O armazém ainda está vazio — construa edifícios e os produtos aparecerão aqui.',
     sellAll: 'Vender tudo',
     emptyRow: 'Vazio',
+    filterAll: 'Todos',
+    filterAria: 'Filtrar por categoria',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

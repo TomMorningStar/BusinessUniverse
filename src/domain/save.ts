@@ -17,7 +17,7 @@ import type {
 } from './types';
 
 export const SAVE_STORAGE_KEY = 'business-universe-save';
-export const SAVE_SCHEMA_VERSION = 4;
+export const SAVE_SCHEMA_VERSION = 5;
 
 /** Legacy v1 buildings had no `ownedCount` — presence in the map meant "built once". */
 type PersistedOwnedBuildingV1 = Omit<OwnedBuilding, 'ownedCount'>;
@@ -27,6 +27,9 @@ type ResourceIdV2 = 'potato' | 'chips';
 
 /** Resources that existed in v3 saves, before `orange` was added in v4. */
 type ResourceIdV3 = ResourceIdV2 | 'wheat';
+
+/** Resources that existed in v4 saves, before `wood`/`planks`/`stone` were added in v5. */
+type ResourceIdV4 = ResourceIdV3 | 'orange';
 
 export type PersistedGameStateV1 = {
   version: 1;
@@ -59,6 +62,15 @@ export type PersistedGameStateV4 = {
   version: 4;
   savedAt: number;
   money: number;
+  warehouse: Record<ResourceIdV4, WarehouseSlot>;
+  ownedBuildings: Partial<Record<BuildingId, OwnedBuilding>>;
+  autoSell: Record<ResourceIdV4, boolean>;
+};
+
+export type PersistedGameStateV5 = {
+  version: 5;
+  savedAt: number;
+  money: number;
   warehouse: Warehouse;
   ownedBuildings: Partial<Record<BuildingId, OwnedBuilding>>;
   autoSell: Record<ResourceId, boolean>;
@@ -68,6 +80,7 @@ const VALID_STATUSES: readonly BuildingRunStatus[] = [
   'idle',
   'running',
   'waiting_for_inputs',
+  'waiting_for_workers',
   'output_blocked',
 ];
 
@@ -168,7 +181,7 @@ function sanitizeAutoSell(raw: unknown): Record<ResourceId, boolean> {
   return autoSell;
 }
 
-export function selectPersistedState(gameData: GameData): PersistedGameStateV4 {
+export function selectPersistedState(gameData: GameData): PersistedGameStateV5 {
   return {
     version: SAVE_SCHEMA_VERSION,
     savedAt: Date.now(),
@@ -250,6 +263,28 @@ function migrateV3ToV4(v3: Record<string, unknown>): Record<string, unknown> {
 }
 
 /**
+ * v4 → v5: `wood`, `planks`, and `stone` were added (construction resources).
+ * Older saves predate them, so they get empty slots and autosell disabled — the
+ * same values a fresh state would contain for the new resources.
+ */
+function migrateV4ToV5(v4: Record<string, unknown>): Record<string, unknown> {
+  const warehouse = isRecord(v4.warehouse) ? v4.warehouse : {};
+  const autoSell = isRecord(v4.autoSell) ? v4.autoSell : {};
+
+  return {
+    ...v4,
+    version: 5,
+    warehouse: {
+      ...warehouse,
+      wood: { amount: 0, capacity: RESOURCES.wood.initialCapacity },
+      planks: { amount: 0, capacity: RESOURCES.planks.initialCapacity },
+      stone: { amount: 0, capacity: RESOURCES.stone.initialCapacity },
+    },
+    autoSell: { ...autoSell, wood: false, planks: false, stone: false },
+  };
+}
+
+/**
  * Migration boundary. Known versions are upgraded step by step to the current
  * schema; an unrecognized or future schema version must not be treated as
  * current data.
@@ -271,6 +306,10 @@ export function migrateSave(parsed: unknown): unknown {
 
   if (candidate.version === 3) {
     candidate = migrateV3ToV4(candidate);
+  }
+
+  if (candidate.version === 4) {
+    candidate = migrateV4ToV5(candidate);
   }
 
   if (candidate.version === SAVE_SCHEMA_VERSION) {

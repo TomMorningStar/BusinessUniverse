@@ -108,6 +108,13 @@
   font-weight: 700;
 }
 
+.building-card__stats-workforce {
+  margin-left: 4px;
+  color: var(--text-muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 /* warehouse fill of the building's outputs: small box icon + progress bar */
 .building-card__storage {
   --icon-size: 15px;
@@ -195,12 +202,27 @@
   outline-offset: 2px;
 }
 
+.building-card__build-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  margin-left: auto;
+}
+
 .building-card__build-button {
   min-height: 40px;
   padding: 8px 18px;
-  margin-left: auto;
   font-size: 14px;
   white-space: nowrap;
+}
+
+.building-card__missing-resources {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(255 180 84 / 88%);
+  text-align: right;
 }
 
 .visually-hidden {

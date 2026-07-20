@@ -4,6 +4,7 @@ import { Background } from '../../../widgets/background';
 import { BuildingsPanel } from '../../../widgets/buildings-panel';
 import { Header } from '../../../widgets/header';
 import { LanguagePanel } from '../../../widgets/language-panel';
+import { PopulationSummary } from '../../../widgets/population-summary';
 import { ProductionNotice } from '../../../widgets/production-notice';
 import { SettingsPanel } from '../../../widgets/settings-panel';
 import { Sidebar, type AppTab } from '../../../widgets/sidebar';
@@ -18,7 +19,11 @@ export function GamePage() {
   const [activeTab, setActiveTab] = useState<AppTab>('warehouse');
   const [settingsView, setSettingsView] = useState<SettingsView>('menu');
   const [buildQuantity, setBuildQuantity] = useState<number>(1);
-  const showBuildQuantityPicker = activeTab === 'raw_material' || activeTab === 'factory';
+  const showBuildQuantityPicker =
+    activeTab === 'raw_material' ||
+    activeTab === 'construction' ||
+    activeTab === 'factory' ||
+    activeTab === 'housing';
 
   const handleTabChange = (tab: AppTab) => {
     // Leaving (or re-entering) settings always lands on the menu, not a stale sub-view.
@@ -44,8 +49,17 @@ export function GamePage() {
             {activeTab === 'raw_material' && (
               <BuildingsPanel category="raw_material" buildQuantity={buildQuantity} />
             )}
+            {activeTab === 'construction' && (
+              <BuildingsPanel category="construction" buildQuantity={buildQuantity} />
+            )}
             {activeTab === 'factory' && (
               <BuildingsPanel category="factory" buildQuantity={buildQuantity} />
+            )}
+            {activeTab === 'housing' && (
+              <>
+                <PopulationSummary />
+                <BuildingsPanel category="housing" buildQuantity={buildQuantity} />
+              </>
             )}
             {activeTab === 'settings' &&
               (isLanguageOpen ? (

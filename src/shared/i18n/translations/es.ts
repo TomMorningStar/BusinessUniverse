@@ -3,8 +3,10 @@ import type { TranslationDict } from '../types';
 export const es = {
   tabs: {
     warehouse: 'Almacén',
+    construction: 'Materiales de construcción',
     raw_material: 'Materias primas',
     factory: 'Fábrica',
+    housing: 'Vivienda',
     settings: 'Ajustes',
   },
   nav: {
@@ -20,6 +22,7 @@ export const es = {
   },
   panels: {
     buildings: 'Edificios',
+    warehouse: 'Almacén',
   },
   buildings: {
     potato_farm: {
@@ -38,17 +41,49 @@ export const es = {
       name: 'Naranjal',
       description: 'Recoge naranjas frescas listas para vender.',
     },
+    lumberjack: {
+      name: 'Leñador',
+      description: 'Recolecta madera, el recurso básico de construcción.',
+    },
+    sawmill: {
+      name: 'Aserradero',
+      description: 'Convierte la madera en tablones para la construcción.',
+    },
+    quarry: {
+      name: 'Cantera',
+      description: 'Extrae piedra para la construcción de edificios.',
+    },
+    settler_house: {
+      name: 'Casa de colonos',
+      description: 'Aloja a los colonos necesarios para la producción de materias primas.',
+    },
+    artisan_house: {
+      name: 'Casa de artesanos',
+      description: 'Aloja a los artesanos necesarios para las fábricas de procesamiento.',
+    },
   },
   resources: {
     potato: { name: 'Patatas' },
     chips: { name: 'Patatas fritas' },
     wheat: { name: 'Trigo' },
     orange: { name: 'Naranjas' },
+    wood: { name: 'Madera' },
+    planks: { name: 'Tablones' },
+    stone: { name: 'Piedra' },
+  },
+  population: {
+    settler: { name: 'Colonos' },
+    artisan: { name: 'Artesanos' },
+    summary: {
+      title: 'Población',
+      classRow: '{{className}}: total {{total}}, ocupados {{employed}}, disponibles {{available}}',
+    },
   },
   buildingStatus: {
     idle: 'En espera de inicio',
     running: 'Producción',
     waiting_for_inputs: 'Esperando materias primas',
+    waiting_for_workers: 'Esperando trabajadores',
     output_blocked: 'Almacén lleno',
   },
   production: {
@@ -59,6 +94,9 @@ export const es = {
     owned: 'Construidos: {{value}}',
     cycleSeconds: '⏱ {{seconds}} s',
     recipeAria: '{{recipe}}, ciclo de {{seconds}} s',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, ciclo de {{seconds}} s, requiere {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Aloja: {{amount}} {{class}}',
     build: 'Construir {{cost}}',
     buildCountAria_one: 'Construir {{quantity}} edificio por {{cost}}',
     buildCountAria_many: 'Construir {{quantity}} edificios por {{cost}}',
@@ -66,11 +104,14 @@ export const es = {
     autoSell: 'Venta automática',
     autoSellNamed: 'Venta automática: {{resource}}',
     storage: 'Almacén: {{amount}} de {{capacity}}',
+    missingForBuild: 'Falta para construir: {{list}}',
   },
   warehouse: {
     empty: 'El almacén está vacío por ahora: construye edificios y los productos llegarán aquí.',
     sellAll: 'Vender todo',
     emptyRow: 'Vacío',
+    filterAll: 'Todo',
+    filterAria: 'Filtrar por categoría',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

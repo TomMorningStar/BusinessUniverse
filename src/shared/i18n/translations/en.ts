@@ -5,8 +5,10 @@
 export const en = {
   tabs: {
     warehouse: 'Warehouse',
+    construction: 'Construction materials',
     raw_material: 'Raw materials',
     factory: 'Factory',
+    housing: 'Housing',
     settings: 'Settings',
   },
   nav: {
@@ -22,6 +24,7 @@ export const en = {
   },
   panels: {
     buildings: 'Buildings',
+    warehouse: 'Warehouse',
   },
   buildings: {
     potato_farm: {
@@ -40,17 +43,49 @@ export const en = {
       name: 'Orange grove',
       description: 'Harvests fresh oranges ready for sale.',
     },
+    lumberjack: {
+      name: 'Lumberjack',
+      description: 'Harvests wood — the basic construction resource.',
+    },
+    sawmill: {
+      name: 'Sawmill',
+      description: 'Turns wood into planks for construction.',
+    },
+    quarry: {
+      name: 'Quarry',
+      description: 'Mines stone for building construction.',
+    },
+    settler_house: {
+      name: 'Settler house',
+      description: 'Houses settlers needed to run raw-material production.',
+    },
+    artisan_house: {
+      name: 'Artisan house',
+      description: 'Houses artisans needed to run processing factories.',
+    },
   },
   resources: {
     potato: { name: 'Potatoes' },
     chips: { name: 'Chips' },
     wheat: { name: 'Wheat' },
     orange: { name: 'Oranges' },
+    wood: { name: 'Wood' },
+    planks: { name: 'Planks' },
+    stone: { name: 'Stone' },
+  },
+  population: {
+    settler: { name: 'Settlers' },
+    artisan: { name: 'Artisans' },
+    summary: {
+      title: 'Population',
+      classRow: '{{className}}: {{total}} total, {{employed}} employed, {{available}} available',
+    },
   },
   buildingStatus: {
     idle: 'Waiting to start',
     running: 'Production',
     waiting_for_inputs: 'Waiting for materials',
+    waiting_for_workers: 'Waiting for workers',
     output_blocked: 'Storage is full',
   },
   production: {
@@ -61,17 +96,23 @@ export const en = {
     owned: 'Owned: {{value}}',
     cycleSeconds: '⏱ {{seconds}} sec',
     recipeAria: '{{recipe}}, cycle {{seconds}} sec',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, cycle {{seconds}} sec, needs {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Houses: {{amount}} {{class}}',
     build: 'Build {{cost}}',
     buildCountAria_one: 'Build {{quantity}} building for {{cost}}',
     buildCountAria_other: 'Build {{quantity}} buildings for {{cost}}',
     autoSell: 'Auto-sell',
     autoSellNamed: 'Auto-sell: {{resource}}',
     storage: 'Warehouse: {{amount}} of {{capacity}}',
+    missingForBuild: 'Missing to build: {{list}}',
   },
   warehouse: {
     empty: 'The warehouse is empty for now — build something and the goods will arrive here.',
     sellAll: 'Sell all',
     emptyRow: 'Empty',
+    filterAll: 'All',
+    filterAria: 'Filter by category',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

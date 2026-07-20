@@ -3,8 +3,10 @@ import type { TranslationDict } from '../types';
 export const ru = {
   tabs: {
     warehouse: 'Склад',
-    raw_material: 'Сырьё',
+    construction: 'Стройматериалы',
+    raw_material: 'Плантации',
     factory: 'Фабрика',
+    housing: 'Жильё',
     settings: 'Настройки',
   },
   nav: {
@@ -20,6 +22,7 @@ export const ru = {
   },
   panels: {
     buildings: 'Здания',
+    warehouse: 'Склад',
   },
   buildings: {
     potato_farm: {
@@ -38,17 +41,49 @@ export const ru = {
       name: 'Апельсиновая роща',
       description: 'Собирает свежие апельсины, готовые к продаже.',
     },
+    lumberjack: {
+      name: 'Лесоруб',
+      description: 'Заготавливает дерево — базовый строительный ресурс.',
+    },
+    sawmill: {
+      name: 'Лесопилка',
+      description: 'Превращает дерево в доски для строительства.',
+    },
+    quarry: {
+      name: 'Каменоломня',
+      description: 'Добывает камень для строительства зданий.',
+    },
+    settler_house: {
+      name: 'Дом поселенцев',
+      description: 'Даёт жильё поселенцам, необходимым для сырьевого производства.',
+    },
+    artisan_house: {
+      name: 'Дом ремесленников',
+      description: 'Даёт жильё ремесленникам, необходимым для переработки.',
+    },
   },
   resources: {
     potato: { name: 'Картошка' },
     chips: { name: 'Чипсы' },
     wheat: { name: 'Пшеница' },
     orange: { name: 'Апельсины' },
+    wood: { name: 'Дерево' },
+    planks: { name: 'Доски' },
+    stone: { name: 'Камень' },
+  },
+  population: {
+    settler: { name: 'Поселенцы' },
+    artisan: { name: 'Ремесленники' },
+    summary: {
+      title: 'Население',
+      classRow: '{{className}}: всего {{total}}, занято {{employed}}, свободно {{available}}',
+    },
   },
   buildingStatus: {
     idle: 'Ожидание запуска',
     running: 'Производство',
     waiting_for_inputs: 'Ожидает сырьё',
+    waiting_for_workers: 'Ожидает рабочих',
     output_blocked: 'Склад заполнен',
   },
   production: {
@@ -59,6 +94,9 @@ export const ru = {
     owned: 'Построено: {{value}}',
     cycleSeconds: '⏱ {{seconds}} сек',
     recipeAria: '{{recipe}}, цикл {{seconds}} сек',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, цикл {{seconds}} сек, требуется {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Вмещает: {{amount}} {{class}}',
     build: 'Построить {{cost}}',
     buildCountAria_one: 'Построить {{quantity}} здание за {{cost}}',
     buildCountAria_few: 'Построить {{quantity}} здания за {{cost}}',
@@ -67,11 +105,14 @@ export const ru = {
     autoSell: 'Автопродажа',
     autoSellNamed: 'Автопродажа: {{resource}}',
     storage: 'Склад: {{amount}} из {{capacity}}',
+    missingForBuild: 'Не хватает для постройки: {{list}}',
   },
   warehouse: {
     empty: 'Склад пока пуст — постройте здания, и товары появятся здесь.',
     sellAll: 'Продать всё',
     emptyRow: 'Пусто',
+    filterAll: 'Все',
+    filterAria: 'Фильтр по категории',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

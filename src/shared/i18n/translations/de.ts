@@ -3,8 +3,10 @@ import type { TranslationDict } from '../types';
 export const de = {
   tabs: {
     warehouse: 'Lager',
+    construction: 'Baumaterialien',
     raw_material: 'Rohstoffe',
     factory: 'Fabrik',
+    housing: 'Wohnen',
     settings: 'Einstellungen',
   },
   nav: {
@@ -20,6 +22,7 @@ export const de = {
   },
   panels: {
     buildings: 'Gebäude',
+    warehouse: 'Lager',
   },
   buildings: {
     potato_farm: {
@@ -38,17 +41,50 @@ export const de = {
       name: 'Orangenhain',
       description: 'Erntet frische Orangen, bereit zum Verkauf.',
     },
+    lumberjack: {
+      name: 'Holzfäller',
+      description: 'Schlägt Holz – den grundlegenden Baustoff.',
+    },
+    sawmill: {
+      name: 'Sägewerk',
+      description: 'Verarbeitet Holz zu Brettern für den Bau.',
+    },
+    quarry: {
+      name: 'Steinbruch',
+      description: 'Fördert Stein für den Gebäudebau.',
+    },
+    settler_house: {
+      name: 'Siedlerhaus',
+      description: 'Beherbergt Siedler, die für die Rohstoffproduktion nötig sind.',
+    },
+    artisan_house: {
+      name: 'Handwerkerhaus',
+      description: 'Beherbergt Handwerker, die für Verarbeitungsfabriken nötig sind.',
+    },
   },
   resources: {
     potato: { name: 'Kartoffeln' },
     chips: { name: 'Chips' },
     wheat: { name: 'Weizen' },
     orange: { name: 'Orangen' },
+    wood: { name: 'Holz' },
+    planks: { name: 'Bretter' },
+    stone: { name: 'Stein' },
+  },
+  population: {
+    settler: { name: 'Siedler' },
+    artisan: { name: 'Handwerker' },
+    summary: {
+      title: 'Bevölkerung',
+      classRow:
+        '{{className}}: gesamt {{total}}, beschäftigt {{employed}}, verfügbar {{available}}',
+    },
   },
   buildingStatus: {
     idle: 'Wartet auf Start',
     running: 'Produktion',
     waiting_for_inputs: 'Wartet auf Rohstoffe',
+    waiting_for_workers: 'Wartet auf Arbeiter',
     output_blocked: 'Lager ist voll',
   },
   production: {
@@ -59,17 +95,23 @@ export const de = {
     owned: 'Gebaut: {{value}}',
     cycleSeconds: '⏱ {{seconds}} Sek.',
     recipeAria: '{{recipe}}, Zyklus {{seconds}} Sek.',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, Zyklus {{seconds}} Sek., benötigt {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Beherbergt: {{amount}} {{class}}',
     build: 'Bauen für {{cost}}',
     buildCountAria_one: '{{quantity}} Gebäude für {{cost}} bauen',
     buildCountAria_other: '{{quantity}} Gebäude für {{cost}} bauen',
     autoSell: 'Auto-Verkauf',
     autoSellNamed: 'Auto-Verkauf: {{resource}}',
     storage: 'Lager: {{amount}} von {{capacity}}',
+    missingForBuild: 'Fehlt zum Bauen: {{list}}',
   },
   warehouse: {
     empty: 'Das Lager ist noch leer – baue Gebäude, und die Waren erscheinen hier.',
     sellAll: 'Alles verkaufen',
     emptyRow: 'Leer',
+    filterAll: 'Alle',
+    filterAria: 'Nach Kategorie filtern',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

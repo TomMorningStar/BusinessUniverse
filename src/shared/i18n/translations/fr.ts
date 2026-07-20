@@ -3,8 +3,10 @@ import type { TranslationDict } from '../types';
 export const fr = {
   tabs: {
     warehouse: 'Entrepôt',
+    construction: 'Matériaux de construction',
     raw_material: 'Matières premières',
     factory: 'Usine',
+    housing: 'Logement',
     settings: 'Paramètres',
   },
   nav: {
@@ -20,6 +22,7 @@ export const fr = {
   },
   panels: {
     buildings: 'Bâtiments',
+    warehouse: 'Entrepôt',
   },
   buildings: {
     potato_farm: {
@@ -38,17 +41,49 @@ export const fr = {
       name: 'Orangeraie',
       description: 'Récolte des oranges fraîches prêtes à la vente.',
     },
+    lumberjack: {
+      name: 'Bûcheron',
+      description: 'Récolte du bois, la ressource de construction de base.',
+    },
+    sawmill: {
+      name: 'Scierie',
+      description: 'Transforme le bois en planches de construction.',
+    },
+    quarry: {
+      name: 'Carrière',
+      description: 'Extrait de la pierre pour la construction des bâtiments.',
+    },
+    settler_house: {
+      name: 'Maison de colons',
+      description: 'Loge les colons nécessaires à la production de matières premières.',
+    },
+    artisan_house: {
+      name: 'Maison d’artisans',
+      description: 'Loge les artisans nécessaires aux usines de transformation.',
+    },
   },
   resources: {
     potato: { name: 'Pommes de terre' },
     chips: { name: 'Chips' },
     wheat: { name: 'Blé' },
     orange: { name: 'Oranges' },
+    wood: { name: 'Bois' },
+    planks: { name: 'Planches' },
+    stone: { name: 'Pierre' },
+  },
+  population: {
+    settler: { name: 'Colons' },
+    artisan: { name: 'Artisans' },
+    summary: {
+      title: 'Population',
+      classRow: '{{className}} : total {{total}}, employés {{employed}}, disponibles {{available}}',
+    },
   },
   buildingStatus: {
     idle: 'En attente de démarrage',
     running: 'Production',
     waiting_for_inputs: 'En attente de matières premières',
+    waiting_for_workers: 'En attente de travailleurs',
     output_blocked: 'Entrepôt plein',
   },
   production: {
@@ -59,6 +94,9 @@ export const fr = {
     owned: 'Construits : {{value}}',
     cycleSeconds: '⏱ {{seconds}} s',
     recipeAria: '{{recipe}}, cycle de {{seconds}} s',
+    recipeAriaWithWorkforce:
+      '{{recipe}}, cycle de {{seconds}} s, nécessite {{workforceCount}} {{workforceClass}}',
+    housingCapacity: 'Loge : {{amount}} {{class}}',
     build: 'Construire {{cost}}',
     buildCountAria_one: 'Construire {{quantity}} bâtiment pour {{cost}}',
     buildCountAria_many: 'Construire {{quantity}} bâtiments pour {{cost}}',
@@ -66,12 +104,15 @@ export const fr = {
     autoSell: 'Vente auto',
     autoSellNamed: 'Vente auto : {{resource}}',
     storage: 'Entrepôt : {{amount}} sur {{capacity}}',
+    missingForBuild: 'Manque pour construire : {{list}}',
   },
   warehouse: {
     empty:
       'L’entrepôt est vide pour l’instant : construisez des bâtiments et les marchandises arriveront ici.',
     sellAll: 'Tout vendre',
     emptyRow: 'Vide',
+    filterAll: 'Tout',
+    filterAria: 'Filtrer par catégorie',
   },
   notices: {
     built: '{{name}} ×{{qty}}',

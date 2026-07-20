@@ -17,10 +17,24 @@ export const useGameStore = create<GameState>()((set, get) => ({
     const existing = state.ownedBuildings[buildingId];
     const ownedCount = existing?.ownedCount ?? 0;
 
-    const plan = planBuild(state.money, config, ownedCount, quantity);
+    const plan = planBuild(state.money, state.warehouse, config, ownedCount, quantity);
 
     if (plan.count <= 0) {
       return;
+    }
+
+    // Money and resources are validated together by planBuild; deduct both in one
+    // atomic update so a building is never partially paid for.
+    let nextWarehouse = state.warehouse;
+
+    if (plan.totalCost.resources.length > 0) {
+      const removalResult = removeResources(state.warehouse, plan.totalCost.resources);
+
+      if (!removalResult.ok) {
+        return;
+      }
+
+      nextWarehouse = removalResult.warehouse;
     }
 
     const nextBuilding: OwnedBuilding = existing
@@ -34,7 +48,8 @@ export const useGameStore = create<GameState>()((set, get) => ({
         };
 
     set({
-      money: state.money - plan.totalCost,
+      money: state.money - plan.totalCost.money,
+      warehouse: nextWarehouse,
       ownedBuildings: {
         ...state.ownedBuildings,
         [buildingId]: nextBuilding,
